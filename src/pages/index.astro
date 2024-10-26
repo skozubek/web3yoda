@@ -43,131 +43,216 @@ const achievements = [
 <BaseLayout title="Web3Yoda - Your Trusted Web3 Guide">
   <Header slot="header" />
 
-  <!-- Hero Section -->
-  <section class="py-20">
-    <div class="text-center">
-      <h1 class="text-4xl font-bold tracking-tight sm:text-6xl">
-        Your Bridge to Web3 Mastery
-      </h1>
-      <p
-        class="mt-6 text-lg leading-8 text-gray-600 dark:text-gray-400 max-w-2xl mx-auto"
-      >
-        Transform your Web2 expertise into Web3 opportunities. Start your
-        journey with personalized guidance from an experienced mentor.
-      </p>
-      <div class="mt-10 flex items-center justify-center gap-6">
-        <a
-          href="/book"
-          class="rounded-md bg-purple-600 px-6 py-3 text-lg font-semibold text-white hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+  <!-- Hero Section with oversized text and diagonal layout -->
+  <section class="relative overflow-hidden">
+    <div
+      class="absolute inset-0 bg-gradient-to-br from-purple-50 to-white dark:from-gray-900 dark:to-gray-800 -skew-y-6 origin-top-left transform-gpu"
+    >
+    </div>
+    <div class="relative max-w-[90rem] mx-auto px-4 pt-32 pb-48">
+      <div class="max-w-[85%] mx-auto">
+        <h1
+          class="text-6xl sm:text-8xl md:text-[10rem] font-bold tracking-tight leading-none mb-8 text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-indigo-600"
         >
-          Book Discovery Call
-        </a>
-        <a
-          href="/resources"
-          class="rounded-md border border-gray-300 dark:border-gray-700 px-6 py-3 text-lg font-semibold text-gray-900 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+          Web3<br />Yoda
+        </h1>
+        <p
+          class="text-xl sm:text-2xl md:text-4xl text-gray-600 dark:text-gray-300 max-w-3xl"
         >
-          Explore Resources
-        </a>
+          Your bridge from Web2 expertise to Web3 mastery.
+        </p>
+        <div class="mt-12 flex flex-wrap gap-6">
+          <a
+            href="/book"
+            class="group relative px-8 py-4 text-xl font-semibold"
+          >
+            <span
+              class="absolute inset-0 w-full h-full transition duration-200 ease-out transform translate-x-1 translate-y-1 bg-purple-700 group-hover:-translate-x-0 group-hover:-translate-y-0"
+            ></span>
+            <span
+              class="absolute inset-0 w-full h-full bg-white dark:bg-gray-900 border-2 border-purple-700 group-hover:bg-purple-700"
+            ></span>
+            <span class="relative text-purple-700 group-hover:text-white"
+              >Book Discovery Call</span
+            >
+          </a>
+          <a
+            href="/resources"
+            class="relative px-8 py-4 text-xl font-semibold text-gray-700 dark:text-gray-300 hover:text-purple-700 dark:hover:text-purple-400 transition-colors"
+          >
+            Explore Resources →
+          </a>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- Stats Section -->
-  <section class="py-16 border-t border-gray-200 dark:border-gray-800">
-    <div class="grid grid-cols-1 gap-8 sm:grid-cols-3">
-      {
-        achievements.map(({ number, label }) => (
-          <div class="text-center">
-            <div class="text-4xl font-bold text-purple-600">{number}</div>
-            <div class="mt-2 text-base text-gray-600 dark:text-gray-400">
-              {label}
-            </div>
-          </div>
-        ))
-      }
+  <!-- Floating Stats Section -->
+  <section class="relative -mt-24 mb-24">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-12">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-12">
+          {
+            achievements.map(({ number, label }) => (
+              <div class="text-center group cursor-default">
+                <div class="text-5xl font-bold text-purple-600 group-hover:scale-110 transform transition-transform">
+                  {number}
+                </div>
+                <div class="mt-2 text-xl text-gray-600 dark:text-gray-400">
+                  {label}
+                </div>
+              </div>
+            ))
+          }
+        </div>
+      </div>
     </div>
   </section>
 
-  <!-- Services Section -->
-  <section class="py-16 border-t border-gray-200 dark:border-gray-800">
-    <div class="text-center mb-12">
-      <h2 class="text-3xl font-bold">Consulting Services</h2>
-      <p class="mt-4 text-gray-600 dark:text-gray-400">
-        Personalized guidance for your Web3 journey
-      </p>
+  <!-- Services Section with Staggered Layout -->
+  <section class="py-32 relative overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4">
+      <h2 class="text-4xl md:text-7xl font-bold mb-24 text-center">
+        Master Your<br />
+        <span class="text-purple-600">Web3 Journey</span>
+      </h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {
+          services.map((service, index) => (
+            <div
+              class={`transform ${index % 2 === 1 ? "md:translate-y-16" : ""}`}
+            >
+              <div class="group relative">
+                <div class="absolute -inset-1 rounded-lg bg-gradient-to-r from-purple-600 to-indigo-600 opacity-25 group-hover:opacity-100 transition-opacity blur" />
+                <div class="relative bg-white dark:bg-gray-800 rounded-lg p-8 transform transition-transform group-hover:-translate-y-2">
+                  <h3 class="text-2xl font-semibold mb-4">{service.title}</h3>
+                  <p class="text-gray-600 dark:text-gray-400 mb-6">
+                    {service.description}
+                  </p>
+                  <div class="flex items-center justify-between">
+                    <span class="text-sm text-purple-600">
+                      {service.duration}
+                    </span>
+                    <a
+                      href="/book"
+                      class="text-purple-600 hover:text-purple-700 font-medium group-hover:underline"
+                    >
+                      Book Now →
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))
+        }
+      </div>
     </div>
-    <div class="grid grid-cols-1 gap-8 sm:grid-cols-3">
-      {
-        services.map(({ title, description, duration }) => (
-          <div class="rounded-lg border border-gray-200 dark:border-gray-800 p-6 hover:border-purple-500 transition-colors">
-            <h3 class="text-xl font-semibold mb-2">{title}</h3>
-            <p class="text-gray-600 dark:text-gray-400 mb-4">{description}</p>
-            <div class="flex items-center justify-between">
-              <span class="text-sm text-gray-500 dark:text-gray-500">
-                {duration}
-              </span>
-              <a
-                href="/book"
-                class="text-purple-600 hover:text-purple-700 font-medium"
+  </section>
+
+  <!-- Why Choose Section with Asymmetrical Layout -->
+  <section class="py-32 relative">
+    <div
+      class="absolute inset-0 bg-gradient-to-tl from-purple-50 to-white dark:from-gray-900 dark:to-gray-800 skew-y-3 origin-bottom-right transform-gpu"
+    >
+    </div>
+    <div class="relative max-w-7xl mx-auto px-4">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        <div>
+          <h2 class="text-4xl md:text-6xl font-bold mb-8">
+            Why Choose<br />
+            <span class="text-purple-600">Web3Yoda?</span>
+          </h2>
+          <p class="text-xl text-gray-600 dark:text-gray-400 mb-12 max-w-xl">
+            Benefit from years of experience in both Web2 and Web3, combining
+            traditional tech expertise with blockchain innovation.
+          </p>
+          <div class="space-y-8">
+            <div class="flex items-start gap-4">
+              <div
+                class="w-12 h-12 rounded-lg bg-purple-600 text-white flex items-center justify-center text-2xl font-bold"
               >
-                Book Now →
-              </a>
+                1
+              </div>
+              <div>
+                <h3 class="text-xl font-semibold mb-2">
+                  Experienced Professional
+                </h3>
+                <p class="text-gray-600 dark:text-gray-400">
+                  Former Google engineer with deep expertise in both traditional
+                  tech and Web3.
+                </p>
+              </div>
+            </div>
+            <div class="flex items-start gap-4">
+              <div
+                class="w-12 h-12 rounded-lg bg-purple-600 text-white flex items-center justify-center text-2xl font-bold"
+              >
+                2
+              </div>
+              <div>
+                <h3 class="text-xl font-semibold mb-2">Practical Approach</h3>
+                <p class="text-gray-600 dark:text-gray-400">
+                  Focus on real-world applications and proven strategies for
+                  Web3 success.
+                </p>
+              </div>
+            </div>
+            <div class="flex items-start gap-4">
+              <div
+                class="w-12 h-12 rounded-lg bg-purple-600 text-white flex items-center justify-center text-2xl font-bold"
+              >
+                3
+              </div>
+              <div>
+                <h3 class="text-xl font-semibold mb-2">
+                  Personalized Guidance
+                </h3>
+                <p class="text-gray-600 dark:text-gray-400">
+                  Customized consulting sessions tailored to your specific needs
+                  and goals.
+                </p>
+              </div>
             </div>
           </div>
-        ))
-      }
-    </div>
-  </section>
-
-  <!-- Why Choose Me Section -->
-  <section class="py-16 border-t border-gray-200 dark:border-gray-800">
-    <div class="text-center mb-12">
-      <h2 class="text-3xl font-bold">Why Choose Web3Yoda?</h2>
-      <p class="mt-4 text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-        Benefit from years of experience in both Web2 and Web3, combining
-        traditional tech expertise with blockchain innovation.
-      </p>
-    </div>
-    <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-      <div class="p-6">
-        <h3 class="text-xl font-semibold mb-2">Experienced Professional</h3>
-        <p class="text-gray-600 dark:text-gray-400">
-          Former Google engineer with deep expertise in both traditional tech
-          and Web3.
-        </p>
-      </div>
-      <div class="p-6">
-        <h3 class="text-xl font-semibold mb-2">Practical Approach</h3>
-        <p class="text-gray-600 dark:text-gray-400">
-          Focus on real-world applications and proven strategies for Web3
-          success.
-        </p>
-      </div>
-      <div class="p-6">
-        <h3 class="text-xl font-semibold mb-2">Personalized Guidance</h3>
-        <p class="text-gray-600 dark:text-gray-400">
-          Customized consulting sessions tailored to your specific needs and
-          goals.
-        </p>
+        </div>
+        <div class="relative">
+          <div
+            class="aspect-square rounded-full bg-purple-100 dark:bg-purple-900/30"
+          >
+          </div>
+          <div class="absolute inset-0 flex items-center justify-center">
+            <span class="text-9xl font-bold text-purple-600/20">Y</span>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- CTA Section -->
-  <section class="py-16 border-t border-gray-200 dark:border-gray-800">
-    <div class="text-center">
-      <h2 class="text-3xl font-bold mb-6">Ready to Start Your Web3 Journey?</h2>
-      <p
-        class="text-lg text-gray-600 dark:text-gray-400 mb-8 max-w-2xl mx-auto"
+  <!-- CTA Section with Dynamic Background -->
+  <section class="py-32 relative overflow-hidden">
+    <div class="absolute inset-0">
+      <div
+        class="absolute inset-0 bg-gradient-to-r from-purple-600 to-indigo-600 opacity-90"
       >
+      </div>
+      <div
+        class="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(255,255,255,0.2)_0%,rgba(0,0,0,0.2)_100%)]"
+      >
+      </div>
+    </div>
+    <div class="relative max-w-7xl mx-auto px-4 text-center">
+      <h2 class="text-4xl md:text-6xl font-bold text-white mb-8">
+        Ready to Start Your<br />Web3 Journey?
+      </h2>
+      <p class="text-xl text-purple-100 mb-12 max-w-2xl mx-auto">
         Book a free 15-minute discovery call to discuss your goals and how I can
         help you achieve them.
       </p>
       <a
         href="/book"
-        class="inline-block rounded-md bg-purple-600 px-8 py-4 text-lg font-semibold text-white hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+        class="inline-flex items-center justify-center px-8 py-4 text-xl font-semibold text-purple-600 bg-white rounded-lg hover:bg-purple-50 transition-colors"
       >
-        Schedule Your Free Call
+        Schedule Your Free Call →
       </a>
     </div>
   </section>
