@@ -1,0 +1,49 @@
+---
+// src/components/astro/Header.astro
+import ThemeToggle from "../react/ThemeToggle";
+
+const navItems = [
+  { name: "Home", href: "/" },
+  { name: "Services", href: "/services" },
+  { name: "Blog", href: "/blog" },
+  { name: "Resources", href: "/resources" },
+];
+---
+
+<header
+  class="sticky top-0 z-50 w-full border-b border-gray-200 dark:border-gray-700 bg-white/90 dark:bg-gray-900/90 backdrop-blur"
+>
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="flex h-16 items-center justify-between">
+      <!-- Logo -->
+      <div class="flex-shrink-0">
+        <a href="/" class="text-2xl font-bold"> Web3Yoda </a>
+      </div>
+
+      <!-- Navigation -->
+      <nav class="hidden md:flex items-center space-x-8">
+        {
+          navItems.map((item) => (
+            <a
+              href={item.href}
+              class="text-sm font-medium text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
+            >
+              {item.name}
+            </a>
+          ))
+        }
+      </nav>
+
+      <!-- Right section -->
+      <div class="flex items-center space-x-4">
+        <ThemeToggle client:load />
+        <a
+          href="/book"
+          class="inline-flex items-center justify-center rounded-md bg-purple-600 px-4 py-2 text-sm font-medium text-white hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+        >
+          Book Call
+        </a>
+      </div>
+    </div>
+  </div>
+</header>

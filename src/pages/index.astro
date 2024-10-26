@@ -1,16 +1,174 @@
 ---
+// src/pages/index.astro
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/astro/Header.astro";
 
+const services = [
+  {
+    title: "Web3 Basics",
+    description:
+      "Foundation course perfect for Web2 professionals looking to transition into Web3.",
+    duration: "60 min",
+  },
+  {
+    title: "NFT & Digital Collectibles",
+    description:
+      "Deep dive into NFTs, digital collectibles, and their business applications.",
+    duration: "60 min",
+  },
+  {
+    title: "Multi-Chain Mastery",
+    description:
+      "Advanced guidance on navigating multiple blockchain ecosystems.",
+    duration: "60 min",
+  },
+];
+
+const achievements = [
+  {
+    number: "10+",
+    label: "Years in Tech",
+  },
+  {
+    number: "1000+",
+    label: "Consulting Hours",
+  },
+  {
+    number: "50+",
+    label: "Web3 Projects",
+  },
+];
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout title="Web3Yoda - Your Trusted Web3 Guide">
+  <Header slot="header" />
+
+  <!-- Hero Section -->
+  <section class="py-20">
+    <div class="text-center">
+      <h1 class="text-4xl font-bold tracking-tight sm:text-6xl">
+        Your Bridge to Web3 Mastery
+      </h1>
+      <p
+        class="mt-6 text-lg leading-8 text-gray-600 dark:text-gray-400 max-w-2xl mx-auto"
+      >
+        Transform your Web2 expertise into Web3 opportunities. Start your
+        journey with personalized guidance from an experienced mentor.
+      </p>
+      <div class="mt-10 flex items-center justify-center gap-6">
+        <a
+          href="/book"
+          class="rounded-md bg-purple-600 px-6 py-3 text-lg font-semibold text-white hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+        >
+          Book Discovery Call
+        </a>
+        <a
+          href="/resources"
+          class="rounded-md border border-gray-300 dark:border-gray-700 px-6 py-3 text-lg font-semibold text-gray-900 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+        >
+          Explore Resources
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats Section -->
+  <section class="py-16 border-t border-gray-200 dark:border-gray-800">
+    <div class="grid grid-cols-1 gap-8 sm:grid-cols-3">
+      {
+        achievements.map(({ number, label }) => (
+          <div class="text-center">
+            <div class="text-4xl font-bold text-purple-600">{number}</div>
+            <div class="mt-2 text-base text-gray-600 dark:text-gray-400">
+              {label}
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- Services Section -->
+  <section class="py-16 border-t border-gray-200 dark:border-gray-800">
+    <div class="text-center mb-12">
+      <h2 class="text-3xl font-bold">Consulting Services</h2>
+      <p class="mt-4 text-gray-600 dark:text-gray-400">
+        Personalized guidance for your Web3 journey
+      </p>
+    </div>
+    <div class="grid grid-cols-1 gap-8 sm:grid-cols-3">
+      {
+        services.map(({ title, description, duration }) => (
+          <div class="rounded-lg border border-gray-200 dark:border-gray-800 p-6 hover:border-purple-500 transition-colors">
+            <h3 class="text-xl font-semibold mb-2">{title}</h3>
+            <p class="text-gray-600 dark:text-gray-400 mb-4">{description}</p>
+            <div class="flex items-center justify-between">
+              <span class="text-sm text-gray-500 dark:text-gray-500">
+                {duration}
+              </span>
+              <a
+                href="/book"
+                class="text-purple-600 hover:text-purple-700 font-medium"
+              >
+                Book Now →
+              </a>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- Why Choose Me Section -->
+  <section class="py-16 border-t border-gray-200 dark:border-gray-800">
+    <div class="text-center mb-12">
+      <h2 class="text-3xl font-bold">Why Choose Web3Yoda?</h2>
+      <p class="mt-4 text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+        Benefit from years of experience in both Web2 and Web3, combining
+        traditional tech expertise with blockchain innovation.
+      </p>
+    </div>
+    <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+      <div class="p-6">
+        <h3 class="text-xl font-semibold mb-2">Experienced Professional</h3>
+        <p class="text-gray-600 dark:text-gray-400">
+          Former Google engineer with deep expertise in both traditional tech
+          and Web3.
+        </p>
+      </div>
+      <div class="p-6">
+        <h3 class="text-xl font-semibold mb-2">Practical Approach</h3>
+        <p class="text-gray-600 dark:text-gray-400">
+          Focus on real-world applications and proven strategies for Web3
+          success.
+        </p>
+      </div>
+      <div class="p-6">
+        <h3 class="text-xl font-semibold mb-2">Personalized Guidance</h3>
+        <p class="text-gray-600 dark:text-gray-400">
+          Customized consulting sessions tailored to your specific needs and
+          goals.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="py-16 border-t border-gray-200 dark:border-gray-800">
+    <div class="text-center">
+      <h2 class="text-3xl font-bold mb-6">Ready to Start Your Web3 Journey?</h2>
+      <p
+        class="text-lg text-gray-600 dark:text-gray-400 mb-8 max-w-2xl mx-auto"
+      >
+        Book a free 15-minute discovery call to discuss your goals and how I can
+        help you achieve them.
+      </p>
+      <a
+        href="/book"
+        class="inline-block rounded-md bg-purple-600 px-8 py-4 text-lg font-semibold text-white hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+      >
+        Schedule Your Free Call
+      </a>
+    </div>
+  </section>
+</BaseLayout>
