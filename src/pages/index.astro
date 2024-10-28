@@ -23,21 +23,6 @@ const services = [
     duration: "60 min",
   },
 ];
-
-const achievements = [
-  {
-    number: "10+",
-    label: "Years in Tech",
-  },
-  {
-    number: "1000+",
-    label: "Consulting Hours",
-  },
-  {
-    number: "50+",
-    label: "Web3 Projects",
-  },
-];
 ---
 
 <BaseLayout title="Web3Yoda - Your Trusted Web3 Guide">
@@ -59,7 +44,8 @@ const achievements = [
         <p
           class="text-xl sm:text-2xl md:text-4xl text-gray-600 dark:text-gray-300 max-w-3xl"
         >
-          Your bridge from Web2 expertise to Web3 mastery.
+          Start your Web3 journey with a seasoned guide who's walked the path
+          before you.
         </p>
         <div class="mt-12 flex flex-wrap gap-6">
           <a
@@ -87,34 +73,12 @@ const achievements = [
     </div>
   </section>
 
-  <!-- Floating Stats Section -->
-  <section class="relative -mt-24 mb-24">
-    <div class="max-w-7xl mx-auto px-4">
-      <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-12">
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-12">
-          {
-            achievements.map(({ number, label }) => (
-              <div class="text-center group cursor-default">
-                <div class="text-5xl font-bold text-purple-600 group-hover:scale-110 transform transition-transform">
-                  {number}
-                </div>
-                <div class="mt-2 text-xl text-gray-600 dark:text-gray-400">
-                  {label}
-                </div>
-              </div>
-            ))
-          }
-        </div>
-      </div>
-    </div>
-  </section>
-
   <!-- Services Section with Staggered Layout -->
   <section class="py-32 relative overflow-hidden">
     <div class="max-w-7xl mx-auto px-4">
       <h2 class="text-4xl md:text-7xl font-bold mb-24 text-center">
-        Master Your<br />
-        <span class="text-purple-600">Web3 Journey</span>
+        Your Web3<br />
+        <span class="text-purple-600">Onboarding Path</span>
       </h2>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
         {
