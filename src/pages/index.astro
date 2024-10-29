@@ -3,19 +3,20 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Header from "../components/astro/Header.astro";
 import { Image } from "astro:assets";
-import btcTech from "../assets/btctechnologies.png";
+import btcOrbit from "../assets/btcorbit.png";
+import btcRunes from "../assets/btctechnologies.png";
+import web3yoda from "../assets/web3yoda.png";
 
 const services = [
   {
     title: "Web3 Basics",
     description:
-      "Foundation course perfect for Web2 professionals looking to transition into Web3.",
+      "Foundation course. All you need to start your transition into Web3.",
     duration: "60 min",
   },
   {
     title: "NFT & Digital Collectibles",
-    description:
-      "Deep dive into NFTs, digital collectibles, and their business applications.",
+    description: "Deep dive into NFTs, digital collectibles, marketplaces.",
     duration: "60 min",
   },
   {
@@ -37,16 +38,16 @@ const services = [
     >
     </div>
 
-    <!-- Bitcoin technology image - hidden on mobile, visible from md up -->
+    <!-- image - hidden on mobile, visible from md up -->
     <div
-      class="absolute top-0 right-0 w-[600px] h-[600px] opacity-20 dark:opacity-80 hidden md:block"
+      class="absolute top-0 right-0 w-[530px] h-[530px] opacity-60 dark:opacity-80 hidden md:block"
     >
       <Image
-        src={btcTech}
-        alt="Bitcoin Technology"
+        src={web3yoda}
+        alt="Web3 Yoda"
         class="w-full h-full object-contain"
-        width={600}
-        height={600}
+        width={530}
+        height={530}
       />
     </div>
 
@@ -142,11 +143,11 @@ const services = [
   </section>
 
   <!-- Services Section with Staggered Layout -->
-  <section class="py-32 relative overflow-hidden">
+  <section class="pt-4 pb-32 py-relative overflow-hidden">
     <div class="max-w-7xl mx-auto px-4">
       <h2 class="text-4xl md:text-7xl font-bold mb-24 text-center">
         Your Web3<br />
-        <span class="text-purple-600">Onboarding Path</span>
+        <span class="text-purple-600">Onboarding guide</span>
       </h2>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
         {
@@ -182,78 +183,82 @@ const services = [
   </section>
 
   <!-- Why Choose Section with Asymmetrical Layout -->
-  <section class="py-32 relative">
+  <section class="py-32 relative overflow-hidden">
     <div
       class="absolute inset-0 bg-gradient-to-tl from-purple-50 to-white dark:from-gray-900 dark:to-gray-800 skew-y-3 origin-bottom-right transform-gpu"
     >
     </div>
+
+    <div
+      class="absolute inset-y-0 right-0 hidden md:flex items-center pointer-events-none"
+    >
+      <img
+        src={btcRunes.src}
+        alt="BTC Runes Symbol Background"
+        class="w-[90%] h-[90%] object-contain opacity-10 dark:opacity-20"
+      />
+    </div>
+
     <div class="relative max-w-7xl mx-auto px-4">
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-        <div>
-          <h2 class="text-4xl md:text-6xl font-bold mb-8">
-            Why Choose<br />
-            <span class="text-purple-600">Web3Yoda?</span>
-          </h2>
-          <p class="text-xl text-gray-600 dark:text-gray-400 mb-12 max-w-xl">
-            Benefit from years of experience in both Web2 and Web3, combining
-            traditional tech expertise with blockchain innovation.
-          </p>
-          <div class="space-y-8">
-            <div class="flex items-start gap-4">
-              <div
-                class="w-12 h-12 rounded-lg bg-purple-600 text-white flex items-center justify-center text-2xl font-bold"
-              >
-                1
-              </div>
-              <div>
-                <h3 class="text-xl font-semibold mb-2">
-                  Experienced Professional
-                </h3>
-                <p class="text-gray-600 dark:text-gray-400">
-                  Former Google engineer with deep expertise in both traditional
-                  tech and Web3.
-                </p>
-              </div>
-            </div>
-            <div class="flex items-start gap-4">
-              <div
-                class="w-12 h-12 rounded-lg bg-purple-600 text-white flex items-center justify-center text-2xl font-bold"
-              >
-                2
-              </div>
-              <div>
-                <h3 class="text-xl font-semibold mb-2">Practical Approach</h3>
-                <p class="text-gray-600 dark:text-gray-400">
-                  Focus on real-world applications and proven strategies for
-                  Web3 success.
-                </p>
-              </div>
-            </div>
-            <div class="flex items-start gap-4">
-              <div
-                class="w-12 h-12 rounded-lg bg-purple-600 text-white flex items-center justify-center text-2xl font-bold"
-              >
-                3
-              </div>
-              <div>
-                <h3 class="text-xl font-semibold mb-2">
-                  Personalized Guidance
-                </h3>
-                <p class="text-gray-600 dark:text-gray-400">
-                  Customized consulting sessions tailored to your specific needs
-                  and goals.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="relative">
+      <div class="lg:max-w-3xl">
+        <h2 class="text-4xl md:text-6xl font-bold mb-8 relative">
+          Why Choose<br />
+          <span class="text-purple-600">Web3Yoda?</span>
+        </h2>
+        <p class="text-xl text-gray-600 dark:text-gray-400 mb-12 max-w-xl">
+          Skip the theory and dive into practical Web3 knowledge from someone
+          who lives and breathes it daily.
+        </p>
+        <div class="space-y-8">
           <div
-            class="aspect-square rounded-full bg-purple-100 dark:bg-purple-900/30"
+            class="group flex items-start gap-6 p-6 rounded-xl transition-all duration-300 hover:bg-white/50 dark:hover:bg-gray-800/50 hover:shadow-xl"
           >
+            <div
+              class="w-12 h-12 rounded-lg bg-purple-600 text-white flex items-center justify-center text-2xl font-bold shrink-0 group-hover:scale-110 transition-transform"
+            >
+              1
+            </div>
+            <div>
+              <h3 class="text-xl font-semibold mb-2">
+                Battle-Tested Web Veteran
+              </h3>
+              <p class="text-gray-600 dark:text-gray-400">
+                Ex-Googler (SQE team), Web2 brand founder, with hands-on
+                experience navigating the evolving web3 landscape.
+              </p>
+            </div>
           </div>
-          <div class="absolute inset-0 flex items-center justify-center">
-            <span class="text-9xl font-bold text-purple-600/20">Y</span>
+          <div
+            class="group flex items-start gap-6 p-6 rounded-xl transition-all duration-300 hover:bg-white/50 dark:hover:bg-gray-800/50 hover:shadow-xl"
+          >
+            <div
+              class="w-12 h-12 rounded-lg bg-purple-600 text-white flex items-center justify-center text-2xl font-bold shrink-0 group-hover:scale-110 transition-transform"
+            >
+              2
+            </div>
+            <div>
+              <h3 class="text-xl font-semibold mb-2">Real-World Experience</h3>
+              <p class="text-gray-600 dark:text-gray-400">
+                Daily practitioner actively trading crypto perps, NFTs,
+                ordinals, memecoins & runes. I don't just teach it, I live it.
+              </p>
+            </div>
+          </div>
+          <div
+            class="group flex items-start gap-6 p-6 rounded-xl transition-all duration-300 hover:bg-white/50 dark:hover:bg-gray-800/50 hover:shadow-xl"
+          >
+            <div
+              class="w-12 h-12 rounded-lg bg-purple-600 text-white flex items-center justify-center text-2xl font-bold shrink-0 group-hover:scale-110 transition-transform"
+            >
+              3
+            </div>
+            <div>
+              <h3 class="text-xl font-semibold mb-2">Focused Mastery Path</h3>
+              <p class="text-gray-600 dark:text-gray-400">
+                Tailored guidance focusing on exactly what you need to master -
+                no fluff, just practical Web3 skills
+              </p>
+            </div>
           </div>
         </div>
       </div>
@@ -261,7 +266,7 @@ const services = [
   </section>
 
   <!-- CTA Section with Dynamic Background -->
-  <section class="py-32 relative overflow-hidden">
+  <section class="py-32 mt-16 relative overflow-hidden">
     <div class="absolute inset-0">
       <div
         class="absolute inset-0 bg-gradient-to-r from-purple-600 to-indigo-600 opacity-90"
@@ -282,9 +287,17 @@ const services = [
       </p>
       <a
         href="/book"
-        class="inline-flex items-center justify-center px-8 py-4 text-xl font-semibold text-purple-600 bg-white rounded-lg hover:bg-purple-50 transition-colors"
+        class="group relative inline-flex px-8 py-4 text-xl font-semibold"
       >
-        Schedule Your Free Call →
+        <span
+          class="absolute inset-0 w-full h-full transition duration-200 ease-out transform translate-x-1 translate-y-1 bg-purple-700 group-hover:-translate-x-0 group-hover:-translate-y-0"
+        ></span>
+        <span
+          class="absolute inset-0 w-full h-full bg-white border-2 border-purple-700 group-hover:bg-purple-700"
+        ></span>
+        <span class="relative text-purple-700 group-hover:text-white"
+          >Schedule Your Free Call →</span
+        >
       </a>
     </div>
   </section>

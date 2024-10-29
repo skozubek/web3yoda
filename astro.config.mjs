@@ -1,11 +1,18 @@
 import { defineConfig } from 'astro/config';
-import tailwind from '@astrojs/tailwind';
 import react from '@astrojs/react';
+import tailwind from '@astrojs/tailwind';
 
-// https://astro.build/config
 export default defineConfig({
-  integrations: [
-    tailwind(),
-    react()
-  ]
+  integrations: [react(), tailwind()],
+  image: {
+    // New image service configuration
+    service: {
+      entrypoint: 'astro/assets/services/sharp',
+      config: {
+        limitInputPixels: 0,
+        limitOutputPixels: 0,
+        maximum: 30000,
+      }
+    }
+  }
 });
