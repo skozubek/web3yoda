@@ -1,51 +1,22 @@
 ---
 // src/components/astro/Header.astro
-import ThemeToggle from "../react/ThemeToggle";
-import MobileNav from "../react/MobileNav";
-
-const navItems = [
-  { name: "Home", href: "/" },
-  { name: "Services", href: "/services" },
-  { name: "Blog", href: "/blog" },
-  { name: "Resources", href: "/resources" },
-];
 ---
 
-<header
-  class="w-screen sticky top-0 z-50 border-b border-gray-200 dark:border-gray-700 bg-white/90 dark:bg-gray-900/90 backdrop-blur"
->
-  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-    <div class="flex h-20 items-center justify-between">
-      <!-- Logo -->
-      <div class="flex-shrink-0">
-        <a href="/" class="text-3xl font-bold tracking-tight">Web3Yoda</a>
-      </div>
-
-      <!-- Desktop Navigation -->
-      <nav class="hidden md:flex items-center space-x-10">
-        {
-          navItems.map((item) => (
-            <a
-              href={item.href}
-              class="text-lg font-medium text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white transition-colors"
-            >
-              {item.name}
-            </a>
-          ))
-        }
-      </nav>
-
-      <!-- Right section -->
-      <div class="flex items-center space-x-6">
-        <ThemeToggle client:load />
-        <a
-          href="/book"
-          class="hidden sm:inline-flex items-center justify-center rounded-md bg-purple-600 px-6 py-3 text-lg font-medium text-white hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 transition-colors"
-        >
-          Book Call
-        </a>
-        <MobileNav client:load navItems={navItems} />
-      </div>
-    </div>
+<header class="w-full py-6">
+  <div class="max-w-3xl mx-auto px-8">
+    <nav class="flex space-x-6">
+      <a href="/" class="text-white hover:text-gray-400 transition-colors">
+        Home
+      </a>
+      <a
+        href="https://twitter.com/phantom0fweb3"
+        class="text-white hover:text-gray-400 transition-colors"
+      >
+        Twitter
+      </a>
+      <a href="#" class="text-white hover:text-gray-400 transition-colors">
+        Book a Call
+      </a>
+    </nav>
   </div>
 </header>
