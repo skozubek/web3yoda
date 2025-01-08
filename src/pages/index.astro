@@ -26,14 +26,7 @@ const services = [
 
 <BaseLayout title="Web3Yoda - Your Web3 Guide">
   <div class="container">
-    <svg class="w-32 h-32 mb-8" viewBox="0 0 64 64">
-      <rect x="16" y="8" width="32" height="32" fill="#ffffff"></rect>
-      <rect x="24" y="16" width="4" height="4" fill="#000000"></rect>
-      <rect x="36" y="16" width="4" height="4" fill="#000000"></rect>
-      <rect x="24" y="28" width="16" height="4" fill="#000000"></rect>
-    </svg>
-
-    <h1 class="text-4xl font-bold mb-4">Your Web3 Onboarding Guide</h1>
+    <h1 class="text-4xl font-bold mb-2">Your Web3 Onboarding Guide</h1>
     <p class="text-gray-400 mb-8">
       Start your Web3 journey with a seasoned guide who's walked the path before
       you. Skip the theory and dive into practical Web3 knowledge from someone
@@ -43,39 +36,56 @@ const services = [
     <section class="mt-16 pt-8 border-t border-gray-600">
       {
         services.map((service) => (
-          <div class="mb-8 service-item">
+          <div class="mb-8 transform transition-transform duration-300 ease-in-out hover:translate-x-2">
             <h2 class="text-xl font-bold mb-2">{service.title}</h2>
             <p class="text-gray-400">{service.description}</p>
           </div>
         ))
       }
 
-      <div class="mb-8 service-item">
+      <div class="mb-8">
         <h2 class="text-xl font-bold mb-2">Free Discovery Call</h2>
         <p class="text-gray-400 mb-4">
           15 min call to get to know your personal needs
         </p>
         <a
-          href="https://calendly.com/web3guru"
-          class="inline-block px-6 py-3 bg-white text-black font-bold hover:bg-gray-400 hover:text-white transition-colors"
+          href="#"
+          class="inline-block px-6 py-3 bg-white text-black font-bold transition-colors duration-300 ease-in-out hover:bg-gray-400 hover:text-white"
         >
           Schedule a Call
         </a>
       </div>
     </section>
+
+    <section class="mt-16 pt-8 border-t border-gray-600">
+      <h2 class="text-2xl font-bold mb-8">Why Choose Web3Yoda?</h2>
+
+      <div class="space-y-12">
+        {
+          [
+            {
+              title: "Battle-Tested Web Veteran",
+              description:
+                "Ex-Googler (SQE team), Web2 brand founder, with hands-on experience navigating the evolving web3 landscape.",
+            },
+            {
+              title: "Real-World Experience",
+              description:
+                "Daily practitioner actively trading crypto perps, NFTs, ordinals, memecoins & runes. I don't just teach it, I live it.",
+            },
+            {
+              title: "Focused Mastery Path",
+              description:
+                "Tailored guidance focusing on exactly what you need to master - no fluff, just practical Web3 skills",
+            },
+          ].map((item) => (
+            <div class="transform transition-transform duration-300 ease-in-out hover:translate-x-2">
+              <h3 class="text-xl font-bold mb-2">{item.title}</h3>
+              <p class="text-gray-400">{item.description}</p>
+            </div>
+          ))
+        }
+      </div>
+    </section>
   </div>
 </BaseLayout>
-
-<script>
-  // Simple hover effect for service items
-  document.querySelectorAll(".service-item").forEach((item) => {
-    item.addEventListener("mouseenter", () => {
-      item.style.transform = "translateX(10px)";
-      item.style.transition = "transform 0.3s ease";
-    });
-
-    item.addEventListener("mouseleave", () => {
-      item.style.transform = "translateX(0)";
-    });
-  });
-</script>

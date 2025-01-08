@@ -2,21 +2,43 @@
 // src/components/astro/Header.astro
 ---
 
-<header class="w-full py-6">
+<header
+  class="fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-sm border-b border-gray-800"
+>
   <div class="max-w-3xl mx-auto px-8">
-    <nav class="flex space-x-6">
-      <a href="/" class="text-white hover:text-gray-400 transition-colors">
-        Home
+    <div class="flex items-center justify-between h-28">
+      <!-- Logo Section with SVG -->
+      <a href="/" class="flex items-center group">
+        <svg
+          class="w-20 h-20 transition-transform duration-300 group-hover:scale-110"
+          viewBox="0 0 64 64"
+        >
+          <rect x="16" y="8" width="32" height="32" fill="#ffffff"></rect>
+          <rect x="24" y="16" width="4" height="4" fill="#000000"></rect>
+          <rect x="36" y="16" width="4" height="4" fill="#000000"></rect>
+          <rect x="24" y="28" width="16" height="4" fill="#000000"></rect>
+        </svg>
+        <span class="ml-3 text-xl font-bold">Web3Yoda</span>
       </a>
-      <a
-        href="https://twitter.com/phantom0fweb3"
-        class="text-white hover:text-gray-400 transition-colors"
-      >
-        Twitter
-      </a>
-      <a href="#" class="text-white hover:text-gray-400 transition-colors">
-        Book a Call
-      </a>
-    </nav>
+
+      <!-- Navigation -->
+      <nav class="flex items-center space-x-8">
+        <a
+          href="https://twitter.com/phantom0fweb3"
+          class="text-gray-400 hover:text-white transition-colors duration-300"
+        >
+          X (Twitter)
+        </a>
+        <a
+          href="#"
+          class="px-4 py-2 bg-white text-black font-bold hover:bg-gray-400 hover:text-white transition-colors duration-300 ease-in-out"
+        >
+          Book a Call
+        </a>
+      </nav>
+    </div>
   </div>
 </header>
+
+<!-- Spacer for fixed header -->
+<div class="h-28"></div>
