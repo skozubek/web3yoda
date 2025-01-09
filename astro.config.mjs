@@ -4,6 +4,14 @@ import tailwind from '@astrojs/tailwind';
 
 export default defineConfig({
   integrations: [react(), tailwind()],
+  i18n: {
+    defaultLocale: 'en',
+    locales: ['en', 'pl'],
+    // No prefix for default locale, prefix for others
+    routing: {
+      prefixDefaultLocale: false
+    }
+  },
   image: {
     // New image service configuration
     service: {

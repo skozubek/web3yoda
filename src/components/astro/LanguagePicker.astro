@@ -1,0 +1,22 @@
+---
+// src/components/astro/LanguagePicker.astro
+---
+
+<style>
+  .custom-select {
+    appearance: none; /* Remove default arrow */
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="gray"><path d="M5.5 8l4.5 4.5L14.5 8H5.5z"/></svg>'); /* Custom arrow */
+    background-repeat: no-repeat;
+    background-position: right 10px center; /* Position the custom arrow */
+    background-size: 16px; /* Size of the custom arrow */
+    padding-right: 30px; /* Space for the arrow */
+  }
+</style>
+
+<select
+  class="custom-select bg-transparent border border-gray-600 rounded px-3 py-2 text-gray-400 focus:border-white transition-colors"
+  onchange="window.location.pathname = this.value"
+>
+  <option value="/" selected={Astro.currentLocale === "en"}>En</option>
+  <option value="/pl/" selected={Astro.currentLocale === "pl"}>Pl</option>
+</select>

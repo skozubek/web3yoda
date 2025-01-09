@@ -1,0 +1,97 @@
+---
+// src/pages/pl/index.astro
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const styles = {
+  section: "mt-16 pt-8 border-t border-gray-600",
+  contentBlock:
+    "mb-8 transform transition-transform duration-300 ease-in-out hover:translate-x-2",
+  title: "text-xl font-bold mb-2",
+  description: "text-gray-400",
+  cta: "inline-block px-6 py-3 bg-white text-black font-bold transition-colors duration-300 ease-in-out hover:bg-gray-400 hover:text-white",
+};
+---
+
+<BaseLayout title="Web3Yoda - Twój przewodnik po Web3">
+  <div class="container">
+    <header>
+      <h1 class="text-4xl font-bold mb-2">Twój przewodnik po Web3</h1>
+      <p class="text-gray-400 mb-8">
+        Rozpocznij swoją podróż po Web3 z doświadczonym przewodnikiem, który
+        przeszedł tę drogę przed Tobą. Pomiń teorię i zanurz się w praktycznej
+        wiedzy o Web3 od kogoś, kto żyje tym na co dzień.
+      </p>
+    </header>
+
+    <section class={styles.section} aria-labelledby="services-title">
+      <h2 id="services-title" class="sr-only">Nasze Usługi</h2>
+      <div class={styles.contentBlock}>
+        <h3 class={styles.title}>Podstawy Web3</h3>
+        <p class={styles.description}>
+          Wszystko, czego potrzebujesz, aby rozpocząć przejście do Web3
+        </p>
+      </div>
+      <div class={styles.contentBlock}>
+        <h3 class={styles.title}>NFT i Cyfrowe Kolekcje</h3>
+        <p class={styles.description}>
+          Dogłębna analiza NFT, cyfrowych kolekcji i rynków
+        </p>
+      </div>
+      <div class={styles.contentBlock}>
+        <h3 class={styles.title}>Wielołańcuchowe Mistrzostwo</h3>
+        <p class={styles.description}>
+          Zaawansowane wskazówki dotyczące poruszania się po różnych
+          ekosystemach blockchain
+        </p>
+      </div>
+      <div class={styles.contentBlock}>
+        <h3 class={styles.title}>Rozwój Narzędzi</h3>
+        <p class={styles.description}>
+          Boty Twitter, integracje portfeli, automatyzacja przepływu pracy i
+          agenci AI
+        </p>
+      </div>
+
+      <div class={styles.contentBlock}>
+        <h3 class={styles.title}>Darmowa Konsultacja</h3>
+        <p class={`${styles.description} mb-4`}>
+          15-minutowa rozmowa, aby poznać Twoje potrzeby
+        </p>
+        <a href="https://cal.com/web3yoda/15min" class={styles.cta}
+          >Umów Rozmowę</a
+        >
+      </div>
+    </section>
+
+    <section class={styles.section} aria-labelledby="benefits-title">
+      <h2 id="benefits-title" class="text-2xl font-bold mb-8">
+        Dlaczego Web3Yoda?
+      </h2>
+      <div class="space-y-12">
+        <div class={styles.contentBlock}>
+          <h3 class={styles.title}>Doświadczony Weteran Sieci</h3>
+          <p class={styles.description}>
+            Były pracownik Google (zespół SQE), założyciel marki Web2, z
+            praktycznym doświadczeniem w nawigowaniu po zmieniającym się
+            krajobrazie web3.
+          </p>
+        </div>
+        <div class={styles.contentBlock}>
+          <h3 class={styles.title}>Doświadczenie z Pierwszej Ręki</h3>
+          <p class={styles.description}>
+            Aktywny trader krypto perps, NFT, ordinals, memecoinów i run. Nie
+            tylko uczę, ale żyję tym.
+          </p>
+        </div>
+        <div class={styles.contentBlock}>
+          <h3 class={styles.title}>Ukierunkowana Ścieżka Rozwoju</h3>
+          <p class={styles.description}>
+            Spersonalizowane wskazówki skupiające się dokładnie na tym, czego
+            potrzebujesz - bez zbędnej teorii, tylko praktyczne umiejętności
+            Web3
+          </p>
+        </div>
+      </div>
+    </section>
+  </div>
+</BaseLayout>
