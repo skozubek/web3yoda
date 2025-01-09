@@ -1,24 +1,42 @@
 // src/content/config.ts
 import { defineCollection, z } from 'astro:content';
 
-const home = defineCollection({
+const homeCollection = defineCollection({
   type: 'data',
   schema: z.object({
     hero: z.object({
       title: z.string(),
       subtitle: z.string()
     }),
-    services: z.array(z.object({
+    consultations: z.object({
       title: z.string(),
-      description: z.string()
-    })),
-    benefits: z.array(z.object({
+      items: z.array(z.object({
+        title: z.string(),
+        description: z.string()
+      }))
+    }),
+    services: z.object({
       title: z.string(),
-      description: z.string()
-    }))
+      items: z.array(z.object({
+        title: z.string(),
+        description: z.string()
+      }))
+    }),
+    discovery: z.object({
+      title: z.string(),
+      description: z.string(),
+      cta: z.string()
+    }),
+    benefits: z.object({
+      title: z.string(),
+      items: z.array(z.object({
+        title: z.string(),
+        description: z.string()
+      }))
+    })
   })
 });
 
 export const collections = {
-  home
+  'home': homeCollection
 };

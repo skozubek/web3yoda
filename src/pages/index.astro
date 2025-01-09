@@ -6,10 +6,7 @@ const homeEntries = await getCollection("home");
 const content = homeEntries.find((entry) => entry.id.startsWith("en"))?.data;
 
 if (!content) {
-  return new Response(null, {
-    status: 404,
-    statusText: "Not found",
-  });
+  throw new Error(`No content found for locale: en`);
 }
 
 const styles = {
@@ -22,42 +19,54 @@ const styles = {
 };
 ---
 
-<BaseLayout title="Web3Yoda - Your Web3 Guide">
+<BaseLayout title={`Web3Yoda - ${content.hero.title}`}>
   <div class="container">
     <header>
-      <h1 class="text-4xl font-bold mb-2">{content?.hero.title}</h1>
-      <p class="text-gray-400 mb-8">{content?.hero.subtitle}</p>
+      <h1 class="text-4xl font-bold mb-2">{content.hero.title}</h1>
+      <p class="text-gray-400 mb-8">{content.hero.subtitle}</p>
     </header>
 
-    <section class={styles.section} aria-labelledby="services-title">
-      <h2 id="services-title" class="sr-only">Our Services</h2>
+    <section class={styles.section}>
+      <h2 class="text-2xl font-bold mb-8">{content.consultations.title}</h2>
       {
-        content?.services.map((service) => (
+        content.consultations.items.map((item) => (
           <div class={styles.contentBlock}>
-            <h3 class={styles.title}>{service.title}</h3>
-            <p class={styles.description}>{service.description}</p>
+            <h3 class={styles.title}>{item.title}</h3>
+            <p class={styles.description}>{item.description}</p>
           </div>
         ))
       }
+    </section>
 
+    <section class={styles.section}>
+      <h2 class="text-2xl font-bold mb-8">{content.services.title}</h2>
+      {
+        content.services.items.map((item) => (
+          <div class={styles.contentBlock}>
+            <h3 class={styles.title}>{item.title}</h3>
+            <p class={styles.description}>{item.description}</p>
+          </div>
+        ))
+      }
+    </section>
+
+    <section class={styles.section}>
+      <h2 class="text-2xl font-bold mb-8">{content.discovery.title}</h2>
       <div class={styles.contentBlock}>
-        <h3 class={styles.title}>Free Discovery Call</h3>
         <p class={`${styles.description} mb-4`}>
-          15 min call to get to know your personal needs
+          {content.discovery.description}
         </p>
-        <a href="https://cal.com/web3yoda/15min" class={styles.cta}
-          >Schedule a Call</a
-        >
+        <a href="https://cal.com/web3yoda/15min" class={styles.cta}>
+          {content.discovery.cta}
+        </a>
       </div>
     </section>
 
-    <section class={styles.section} aria-labelledby="benefits-title">
-      <h2 id="benefits-title" class="text-2xl font-bold mb-8">
-        Why Choose Web3Yoda?
-      </h2>
+    <section class={styles.section}>
+      <h2 class="text-2xl font-bold mb-8">{content.benefits.title}</h2>
       <div class="space-y-12">
         {
-          content?.benefits.map((benefit) => (
+          content.benefits.items.map((benefit) => (
             <div class={styles.contentBlock}>
               <h3 class={styles.title}>{benefit.title}</h3>
               <p class={styles.description}>{benefit.description}</p>
