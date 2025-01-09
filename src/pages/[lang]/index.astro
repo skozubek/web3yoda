@@ -1,0 +1,96 @@
+---
+// src/pages/[lang]/index.astro
+
+import { getCollection, type CollectionEntry } from "astro:content";
+import { languages, type Language } from "../../utils/i18n";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+// Define interfaces for our content types
+interface ServiceItem {
+  title: string;
+  description: string;
+}
+
+interface BenefitItem {
+  title: string;
+  description: string;
+}
+
+type I18nCollection = CollectionEntry<"i18n">;
+
+export async function getStaticPaths() {
+  return Object.keys(languages).map((lang) => ({
+    params: { lang },
+  }));
+}
+
+const { lang } = Astro.params;
+const currentLang = lang as Language;
+
+const i18nCollection = await getCollection("i18n");
+const translations = i18nCollection.find(
+  (entry: I18nCollection) => entry.id === `${currentLang}.json`
+)?.data;
+
+if (!translations) {
+  throw new Error(`Missing translations for ${currentLang}`);
+}
+
+const { hero, services, discovery, benefits, footer } = translations;
+
+const styles = {
+  section: "mt-16 pt-8 border-t border-gray-600",
+  contentBlock:
+    "mb-8 transform transition-transform duration-300 ease-in-out hover:translate-x-2",
+  title: "text-xl font-bold mb-2",
+  description: "text-gray-400",
+  cta: "inline-block px-6 py-3 bg-white text-black font-bold transition-colors duration-300 ease-in-out hover:bg-gray-400 hover:text-white",
+};
+---
+
+<BaseLayout title={`Web3Yoda - ${hero.title}`}>
+  <div class="container">
+    <header>
+      <h1 class="text-4xl font-bold mb-2">{hero.title}</h1>
+      <p class="text-gray-400 mb-8">{hero.description}</p>
+    </header>
+
+    <section class={styles.section} aria-labelledby="services-title">
+      <h2 id="services-title" class="sr-only">{services.title}</h2>
+      {
+        services.items.map((service: ServiceItem) => (
+          <div class={styles.contentBlock}>
+            <h3 class={styles.title}>{service.title}</h3>
+            <p class={styles.description}>{service.description}</p>
+          </div>
+        ))
+      }
+
+      <div class={styles.contentBlock}>
+        <h3 class={styles.title}>{discovery.title}</h3>
+        <p class={`${styles.description} mb-4`}>
+          {discovery.description}
+        </p>
+        <a href={discovery.cta.href} class={styles.cta}>
+          {discovery.cta.text}
+        </a>
+      </div>
+    </section>
+
+    <section class={styles.section} aria-labelledby="benefits-title">
+      <h2 id="benefits-title" class="text-2xl font-bold mb-8">
+        {benefits.title}
+      </h2>
+      <div class="space-y-12">
+        {
+          benefits.items.map((benefit: BenefitItem) => (
+            <div class={styles.contentBlock}>
+              <h3 class={styles.title}>{benefit.title}</h3>
+              <p class={styles.description}>{benefit.description}</p>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+  </div>
+</BaseLayout>
