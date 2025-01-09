@@ -1,0 +1,67 @@
+// src/content/i18n/en.json
+{
+    "nav": {
+      "home": "Home",
+      "schedule": "Schedule a Call",
+      "twitter": "X (Twitter)"
+    },
+    "hero": {
+      "title": "Your Web3 Onboarding Guide",
+      "description": "Start your Web3 journey with a seasoned guide who's walked the path before you. Skip the theory and dive into practical Web3 knowledge from someone who lives and breathes it daily."
+    },
+    "services": {
+      "title": "Our Services",
+      "items": [
+        {
+          "title": "Web3 Basics",
+          "description": "All you need to start your transition into Web3"
+        },
+        {
+          "title": "NFT & Digital Collectibles",
+          "description": "Deep dive into NFTs, digital collectibles & marketplaces"
+        },
+        {
+          "title": "Multi-Chain Mastery",
+          "description": "Advanced guidance on navigating multiple blockchain ecosystems"
+        },
+        {
+          "title": "Custom Tools Development",
+          "description": "Twitter bots, wallet integrations, workflow automations & AI agents"
+        }
+      ]
+    },
+    "discovery": {
+      "title": "Free Discovery Call",
+      "description": "15 min call to get to know your personal needs",
+      "cta": {
+        "text": "Schedule a Call",
+        "href": "https://cal.com/web3yoda/15min"
+      }
+    },
+    "benefits": {
+      "title": "Why Choose Web3Yoda?",
+      "items": [
+        {
+          "title": "Battle-Tested Web Veteran",
+          "description": "Ex-Googler (SQE team), Web2 brand founder, with hands-on experience navigating the evolving web3 landscape."
+        },
+        {
+          "title": "Real-World Experience",
+          "description": "Daily practitioner actively trading crypto perps, NFTs, ordinals, memecoins & runes. I don't just teach it, I live it."
+        },
+        {
+          "title": "Focused Mastery Path",
+          "description": "Tailored guidance focusing on exactly what you need to master - no fluff, just practical Web3 skills"
+        }
+      ]
+    },
+    "footer": {
+      "newsletter": {
+        "title": "Newsletter",
+        "description": "Get the latest Web3 insights delivered to your inbox.",
+        "placeholder": "Enter your email",
+        "button": "Subscribe"
+      },
+      "copyright": "© 2024 Web3Yoda. All rights reserved."
+    }
+  }
