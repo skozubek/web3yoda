@@ -1,6 +1,16 @@
 ---
-// src/pages/index.astro
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+
+const homeEntries = await getCollection("home");
+const content = homeEntries.find((entry) => entry.id.startsWith("en"))?.data;
+
+if (!content) {
+  return new Response(null, {
+    status: 404,
+    statusText: "Not found",
+  });
+}
 
 const styles = {
   section: "mt-16 pt-8 border-t border-gray-600",
@@ -15,40 +25,20 @@ const styles = {
 <BaseLayout title="Web3Yoda - Your Web3 Guide">
   <div class="container">
     <header>
-      <h1 class="text-4xl font-bold mb-2">Your Web3 Onboarding Guide</h1>
-      <p class="text-gray-400 mb-8">
-        Start your Web3 journey with a seasoned guide who's walked the path
-        before you. Skip the theory and dive into practical Web3 knowledge from
-        someone who lives and breathes it daily.
-      </p>
+      <h1 class="text-4xl font-bold mb-2">{content?.hero.title}</h1>
+      <p class="text-gray-400 mb-8">{content?.hero.subtitle}</p>
     </header>
 
     <section class={styles.section} aria-labelledby="services-title">
       <h2 id="services-title" class="sr-only">Our Services</h2>
-      <div class={styles.contentBlock}>
-        <h3 class={styles.title}>Web3 Basics</h3>
-        <p class={styles.description}>
-          All you need to start your transition into Web3
-        </p>
-      </div>
-      <div class={styles.contentBlock}>
-        <h3 class={styles.title}>NFT & Digital Collectibles</h3>
-        <p class={styles.description}>
-          Deep dive into NFTs, digital collectibles & marketplaces
-        </p>
-      </div>
-      <div class={styles.contentBlock}>
-        <h3 class={styles.title}>Multi-Chain Mastery</h3>
-        <p class={styles.description}>
-          Advanced guidance on navigating multiple blockchain ecosystems
-        </p>
-      </div>
-      <div class={styles.contentBlock}>
-        <h3 class={styles.title}>Custom Tools Development</h3>
-        <p class={styles.description}>
-          Twitter bots, wallet integrations, workflow automations & AI agents
-        </p>
-      </div>
+      {
+        content?.services.map((service) => (
+          <div class={styles.contentBlock}>
+            <h3 class={styles.title}>{service.title}</h3>
+            <p class={styles.description}>{service.description}</p>
+          </div>
+        ))
+      }
 
       <div class={styles.contentBlock}>
         <h3 class={styles.title}>Free Discovery Call</h3>
@@ -66,27 +56,14 @@ const styles = {
         Why Choose Web3Yoda?
       </h2>
       <div class="space-y-12">
-        <div class={styles.contentBlock}>
-          <h3 class={styles.title}>Battle-Tested Web Veteran</h3>
-          <p class={styles.description}>
-            Ex-Googler (SQE team), Web2 brand founder, with hands-on experience
-            navigating the evolving web3 landscape.
-          </p>
-        </div>
-        <div class={styles.contentBlock}>
-          <h3 class={styles.title}>Real-World Experience</h3>
-          <p class={styles.description}>
-            Daily practitioner actively trading crypto perps, NFTs, ordinals,
-            memecoins & runes. I don't just teach it, I live it.
-          </p>
-        </div>
-        <div class={styles.contentBlock}>
-          <h3 class={styles.title}>Focused Mastery Path</h3>
-          <p class={styles.description}>
-            Tailored guidance focusing on exactly what you need to master - no
-            fluff, just practical Web3 skills
-          </p>
-        </div>
+        {
+          content?.benefits.map((benefit) => (
+            <div class={styles.contentBlock}>
+              <h3 class={styles.title}>{benefit.title}</h3>
+              <p class={styles.description}>{benefit.description}</p>
+            </div>
+          ))
+        }
       </div>
     </section>
   </div>

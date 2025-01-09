@@ -2,6 +2,8 @@
 // src/layouts/BaseLayout.astro
 import Footer from "../components/astro/Footer.astro";
 import Header from "../components/astro/Header.astro";
+import { getLocaleFromUrl, getLocalizedURL } from "../i18n/utils";
+import { languages, defaultLang } from "../i18n/ui";
 
 interface Props {
   title: string;
@@ -12,10 +14,22 @@ const {
   title,
   description = "Web3Yoda - Your trusted guide in the Web3 space",
 } = Astro.props;
+
+const currentLocale = getLocaleFromUrl(Astro.url);
+const currentPath = Astro.url.pathname;
+
+// Generate alternate URLs for each language
+const alternates = Object.keys(languages).map((locale) => ({
+  href: new URL(
+    getLocalizedURL(currentPath, locale, defaultLang),
+    Astro.site || "http://localhost:3000"
+  ),
+  hreflang: locale,
+}));
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={currentLocale}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
@@ -29,6 +43,15 @@ const {
       href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap"
       rel="stylesheet"
     />
+    {
+      alternates.map((alternate) => (
+        <link
+          rel="alternate"
+          hreflang={alternate.hreflang}
+          href={alternate.href}
+        />
+      ))
+    }
   </head>
   <body class="bg-black text-white font-mono">
     <div class="flex flex-col min-h-screen">

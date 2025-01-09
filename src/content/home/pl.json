@@ -1,0 +1,38 @@
+{
+    "hero": {
+      "title": "Twój przewodnik po Web3",
+      "subtitle": "Rozpocznij swoją podróż po Web3 z doświadczonym przewodnikiem, który przeszedł tę drogę przed Tobą. Pomiń teorię i zanurz się w praktycznej wiedzy o Web3 od kogoś, kto żyje tym na co dzień."
+    },
+    "services": [
+      {
+        "title": "Podstawy Web3",
+        "description": "Wszystko, czego potrzebujesz, aby rozpocząć przejście do Web3"
+      },
+      {
+        "title": "NFT i Cyfrowe Kolekcje",
+        "description": "Dogłębna analiza NFT, cyfrowych kolekcji i rynków"
+      },
+      {
+        "title": "Wielołańcuchowe Mistrzostwo",
+        "description": "Zaawansowane wskazówki dotyczące poruszania się po różnych ekosystemach blockchain"
+      },
+      {
+        "title": "Rozwój Narzędzi",
+        "description": "Boty Twitter, integracje portfeli, automatyzacja przepływu pracy i agenci AI"
+      }
+    ],
+    "benefits": [
+      {
+        "title": "Doświadczony Weteran Sieci",
+        "description": "Były pracownik Google (zespół SQE), założyciel marki Web2, z praktycznym doświadczeniem w nawigowaniu po zmieniającym się krajobrazie web3."
+      },
+      {
+        "title": "Doświadczenie z Pierwszej Ręki",
+        "description": "Aktywny trader krypto perps, NFT, ordinals, memecoinów i run. Nie tylko uczę, ale żyję tym."
+      },
+      {
+        "title": "Ukierunkowana Ścieżka Rozwoju",
+        "description": "Spersonalizowane wskazówki skupiające się dokładnie na tym, czego potrzebujesz - bez zbędnej teorii, tylko praktyczne umiejętności Web3"
+      }
+    ]
+  }

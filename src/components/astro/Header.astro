@@ -1,27 +1,9 @@
 ---
 // src/components/astro/Header.astro
 import LanguagePicker from "./LanguagePicker.astro";
+import { useTranslations } from "@/i18n/utils";
 
-type Locale = "en" | "pl";
-
-const translations: Record<
-  Locale,
-  {
-    twitter: string;
-    schedule: string;
-  }
-> = {
-  en: {
-    twitter: "X (Twitter)",
-    schedule: "Schedule a Call",
-  },
-  pl: {
-    twitter: "X (Twitter)",
-    schedule: "Umów rozmowę",
-  },
-};
-
-const t = translations[(Astro.currentLocale as Locale) || "en"];
+const t = useTranslations(Astro.currentLocale as "en" | "pl");
 ---
 
 <header
@@ -48,13 +30,13 @@ const t = translations[(Astro.currentLocale as Locale) || "en"];
           href="https://twitter.com/phantom0fweb3"
           class="text-gray-400 hover:text-white transition-colors duration-300"
         >
-          {t.twitter}
+          {t("nav.twitter")}
         </a>
         <a
           href="https://cal.com/web3yoda/15min"
           class="px-4 py-2 bg-white text-black font-bold hover:bg-gray-400 hover:text-white transition-colors duration-300 ease-in-out"
         >
-          {t.schedule}
+          {t("nav.schedule")}
         </a>
       </nav>
     </div>
