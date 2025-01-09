@@ -1,5 +1,9 @@
 ---
 // src/components/astro/Header.astro
+import LanguagePicker from "./LanguagePicker.astro";
+import { useTranslations } from "@/i18n/utils";
+
+const t = useTranslations(Astro.currentLocale as "en" | "pl");
 ---
 
 <header
@@ -7,7 +11,6 @@
 >
   <div class="max-w-3xl mx-auto px-8">
     <div class="flex items-center justify-between h-28">
-      <!-- Logo Section with SVG -->
       <a href="/" class="flex items-center group">
         <svg
           class="w-20 h-20 transition-transform duration-300 group-hover:scale-110"
@@ -21,24 +24,23 @@
         <span class="ml-3 text-xl font-bold">Web3Yoda</span>
       </a>
 
-      <!-- Navigation -->
       <nav class="flex items-center space-x-8">
+        <LanguagePicker />
         <a
           href="https://twitter.com/phantom0fweb3"
           class="text-gray-400 hover:text-white transition-colors duration-300"
         >
-          X (Twitter)
+          {t("nav.twitter")}
         </a>
         <a
           href="https://cal.com/web3yoda/15min"
           class="px-4 py-2 bg-white text-black font-bold hover:bg-gray-400 hover:text-white transition-colors duration-300 ease-in-out"
         >
-          Schedule a Call
+          {t("nav.schedule")}
         </a>
       </nav>
     </div>
   </div>
 </header>
 
-<!-- Spacer for fixed header -->
 <div class="h-28"></div>

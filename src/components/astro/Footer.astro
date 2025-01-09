@@ -1,7 +1,9 @@
 ---
 // src/components/astro/Footer.astro
+import { useTranslations } from "../../i18n/utils";
 import { X, Mail } from "lucide-react";
-const currentYear = new Date().getFullYear();
+
+const t = useTranslations(Astro.currentLocale as "en" | "pl");
 ---
 
 <footer class="py-16 border-t border-gray-600">
@@ -10,29 +12,24 @@ const currentYear = new Date().getFullYear();
       <div class="flex items-center mb-6">
         <span class="text-2xl font-bold">Web3Yoda</span>
       </div>
-      <p class="text-gray-400 text-lg">
-        Bridging the gap between Web2 and Web3 through expert guidance and
-        education.
-      </p>
+      <p class="text-gray-400 text-lg">{t("footer.description")}</p>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
       <div>
-        <h3 class="font-bold mb-4">Newsletter</h3>
-        <p class="text-gray-400 mb-4">
-          Get the latest Web3 insights delivered to your inbox.
-        </p>
+        <h3 class="font-bold mb-4">{t("newsletter.title")}</h3>
+        <p class="text-gray-400 mb-4">{t("newsletter.description")}</p>
         <form class="space-y-2">
           <input
             type="email"
-            placeholder="Enter your email"
+            placeholder={t("newsletter.placeholder")}
             class="w-full px-3 py-2 bg-transparent border border-gray-600 text-white placeholder-gray-400 focus:border-white transition-colors"
           />
           <button
             type="submit"
             class="w-full px-3 py-2 bg-white text-black font-bold hover:bg-gray-400 hover:text-white transition-colors duration-300 ease-in-out"
           >
-            Subscribe
+            {t("newsletter.button")}
           </button>
         </form>
       </div>
@@ -41,9 +38,7 @@ const currentYear = new Date().getFullYear();
     <div
       class="flex justify-between items-center pt-8 border-t border-gray-600"
     >
-      <p class="text-gray-400 text-sm">
-        &copy; {currentYear} Web3Yoda. All rights reserved.
-      </p>
+      <p class="text-gray-400 text-sm">{t("copyright")}</p>
       <div class="flex space-x-6">
         <a
           href="https://twitter.com/phantom0fweb3"

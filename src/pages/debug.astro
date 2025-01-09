@@ -1,0 +1,15 @@
+---
+import { getCollection, type CollectionEntry } from "astro:content";
+import type { CollectionKey } from "astro:content";
+
+const homeContent = await getCollection("home" as CollectionKey);
+console.log("Collection contents:", homeContent);
+
+const content = homeContent.find((entry) => entry.id === "en.json")?.data;
+console.log("Found content:", content);
+---
+
+<pre>
+  Home Collection: {JSON.stringify(homeContent, null, 2)}
+  Found Content: {JSON.stringify(content, null, 2)}
+</pre>
