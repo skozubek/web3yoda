@@ -21,3 +21,11 @@ declare module 'astro:content' {
     };
   }
 }
+interface ImportMetaEnv {
+    readonly BEEHIIV_API_KEY: string;
+    readonly BEEHIIV_PUBLICATION_ID: string;
+  }
+
+  interface ImportMeta {
+    readonly env: ImportMetaEnv;
+  }
