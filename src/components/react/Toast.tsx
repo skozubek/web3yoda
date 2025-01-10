@@ -1,25 +1,28 @@
+// src/components/react/Toast.tsx
 import React, { useEffect, useState } from 'react';
 import { X, Check, AlertCircle } from 'lucide-react';
 import { ui } from '../../i18n/ui';
 
 export type ToastType = 'success' | 'error';
 
-interface ToastEvent {
-  messageKey: keyof typeof ui.en;
-  type: ToastType;
+export interface ToastEvent {
+  detail: {
+    messageKey: keyof typeof ui.en;
+    type: ToastType;
+  }
 }
 
 interface ToastProps {
-  locale: 'en' | 'pl';
+  'data-locale': 'en' | 'pl';
 }
 
-const Toast: React.FC<ToastProps> = ({ locale }) => {
+const Toast: React.FC<ToastProps> = ({ 'data-locale': locale }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [messageKey, setMessageKey] = useState<keyof typeof ui.en | null>(null);
   const [type, setType] = useState<ToastType>('success');
 
   useEffect(() => {
-    const handleToast = (event: CustomEvent<ToastEvent>) => {
+    const handleToast = (event: CustomEvent<ToastEvent['detail']>) => {
       setMessageKey(event.detail.messageKey);
       setType(event.detail.type);
       setIsVisible(true);
@@ -43,7 +46,6 @@ const Toast: React.FC<ToastProps> = ({ locale }) => {
 
   if (!isVisible || !messageKey) return null;
 
-  // Get the translated message
   const message = ui[locale][messageKey];
 
   return (

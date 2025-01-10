@@ -1,14 +1,13 @@
 // src/i18n/ui.ts
-
 export const languages = {
     en: 'English',
     pl: 'Polski'
-} as const;
+  } as const;
 
-export const defaultLang = 'en';
-export const showDefaultLang = false;
+  export const defaultLang = 'en';
+  export const showDefaultLang = false;
 
-export const ui = {
+  export const ui = {
     en: {
       'meta.description': 'Start your Web3 journey with a seasoned guide. Expert consultations and practical knowledge for Web3 transition.',
       'nav.schedule': 'Schedule a Call',
@@ -18,10 +17,10 @@ export const ui = {
       'newsletter.placeholder': 'Enter your email',
       'newsletter.button': 'Subscribe',
       'newsletter.toast.success': 'Thanks for subscribing!',
-      'newsletter.toast.error.general': 'Something went wrong. Please try again.',
       'newsletter.toast.error.invalid': 'Please provide a valid email address',
       'newsletter.toast.error.failed': 'Failed to subscribe. Please try again.',
       'newsletter.toast.error.server': 'Server configuration error',
+      'newsletter.toast.error.general': 'Something went wrong. Please try again.',
       'footer.description': 'Bridging the gap between Web2 and Web3 through expert guidance and education.',
       'copyright': '© 2024 Web3Yoda. All rights reserved.'
     },
@@ -34,10 +33,10 @@ export const ui = {
       'newsletter.placeholder': 'Twój email',
       'newsletter.button': 'Subskrybuj',
       'newsletter.toast.success': 'Dziękujemy za subskrypcję!',
-      'newsletter.toast.error.general': 'Coś poszło nie tak. Spróbuj ponownie.',
       'newsletter.toast.error.invalid': 'Podaj prawidłowy adres email',
       'newsletter.toast.error.failed': 'Nie udało się zapisać. Spróbuj ponownie.',
-      'newsletter.toast.error.server': 'Błąd serwera',
+      'newsletter.toast.error.server': 'Błąd konfiguracji serwera',
+      'newsletter.toast.error.general': 'Coś poszło nie tak. Spróbuj ponownie.',
       'footer.description': 'Łączymy świat Web2 i Web3 poprzez profesjonalne doradztwo i edukację.',
       'copyright': '© 2024 Web3Yoda. Wszelkie prawa zastrzeżone.'
     }

@@ -1,14 +1,7 @@
+// src/pages/api/subscribe.ts
 import type { APIRoute } from 'astro';
 
 export const prerender = false;
-
-// Environment variable validation
-const BEEHIIV_API_KEY = import.meta.env.BEEHIIV_API_KEY;
-const BEEHIIV_PUBLICATION_ID = import.meta.env.BEEHIIV_PUBLICATION_ID;
-
-if (!BEEHIIV_API_KEY || !BEEHIIV_PUBLICATION_ID) {
-  console.error('Missing required environment variables');
-}
 
 function isValidEmail(email: string): boolean {
   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -22,6 +15,9 @@ export const POST: APIRoute = async ({ request }) => {
 
   try {
     // Validate environment variables
+    const BEEHIIV_API_KEY = import.meta.env.BEEHIIV_API_KEY;
+    const BEEHIIV_PUBLICATION_ID = import.meta.env.BEEHIIV_PUBLICATION_ID;
+
     if (!BEEHIIV_API_KEY || !BEEHIIV_PUBLICATION_ID) {
       return new Response(
         JSON.stringify({
@@ -68,7 +64,6 @@ export const POST: APIRoute = async ({ request }) => {
 
     const responseData = await response.json();
 
-    // Handle API response
     if (!response.ok) {
       return new Response(
         JSON.stringify({

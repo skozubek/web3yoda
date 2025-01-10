@@ -1,98 +1,21 @@
 ---
 // src/components/astro/Newsletter.astro
 import { useTranslations } from "../../i18n/utils";
+import NewsletterForm from "../react/NewsletterForm";
 import Toast from "../react/Toast";
 
 const t = useTranslations(Astro.currentLocale as "en" | "pl");
-
-// Get the current locale
 const currentLocale = Astro.currentLocale as "en" | "pl";
+
+const translations = {
+  title: t("newsletter.title"),
+  description: t("newsletter.description"),
+  placeholder: t("newsletter.placeholder"),
+  button: t("newsletter.button"),
+};
 ---
 
-<div class="newsletter-form" data-form-container>
-  <h3 class="font-bold mb-4">{t("newsletter.title")}</h3>
-  <p class="text-gray-400 mb-4">{t("newsletter.description")}</p>
-
-  <form data-newsletter-form class="space-y-4">
-    <div class="flex gap-2">
-      <input
-        type="email"
-        name="email"
-        required
-        placeholder={t("newsletter.placeholder")}
-        class="flex-1 px-4 py-2 bg-transparent border border-gray-600 rounded-md focus:outline-none focus:border-white"
-      />
-      <button
-        type="submit"
-        class="px-6 py-2 bg-white text-black font-bold rounded-md hover:bg-gray-200 transition-colors"
-      >
-        {t("newsletter.button")}
-      </button>
-    </div>
-  </form>
-
-  <div data-toast-container>
-    <Toast client:load locale={currentLocale} />
-  </div>
+<div class="newsletter-section">
+  <NewsletterForm client:load translations={translations} />
+  <Toast client:load data-locale={currentLocale} />
 </div>
-
-<script>
-  // Pass the translations to the script
-  const formContainer = document.querySelector("[data-form-container]");
-  const form = formContainer?.querySelector(
-    "[data-newsletter-form]"
-  ) as HTMLFormElement;
-
-  if (form) {
-    const newForm = form.cloneNode(true) as HTMLFormElement;
-    form.parentNode?.replaceChild(newForm, form);
-
-    newForm.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const formData = new FormData(e.target as HTMLFormElement);
-      const email = formData.get("email");
-
-      try {
-        const response = await fetch("/api/subscribe", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ email }),
-        });
-
-        const data = await response.json();
-
-        // Get the message key based on the response
-        const messageKey = data.success
-          ? "newsletter.toast.success"
-          : data.error === "Please provide a valid email address"
-            ? "newsletter.toast.error.invalid"
-            : data.error === "Server configuration error"
-              ? "newsletter.toast.error.server"
-              : "newsletter.toast.error.general";
-
-        // Dispatch custom event with the message key
-        const event = new CustomEvent("show-toast", {
-          detail: {
-            messageKey,
-            type: data.success ? "success" : "error",
-          },
-        });
-        window.dispatchEvent(event);
-
-        if (data.success) {
-          newForm.reset();
-        }
-      } catch (error) {
-        const event = new CustomEvent("show-toast", {
-          detail: {
-            messageKey: "newsletter.toast.error.general",
-            type: "error",
-          },
-        });
-        window.dispatchEvent(event);
-      }
-    });
-  }
-</script>

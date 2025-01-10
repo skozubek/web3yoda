@@ -26,15 +26,31 @@ const t = useTranslations(currentLocale as "en" | "pl");
 // Get the site URL from Astro.site or fallback to current URL origin
 const siteUrl = Astro.site?.origin || Astro.url.origin;
 
-// Generate alternate URLs with full URLs for SEO
-const alternateUrls = Object.keys(languages).reduce((acc, locale) => {
-  const path = getLocalizedURL(currentPath, locale, defaultLang);
-  const url = new URL(path, siteUrl).toString();
-  return { ...acc, [locale]: url };
-}, {});
+// Define type for alternateUrls
+interface AlternateUrls {
+  [key: string]: string;
+  "x-default": string;
+  en: string;
+  pl: string;
+}
 
-// Add x-default (usually points to English version)
-alternateUrls["x-default"] = alternateUrls["en"];
+// First, create the language URLs
+const baseAlternateUrls = Object.keys(languages).reduce<Record<string, string>>(
+  (acc, locale) => {
+    const path = getLocalizedURL(currentPath, locale, defaultLang);
+    const url = new URL(path, siteUrl).toString();
+    return { ...acc, [locale]: url };
+  },
+  {}
+);
+
+// Then create the complete alternateUrls object with proper typing
+const alternateUrlsWithDefault: AlternateUrls = {
+  ...baseAlternateUrls,
+  "x-default": baseAlternateUrls["en"],
+  en: baseAlternateUrls["en"],
+  pl: baseAlternateUrls["pl"],
+};
 ---
 
 <!doctype html>
@@ -51,7 +67,7 @@ alternateUrls["x-default"] = alternateUrls["en"];
       image={image}
       type={type}
       currentLocale={currentLocale}
-      alternateUrls={alternateUrls}
+      alternateUrls={alternateUrlsWithDefault}
     />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />

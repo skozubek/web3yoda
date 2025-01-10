@@ -47,15 +47,11 @@ const currentUrl = Astro.url.href;
 <meta property="twitter:image" content={new URL(image, Astro.url)} />
 
 <!-- Language Alternates -->
-<link
-  rel="alternate"
-  href={alternateUrls["x-default"] || alternateUrls["en"]}
-  hreflang="x-default"
-/>
+<link rel="alternate" href={alternateUrls["x-default"]} hreflang="x-default" />
 {
-  Object.entries(alternateUrls).map(([lang, url]) => (
-    <link rel="alternate" href={url} hreflang={lang} />
-  ))
+  Object.entries(alternateUrls)
+    .filter(([lang]) => lang !== "x-default")
+    .map(([lang, url]) => <link rel="alternate" href={url} hreflang={lang} />)
 }
 
 <!-- JSON-LD Schema -->
