@@ -1,0 +1,73 @@
+---
+// src/components/astro/SEO.astro
+interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  canonicalUrl?: string;
+  type?: string;
+  currentLocale: string;
+  alternateUrls: {
+    [key: string]: string;
+  };
+}
+
+const {
+  title,
+  description,
+  image = "/default-og.png",
+  canonicalUrl,
+  type = "website",
+  currentLocale,
+  alternateUrls,
+} = Astro.props;
+
+// Get the current URL
+const currentUrl = Astro.url.href;
+---
+
+<!-- Basic Meta Tags -->
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonicalUrl || currentUrl} />
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content={type} />
+<meta property="og:url" content={currentUrl} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={new URL(image, Astro.url)} />
+<meta property="og:locale" content={currentLocale} />
+
+<!-- Twitter -->
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content={currentUrl} />
+<meta property="twitter:title" content={title} />
+<meta property="twitter:description" content={description} />
+<meta property="twitter:image" content={new URL(image, Astro.url)} />
+
+<!-- Language Alternates -->
+<link
+  rel="alternate"
+  href={alternateUrls["x-default"] || alternateUrls["en"]}
+  hreflang="x-default"
+/>
+{
+  Object.entries(alternateUrls).map(([lang, url]) => (
+    <link rel="alternate" href={url} hreflang={lang} />
+  ))
+}
+
+<!-- JSON-LD Schema -->
+<script
+  type="application/ld+json"
+  set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    url: currentUrl,
+    name: title,
+    description: description,
+    inLanguage: currentLocale,
+    alternateName: Object.values(alternateUrls),
+  })}
+/>

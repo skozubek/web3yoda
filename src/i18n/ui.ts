@@ -10,6 +10,7 @@ export const showDefaultLang = false;
 
 export const ui = {
     en: {
+      'meta.description': 'Start your Web3 journey with a seasoned guide. Expert consultations and practical knowledge for Web3 transition.',
       'nav.schedule': 'Schedule a Call',
       'nav.twitter': 'X (Twitter)',
       'newsletter.title': 'Newsletter',
@@ -20,6 +21,7 @@ export const ui = {
       'copyright': '© 2024 Web3Yoda. All rights reserved.'
     },
     pl: {
+      'meta.description': 'Zacznij bezpiecznie korzystać z technologii blockchain. Praktyczna wiedza bez zbędnej teorii',
       'nav.schedule': 'Umów rozmowę',
       'nav.twitter': 'X (Twitter)',
       'newsletter.title': 'Newsletter',

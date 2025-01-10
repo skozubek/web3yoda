@@ -3,6 +3,7 @@ import react from '@astrojs/react';
 import tailwind from '@astrojs/tailwind';
 
 export default defineConfig({
+  site: 'https://web3yoda.xyz', // Production domain
   integrations: [react(), tailwind()],
   i18n: {
     defaultLocale: 'en',

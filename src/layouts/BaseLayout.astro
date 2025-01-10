@@ -2,30 +2,39 @@
 // src/layouts/BaseLayout.astro
 import Footer from "../components/astro/Footer.astro";
 import Header from "../components/astro/Header.astro";
-import { getLocaleFromUrl, getLocalizedURL } from "../i18n/utils";
+import SEO from "../components/astro/seo.astro";
+import {
+  getLocaleFromUrl,
+  getLocalizedURL,
+  useTranslations,
+} from "../i18n/utils";
 import { languages, defaultLang } from "../i18n/ui";
 
 interface Props {
   title: string;
   description?: string;
+  image?: string;
+  type?: string;
 }
 
-const {
-  title,
-  description = "Web3Yoda - Your trusted guide in the Web3 space",
-} = Astro.props;
+const { title, description, image, type } = Astro.props;
 
 const currentLocale = getLocaleFromUrl(Astro.url);
 const currentPath = Astro.url.pathname;
+const t = useTranslations(currentLocale as "en" | "pl");
 
-// Generate alternate URLs for each language
-const alternates = Object.keys(languages).map((locale) => ({
-  href: new URL(
-    getLocalizedURL(currentPath, locale, defaultLang),
-    Astro.site || "http://localhost:3000"
-  ),
-  hreflang: locale,
-}));
+// Get the site URL from Astro.site or fallback to current URL origin
+const siteUrl = Astro.site?.origin || Astro.url.origin;
+
+// Generate alternate URLs with full URLs for SEO
+const alternateUrls = Object.keys(languages).reduce((acc, locale) => {
+  const path = getLocalizedURL(currentPath, locale, defaultLang);
+  const url = new URL(path, siteUrl).toString();
+  return { ...acc, [locale]: url };
+}, {});
+
+// Add x-default (usually points to English version)
+alternateUrls["x-default"] = alternateUrls["en"];
 ---
 
 <!doctype html>
@@ -35,23 +44,22 @@ const alternates = Object.keys(languages).map((locale) => ({
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
-    <meta name="description" content={description} />
-    <title>{title}</title>
+
+    <SEO
+      title={title}
+      description={description || t("meta.description")}
+      image={image}
+      type={type}
+      currentLocale={currentLocale}
+      alternateUrls={alternateUrls}
+    />
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap"
       rel="stylesheet"
     />
-    {
-      alternates.map((alternate) => (
-        <link
-          rel="alternate"
-          hreflang={alternate.hreflang}
-          href={alternate.href}
-        />
-      ))
-    }
   </head>
   <body class="bg-black text-white font-mono">
     <div class="flex flex-col min-h-screen">
@@ -63,17 +71,3 @@ const alternates = Object.keys(languages).map((locale) => ({
     </div>
   </body>
 </html>
-
-<style is:global>
-  :root {
-    --primary: #ffffff;
-    --background: #000000;
-    --accent: #666666;
-  }
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: "Space Mono", monospace;
-  }
-</style>
