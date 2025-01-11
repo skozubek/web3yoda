@@ -1,32 +1,43 @@
 // src/i18n/utils.ts
-import { ui, defaultLang, languages } from './ui';
+import { getCollection } from 'astro:content';
+import { languages, defaultLang, showDefaultLang, type SupportedLanguages } from './i18n-config';
+
+let cachedUI: Record<string, any> | null = null;
+
+export async function getUI(lang: SupportedLanguages = defaultLang) {
+  if (!cachedUI) {
+    const uiCollection = await getCollection('ui');
+    cachedUI = Object.fromEntries(
+      uiCollection.map(entry => [entry.id, entry.data])
+    );
+  }
+  return cachedUI[lang] || cachedUI[defaultLang];
+}
 
 export function getLocaleFromUrl(url: URL) {
   const [, lang] = url.pathname.split('/');
-  if (lang in languages) return lang as keyof typeof languages;
+  if (lang in languages) return lang as SupportedLanguages;
   return defaultLang;
 }
 
-export function useTranslations(lang: keyof typeof ui) {
-  return function t(key: keyof typeof ui[typeof defaultLang]) {
-    return ui[lang][key] || ui[defaultLang][key];
+export async function useTranslations(lang: SupportedLanguages) {
+  const ui = await getUI(lang);
+  return function t(key: string) {
+    return key.split('.').reduce((obj, key) => obj?.[key], ui) || '';
   }
 }
 
-export function getLocalizedURL(currentPath: string, locale: string, defaultLocale: string) {
+export function getLocalizedURL(currentPath: string, locale: string, defaultLang: string) {
   // Remove the current locale from the path if it exists
-  const pathWithoutLocale = currentPath.replace(/^\/[^/]+/, '');
+  const pathWithoutLocale = currentPath.replace(/^\/[^/]+\/?/, '');
 
   // Don't add locale prefix for default language
-  if (locale === defaultLocale) {
+  if (locale === defaultLang) {
     return pathWithoutLocale || '/';
   }
 
   // Add the new locale prefix
-  return `/${locale}${pathWithoutLocale}`;
+  return `/${locale}${pathWithoutLocale ? `/${pathWithoutLocale}` : ''}`;
 }
 
-export function getTranslatedContent(collection: any[], locale: string) {
-  return collection.find((entry) => entry.id.startsWith(locale))?.data
-    ?? collection.find((entry) => entry.id.startsWith('en'))?.data;
-}
+export { languages, defaultLang, showDefaultLang };

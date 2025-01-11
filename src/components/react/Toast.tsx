@@ -1,24 +1,24 @@
 // src/components/react/Toast.tsx
 import React, { useEffect, useState } from 'react';
 import { X, Check, AlertCircle } from 'lucide-react';
-import { ui } from '../../i18n/ui';
 
 export type ToastType = 'success' | 'error';
 
 export interface ToastEvent {
   detail: {
-    messageKey: keyof typeof ui.en;
+    messageKey: string;
     type: ToastType;
   }
 }
 
 interface ToastProps {
   'data-locale': 'en' | 'pl';
+  translations: Record<string, any>;
 }
 
-const Toast: React.FC<ToastProps> = ({ 'data-locale': locale }) => {
+const Toast: React.FC<ToastProps> = ({ 'data-locale': locale, translations }) => {
   const [isVisible, setIsVisible] = useState(false);
-  const [messageKey, setMessageKey] = useState<keyof typeof ui.en | null>(null);
+  const [messageKey, setMessageKey] = useState<string | null>(null);
   const [type, setType] = useState<ToastType>('success');
 
   useEffect(() => {
@@ -44,9 +44,10 @@ const Toast: React.FC<ToastProps> = ({ 'data-locale': locale }) => {
     }
   }, [isVisible]);
 
-  if (!isVisible || !messageKey) return null;
+  if (!isVisible || !messageKey || !translations) return null;
 
-  const message = ui[locale][messageKey];
+  // Get the message from nested keys
+  const message = messageKey.split('.').reduce((obj: any, key: string) => obj?.[key], translations);
 
   return (
     <div className="fixed bottom-4 right-4 z-50 animate-slide-up">

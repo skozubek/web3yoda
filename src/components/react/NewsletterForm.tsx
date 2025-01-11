@@ -1,7 +1,6 @@
 // src/components/react/NewsletterForm.tsx
 import { useState } from 'react';
 import type { ToastEvent } from './Toast';
-import { ui } from '../../i18n/ui';
 
 interface NewsletterFormProps {
   translations: {

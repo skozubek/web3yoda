@@ -3,7 +3,7 @@
 import LanguagePicker from "./LanguagePicker.astro";
 import { useTranslations } from "@/i18n/utils";
 
-const t = useTranslations(Astro.currentLocale as "en" | "pl");
+const t = await useTranslations(Astro.currentLocale as "en" | "pl");
 ---
 
 <header

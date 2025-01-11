@@ -3,9 +3,11 @@
 import { useTranslations } from "../../i18n/utils";
 import NewsletterForm from "../react/NewsletterForm";
 import Toast from "../react/Toast";
+import { getCollection } from "astro:content";
+import type { CollectionEntry } from "astro:content";
 
-const t = useTranslations(Astro.currentLocale as "en" | "pl");
 const currentLocale = Astro.currentLocale as "en" | "pl";
+const t = await useTranslations(currentLocale);
 
 const translations = {
   title: t("newsletter.title"),
@@ -13,9 +15,23 @@ const translations = {
   placeholder: t("newsletter.placeholder"),
   button: t("newsletter.button"),
 };
+
+// Get UI translations for Toast component
+const uiCollections = await getCollection("ui");
+const uiTranslations = uiCollections.find(
+  (entry) => entry.id === currentLocale
+)?.data;
+
+if (!uiTranslations) {
+  throw new Error(`No UI translations found for locale: ${currentLocale}`);
+}
 ---
 
 <div class="newsletter-section">
   <NewsletterForm client:load translations={translations} />
-  <Toast client:load data-locale={currentLocale} />
+  <Toast
+    client:load
+    data-locale={currentLocale}
+    translations={uiTranslations as Record<string, any>}
+  />
 </div>

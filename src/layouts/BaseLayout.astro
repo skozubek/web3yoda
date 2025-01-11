@@ -8,8 +8,9 @@ import {
   getLocaleFromUrl,
   getLocalizedURL,
   useTranslations,
+  languages,
+  defaultLang,
 } from "../i18n/utils";
-import { languages, defaultLang } from "../i18n/ui";
 
 interface Props {
   title: string;
@@ -22,7 +23,7 @@ const { title, description, image, type } = Astro.props;
 
 const currentLocale = getLocaleFromUrl(Astro.url);
 const currentPath = Astro.url.pathname;
-const t = useTranslations(currentLocale as "en" | "pl");
+const t = await useTranslations(currentLocale);
 
 // Get the site URL from Astro.site or fallback to current URL origin
 const siteUrl = Astro.site?.origin || Astro.url.origin;

@@ -4,7 +4,7 @@ import { useTranslations } from "../../i18n/utils";
 import { X, Mail } from "lucide-react";
 import Newsletter from "./Newsletter.astro";
 
-const t = useTranslations(Astro.currentLocale as "en" | "pl");
+const t = await useTranslations(Astro.currentLocale as "en" | "pl");
 ---
 
 <footer class="py-16 border-t border-gray-600">
