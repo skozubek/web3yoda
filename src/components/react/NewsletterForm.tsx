@@ -1,5 +1,5 @@
 // src/components/react/NewsletterForm.tsx
-import { useState } from 'react';
+import React, { useState } from 'react';
 import type { ToastEvent } from './Toast';
 
 interface NewsletterFormProps {
@@ -11,7 +11,7 @@ interface NewsletterFormProps {
   };
 }
 
-export default function NewsletterForm({ translations }: NewsletterFormProps) {
+const NewsletterForm: React.FC<NewsletterFormProps> = ({ translations }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -30,7 +30,6 @@ export default function NewsletterForm({ translations }: NewsletterFormProps) {
 
       const data = await response.json();
 
-      // Dispatch toast event
       const event = new CustomEvent<ToastEvent['detail']>('show-toast', {
         detail: {
           messageKey: data.success 
@@ -86,4 +85,6 @@ export default function NewsletterForm({ translations }: NewsletterFormProps) {
       </form>
     </div>
   );
-}
+};
+
+export default NewsletterForm;

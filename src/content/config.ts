@@ -1,5 +1,6 @@
 // src/content/config.ts
 import { defineCollection, reference, z } from 'astro:content';
+import { glob } from 'astro/loaders';
 
 // UI collection schema
 const uiSchema = z.object({
@@ -74,73 +75,76 @@ const homeSchema = z.object({
   })
 });
 
-// Tool category schema
+/**
+ * Core categories for Web3 tools
+ */
 const categorySchema = z.enum([
-  'wallets',           // Cryptocurrency & NFT wallets
-  'marketplaces',      // NFT & token marketplaces
-  'defi',             // DeFi protocols & tools
-  'analytics',        // Market analysis & tracking
-  'security',         // Security & audit tools
-  'infrastructure',   // Node providers, RPCs, indexers
-  'development',      // Dev tools, SDKs, frameworks
-  'identity',         // DIDs, authentication, verification
-  'governance',       // DAOs, voting, delegation
-  'social',           // Web3 social platforms
-  'storage',          // Decentralized storage solutions
-  'gaming',           // Web3 gaming platforms & tools
-  'oracles',          // Price feeds, data oracles, VRF
-  'bridges',          // Cross-chain bridges & liquidity networks
-  'data',             // On-chain data, indexing, APIs
-  'other'             // Miscellaneous tools
+  'wallets',         // Crypto wallets, key management
+  'marketplaces',    // NFT and token marketplaces
+  'defi',           // DeFi protocols and tools
+  'infrastructure', // RPCs, nodes, indexers
+  'security',       // Security tools, audit tools
+  'analytics',      // Data analytics, market tracking
+  'other'          // Catch-all for edge cases
 ]);
 
-// Tool status schema
-const statusSchema = z.enum(['active', 'beta', 'deprecated']);
+/**
+ * Tool status indicators
+ */
+const statusSchema = z.enum([
+  'active',     // Tool is actively maintained
+  'beta',       // Tool is in testing phase
+  'deprecated'  // Tool is no longer maintained
+]);
 
-// Tool pricing schema
-const pricingSchema = z.enum(['free', 'paid', 'hybrid', 'contact']);
-
-// Blockchain ecosystem schema
+/**
+ * Supported blockchain ecosystems
+ */
 const ecosystemSchema = z.array(z.enum([
-  'bitcoin',    // BTC, Ordinals, Lightning, etc.
+  'bitcoin',    // BTC, Ordinals, Lightning
   'ethereum',   // ETH, EVM chains
   'solana',     // SOL ecosystem
-  'cardano',    // ADA ecosystem
-  'polkadot',   // DOT ecosystem
-  'cosmos',     // ATOM, IBC chains
   'multichain', // Cross-chain solutions
   'other'       // Other blockchains
 ])).min(1);
 
-// Schema for multilingual tool descriptions
-// Defines how each tool's content should be structured in different languages
+/**
+ * Schema for multilingual tool content
+ */
 const toolTranslationsSchema = z.record(z.enum(['en', 'pl']), z.object({
-  title: z.string(),       // Tool name in given language
-  description: z.string(), // Tool description in given language
-  features: z.array(z.string()), // List of tool features in given language
+  title: z.string(),
+  description: z.string(),
+  features: z.array(z.string()),
 }));
 
-// Tool collection schema
-const toolsSchema = z.object({
+/**
+ * Simplified tool schema without image validation
+ */
+const toolSchema = z.object({
   id: z.string(),
-  ecosystems: ecosystemSchema,
+  logo: z.string(),  // Simplified to just expect a string path
+  screenshot: z.string().optional(),
   website: z.string().url(),
   github: z.string().url().optional(),
   category: categorySchema,
+  ecosystems: ecosystemSchema,
   status: statusSchema,
   lastUpdated: z.date(),
-  i18n: toolTranslationsSchema, // Multilingual content for this tool
+  i18n: toolTranslationsSchema,
   metadata: z.object({
     tags: z.array(z.string()),
-    pricing: pricingSchema,
-    relatedTools: z.array(reference('tools')).optional(),
+    pricing: z.enum(['free', 'paid', 'hybrid']),
   }).optional(),
 });
 
-// Define the collections
+// Collections Configuration
 const tools = defineCollection({
-  type: 'content',
-  schema: toolsSchema,
+  schema: toolSchema,
+  // Update the loader to use glob for loading MDX files
+  loader: glob({
+    pattern: "tools/**/*.mdx",
+    base: "./src/content"
+  })
 });
 
 const home = defineCollection({
@@ -154,15 +158,11 @@ const ui = defineCollection({
 });
 
 // Export the collections
-export const collections = {
-  tools,
-  home,
-  ui,
-};
+export const collections = { tools, home, ui };
 
 // Export type helpers
-export type ToolFrontmatter = z.infer<typeof toolsSchema>;
+export type Tool = z.infer<typeof toolSchema>;
+export type ToolTranslations = z.infer<typeof toolTranslationsSchema>;
 export type ToolCategory = z.infer<typeof categorySchema>;
 export type ToolStatus = z.infer<typeof statusSchema>;
-export type ToolPricing = z.infer<typeof pricingSchema>;
-export type ToolTranslations = z.infer<typeof toolTranslationsSchema>;
+export type ToolEcosystem = z.infer<typeof ecosystemSchema>[number];

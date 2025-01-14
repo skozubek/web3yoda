@@ -1,0 +1,177 @@
+---
+// src/pages/[lang]/tools/[...slug].astro
+import { type CollectionEntry, getCollection, render } from "astro:content";
+import { Image } from "astro:assets";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { getLocaleFromUrl, useTranslations } from "@/i18n/utils";
+import type { SupportedLanguages } from "@/i18n/i18n-config";
+
+// Add prerender flag
+export const prerender = true;
+
+export async function getStaticPaths() {
+  const tools = await getCollection("tools");
+
+  return tools.flatMap((tool) => {
+    const slug = tool.id.split("/").pop();
+    return [
+      {
+        params: { lang: "en", slug },
+        props: { tool, lang: "en" as SupportedLanguages },
+      },
+      {
+        params: { lang: "pl", slug },
+        props: { tool, lang: "pl" as SupportedLanguages },
+      },
+    ];
+  });
+}
+
+const { tool, lang } = Astro.props;
+const t = await useTranslations(lang as SupportedLanguages);
+
+// Get localized content
+const localizedContent = tool.data.i18n[lang];
+
+// Ensure localized content exists
+if (!localizedContent) {
+  throw new Error(`Missing localized content for language: ${lang}`);
+}
+
+// Render MDX content
+const { Content } = await render(tool);
+
+// Format date for display
+const formattedDate = new Intl.DateTimeFormat(lang, {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+}).format(tool.data.lastUpdated);
+
+// Tailwind classes
+const classes = {
+  header: "mb-8 pb-8 border-b border-gray-700",
+  logo: "w-24 h-24 flex-shrink-0",
+  logoImg: "w-full h-full object-contain rounded-lg bg-gray-800 p-2",
+  logoPlaceholder:
+    "w-full h-full bg-gray-800 rounded-lg flex items-center justify-center",
+  title: "text-4xl font-bold mb-4",
+  description: "text-xl text-gray-400 mb-4",
+  badges: "flex flex-wrap gap-3",
+  badge: "px-3 py-1 bg-gray-800 rounded-full text-sm",
+  links: "flex gap-4 mt-6",
+  primaryLink:
+    "px-4 py-2 bg-white text-black font-bold rounded hover:bg-gray-200 transition-colors",
+  secondaryLink:
+    "px-4 py-2 border border-gray-600 rounded hover:border-gray-400 transition-colors",
+  features: "mb-8",
+  featuresList: "grid gap-3",
+  featureItem: "flex items-start gap-2",
+  content: "prose prose-invert max-w-none",
+  footer: "mt-12 pt-8 border-t border-gray-700 text-sm text-gray-400",
+};
+---
+
+<BaseLayout
+  title={`${localizedContent.title} - ${t("tools.title")}`}
+  description={localizedContent.description}
+>
+  <article class="max-w-4xl mx-auto px-4">
+    <header class={classes.header}>
+      <div class="flex items-start gap-6">
+        {/* Tool Logo */}
+        <div class={classes.logo}>
+          {
+            tool.data.logo ? (
+              <Image
+                src={tool.data.logo}
+                alt={`${localizedContent.title} logo`}
+                width={96}
+                height={96}
+                class={classes.logoImg}
+              />
+            ) : (
+              <div class={classes.logoPlaceholder}>
+                <span class="text-xs text-gray-400">No logo</span>
+              </div>
+            )
+          }
+        </div>
+
+        {/* Tool Title and Description */}
+        <div class="flex-grow">
+          <h1 class={classes.title}>{localizedContent.title}</h1>
+          <p class={classes.description}>{localizedContent.description}</p>
+
+          {/* Tool Metadata Badges */}
+          <div class={classes.badges}>
+            <span class={classes.badge}>
+              {t(`tools.status.${tool.data.status}`)}
+            </span>
+            <span class={classes.badge}>
+              {t(`tools.categories.${tool.data.category}`)}
+            </span>
+            {
+              tool.data.metadata?.pricing && (
+                <span class={classes.badge}>
+                  {t(`tools.pricing.${tool.data.metadata.pricing}`)}
+                </span>
+              )
+            }
+          </div>
+        </div>
+      </div>
+
+      {/* Tool Links */}
+      <div class={classes.links}>
+        <a
+          href={tool.data.website}
+          target="_blank"
+          rel="noopener noreferrer"
+          class={classes.primaryLink}
+        >
+          {t("tools.visit_website")}
+        </a>
+        {
+          tool.data.github && (
+            <a
+              href={tool.data.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              class={classes.secondaryLink}
+            >
+              GitHub
+            </a>
+          )
+        }
+      </div>
+    </header>
+
+    {/* Tool Features */}
+    {
+      localizedContent.features.length > 0 && (
+        <section class={classes.features}>
+          <h2 class="text-2xl font-bold mb-4">{t("tools.key_features")}</h2>
+          <ul class={classes.featuresList}>
+            {localizedContent.features.map((feature) => (
+              <li class={classes.featureItem}>
+                <span class="text-gray-400 mt-1">•</span>
+                <span>{feature}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
+
+    {/* MDX Content */}
+    <section class={classes.content}>
+      <Content />
+    </section>
+
+    {/* Tool Footer */}
+    <footer class={classes.footer}>
+      <p>{t("tools.last_updated")}: {formattedDate}</p>
+    </footer>
+  </article>
+</BaseLayout>

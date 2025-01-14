@@ -1,0 +1,52 @@
+---
+// src/pages/[lang]/tools/index.astro
+import { type CollectionEntry, getCollection } from "astro:content";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import ToolCard from "@/components/tools/ToolCard.astro";
+import { getLocaleFromUrl, useTranslations } from "@/i18n/utils";
+
+// Get current language and translations
+
+const lang = getLocaleFromUrl(Astro.url) as "en" | "pl";
+
+const t = await useTranslations(lang);
+
+// Fetch all tools with error handling
+let tools: CollectionEntry<"tools">[] = [];
+try {
+  tools = await getCollection("tools");
+} catch (error) {
+  console.error("Error fetching tools:", error);
+}
+
+// Tailwind classes
+const classes = {
+  container: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12",
+  title: "text-4xl font-bold mb-8",
+  toolsGrid: "grid gap-6 md:grid-cols-2 lg:grid-cols-3",
+  noTools: "text-gray-400 italic",
+};
+---
+
+<BaseLayout
+  title={t("tools.title")}
+  description={t("tools.description")}
+  type="website"
+>
+  <main class={classes.container}>
+    <h1 class={classes.title}>{t("tools.title")}</h1>
+
+    {/* Simple tools grid */}
+    {
+      tools.length > 0 ? (
+        <div class={classes.toolsGrid}>
+          {tools.map((tool) => (
+            <ToolCard tool={tool} lang={lang} />
+          ))}
+        </div>
+      ) : (
+        <p class={classes.noTools}>{t("tools.no_tools_found")}</p>
+      )
+    }
+  </main>
+</BaseLayout>

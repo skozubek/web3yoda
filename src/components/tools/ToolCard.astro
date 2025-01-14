@@ -1,0 +1,96 @@
+---
+// src/components/tools/ToolCard.astro
+import type { CollectionEntry } from "astro:content";
+import { Image } from "astro:assets";
+import { useTranslations } from "@/i18n/utils";
+import type { Tool } from "@/content/config";
+
+interface Props {
+  tool: CollectionEntry<"tools">;
+  lang: "en" | "pl";
+}
+
+const { tool, lang } = Astro.props;
+const t = await useTranslations(lang);
+
+// Type-safe access to localized content
+const localizedContent = tool.data.i18n[lang];
+
+// Ensure localized content exists
+if (!localizedContent) {
+  throw new Error(`Missing localized content for language: ${lang}`);
+}
+
+// Generate the tool URL
+const toolUrl = `/${lang}/tools/${tool.id.split("/").pop()}`;
+
+// Tailwind classes for consistent styling
+const classes = {
+  card: "border border-gray-700 rounded-lg p-6 hover:border-gray-500 transition-colors",
+  logoContainer: "w-16 h-16 mb-4",
+  logo: "w-full h-full object-contain",
+  logoPlaceholder:
+    "w-full h-full bg-gray-800 rounded flex items-center justify-center",
+  title: "text-xl font-bold mb-2",
+  description: "text-gray-400 mb-4 line-clamp-2",
+  features: "text-sm text-gray-400 space-y-1 mb-4",
+  featureItem: "flex items-start",
+  metadata: "flex flex-wrap gap-2 mt-auto",
+  badge: "px-2 py-1 bg-gray-800 rounded text-sm",
+};
+---
+
+<article class={classes.card}>
+  <a href={toolUrl} class="block">
+    {/* Tool logo with error boundary */}
+    <div class={classes.logoContainer}>
+      {
+        tool.data.logo ? (
+          <Image
+            src={tool.data.logo}
+            alt={localizedContent.title}
+            width={64}
+            height={64}
+            class={classes.logo}
+          />
+        ) : (
+          <div class={classes.logoPlaceholder}>
+            <span class="text-xs text-gray-400">No logo</span>
+          </div>
+        )
+      }
+    </div>
+
+    {/* Tool info */}
+    <h3 class={classes.title}>{localizedContent.title}</h3>
+    <p class={classes.description}>{localizedContent.description}</p>
+
+    {/* Features preview with validation */}
+    {
+      localizedContent.features.length > 0 && (
+        <ul class={classes.features}>
+          {localizedContent.features.slice(0, 3).map((feature) => (
+            <li class={classes.featureItem}>
+              <span class="mr-2">•</span>
+              {feature}
+            </li>
+          ))}
+        </ul>
+      )
+    }
+
+    {/* Tool metadata */}
+    <div class={classes.metadata}>
+      <span class={classes.badge}>
+        {t(`tools.status.${tool.data.status}`)}
+      </span>
+      {
+        tool.data.metadata?.pricing && (
+          <span class={classes.badge}>
+            {t(`tools.pricing.${tool.data.metadata.pricing}`)}
+          </span>
+        )
+      }
+    </div>
+  </a>
+</article>
