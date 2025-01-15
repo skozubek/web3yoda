@@ -122,8 +122,9 @@ const classes = {
               target="_blank"
               rel="noopener noreferrer"
               class={classes.primaryLink}
+              aria-label={`${t("tools.website")} - ${localizedContent.title}`}
             >
-              {t("tools.visit_website")}
+              {t("tools.website")} - {localizedContent.title}
             </a>
             {
               tool.data.github && (

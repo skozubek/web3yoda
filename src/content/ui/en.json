@@ -23,6 +23,9 @@
     }
   },
   "tools": {
+    "website": "visit website",
+    "key_features": "Key Features",
+    "last_updated": "Last Updated",
     "title": "Web3 Tools Directory",
     "categories": {
       "wallets": "Wallets",

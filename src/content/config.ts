@@ -30,6 +30,9 @@ const uiSchema = z.object({
   }),
   tools: z.object({
     title: z.string(),
+    website: z.string(),
+    key_features: z.string(),
+    last_updated: z.string(),
     categories: z.record(z.string()),
     ecosystems: z.record(z.string()),
     status: z.record(z.string()),

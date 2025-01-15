@@ -23,6 +23,9 @@
       }
     },
     "tools": {
+      "website": "Strona www",
+      "key_features": "Główne Funkcje",
+      "last_updated": "Ostatnia Aktualizacja",
       "title": "Katalog Narzędzi Web3",
       "categories": {
         "wallets": "Portfele",
