@@ -1,6 +1,7 @@
 // src/content/config.ts
-import { defineCollection, reference, z } from 'astro:content';
+import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
+import { type SupportedLanguages } from '../i18n/i18n-config';
 
 // UI collection schema
 const uiSchema = z.object({
@@ -111,30 +112,42 @@ const ecosystemSchema = z.array(z.enum([
 /**
  * Schema for multilingual tool content
  */
-const toolTranslationsSchema = z.record(z.enum(['en', 'pl']), z.object({
-  title: z.string(),
-  description: z.string(),
-  features: z.array(z.string()),
-}));
+const toolTranslationsSchema = z.record(
+  z.custom<SupportedLanguages>(), // Use the imported type
+  z.object({
+    title: z.string(),
+    description: z.string(),
+    features: z.array(z.string()),
+    sections: z.array(z.object({
+      title: z.string(),
+      content: z.string()
+    })),
+    keyFeatures: z.array(z.object({
+      title: z.string(),
+      items: z.array(z.string())
+    }))
+  })
+);
 
 /**
- * Simplified tool schema without image validation
+ * Main tool schema
+ * Combines metadata with translations
  */
 const toolSchema = z.object({
   id: z.string(),
-  logo: z.string(),  // Simplified to just expect a string path
+  logo: z.string().optional(),
   screenshot: z.string().optional(),
   website: z.string().url(),
   github: z.string().url().optional(),
-  category: categorySchema,
-  ecosystems: ecosystemSchema,
-  status: statusSchema,
+  category: z.enum(['wallets', 'marketplaces', 'defi', 'infrastructure', 'security', 'analytics', 'other']),
+  ecosystems: z.array(z.enum(['bitcoin', 'ethereum', 'solana', 'multichain', 'other'])).min(1),
+  status: z.enum(['active', 'beta', 'deprecated']),
   lastUpdated: z.date(),
   i18n: toolTranslationsSchema,
   metadata: z.object({
     tags: z.array(z.string()),
-    pricing: z.enum(['free', 'paid', 'hybrid']),
-  }).optional(),
+    pricing: z.enum(['free', 'paid', 'hybrid'])
+  }).optional()
 });
 
 // Collections Configuration
@@ -142,7 +155,7 @@ const tools = defineCollection({
   schema: toolSchema,
   // Update the loader to use glob for loading MDX files
   loader: glob({
-    pattern: "tools/**/*.mdx",
+    pattern: "tools/**/**.mdx",
     base: "./src/content"
   })
 });

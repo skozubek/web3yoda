@@ -1,6 +1,6 @@
 ---
 id: "unisat-wallet"
-logo: "/src/assets/tools/unisat/logo.png"  # Path relative to project root
+logo: "/src/assets/tools/unisat/logo.png"
 screenshot: "/src/assets/tools/unisat/screenshot.png"
 website: "https://unisat.io"
 github: "https://github.com/unisat-wallet"
@@ -8,46 +8,70 @@ category: "wallets"
 ecosystems: ["bitcoin"]
 status: "active"
 lastUpdated: 2024-01-14
+metadata:
+  tags: ["bitcoin", "ordinals", "brc20", "wallet", "inscriptions"]
+  pricing: "free"
 i18n:
   en:
     title: "UniSat Wallet"
     description: "Self-custodial browser extension wallet for Bitcoin, Ordinals, and BRC-20 tokens"
     features:
       - "Complete Bitcoin transaction support with custom fee settings"
-      - "Full Ordinals support with inscription viewer"
-      - "BRC-20 token management with built-in marketplace"
+      - "Full Ordinals inscription viewer and transfer capabilities"
+      - "BRC-20 token management with built-in marketplace integration"
+    sections:
+      - title: "Overview"
+        content: "UniSat Wallet represents the evolution of Bitcoin wallets, bridging traditional Bitcoin functionality with emerging digital asset standards. As a browser extension, it provides seamless access to the Bitcoin network while supporting modern features like Ordinals and BRC-20 tokens."
+      - title: "Security Model"
+        content: "Your private keys never leave your device. The wallet supports both legacy and modern Bitcoin address formats, ensuring broad compatibility while maintaining robust security standards."
+    keyFeatures:
+      - title: "Bitcoin Operations"
+        items:
+          - "Standard BTC transactions with RBF support"
+          - "Multiple address formats (Legacy, Native SegWit, Taproot)"
+          - "Custom fee settings with fee estimation"
+          - "UTXO management and coin control"
+      - title: "Ordinals Support"
+        items:
+          - "View and transfer inscriptions"
+          - "Built-in inscription marketplace"
+          - "Bulk inscription operations"
+          - "Ordinals-aware UTXO management"
+      - title: "BRC-20 Integration"
+        items:
+          - "Token balances and transfers"
+          - "Market price tracking"
+          - "Trading interface"
+          - "Token minting support"
   pl:
     title: "Portfel UniSat"
-    description: "Portfel w formie rozszerzenia przeglądarki dla Bitcoin, Ordinals i tokenów BRC-20"
+    description: "Samodzielny portfel w formie rozszerzenia przeglądarki dla Bitcoin, Ordinals i tokenów BRC-20"
     features:
-      - "Pełna obsługa transakcji Bitcoin z możliwością ustawienia opłat"
-      - "Wsparcie dla Ordinals z przeglądarką inskrypcji"
-      - "Zarządzanie tokenami BRC-20 z wbudowaną giełdą"
-metadata:
-  tags: ["bitcoin", "ordinals", "brc20"]
-  pricing: "free"
+      - "Pełna obsługa transakcji Bitcoin z możliwością dostosowania opłat"
+      - "Pełna obsługa inskrypcji Ordinals z przeglądarką"
+      - "Zarządzanie tokenami BRC-20 z wbudowaną integracją giełdy"
+    sections:
+      - title: "Przegląd"
+        content: "Portfel UniSat reprezentuje ewolucję portfeli Bitcoin, łącząc tradycyjną funkcjonalność Bitcoina z nowymi standardami aktywów cyfrowych. Jako rozszerzenie przeglądarki zapewnia płynny dostęp do sieci Bitcoin, wspierając jednocześnie nowoczesne funkcje jak Ordinals i tokeny BRC-20."
+      - title: "Model Bezpieczeństwa"
+        content: "Twoje klucze prywatne nigdy nie opuszczają urządzenia. Portfel obsługuje zarówno starsze, jak i nowoczesne formaty adresów Bitcoin, zapewniając szeroką kompatybilność przy zachowaniu wysokich standardów bezpieczeństwa."
+    keyFeatures:
+      - title: "Operacje Bitcoin"
+        items:
+          - "Standardowe transakcje BTC ze wsparciem RBF"
+          - "Wiele formatów adresów (Legacy, Native SegWit, Taproot)"
+          - "Niestandardowe ustawienia opłat z estymacją"
+          - "Zarządzanie UTXO i kontrola monet"
+      - title: "Wsparcie dla Ordinals"
+        items:
+          - "Przeglądanie i transfer inskrypcji"
+          - "Wbudowana giełda inskrypcji"
+          - "Operacje masowe na inskrypcjach"
+          - "Zarządzanie UTXO z uwzględnieniem Ordinals"
+      - title: "Integracja BRC-20"
+        items:
+          - "Saldo i transfery tokenów"
+          - "Śledzenie cen rynkowych"
+          - "Interfejs handlowy"
+          - "Wsparcie dla mintowania tokenów"
 ---
-
-## Overview
-
-UniSat Wallet is a comprehensive Bitcoin wallet solution designed for the emerging Bitcoin NFT and token standards. It stands out as one of the leading wallets for Ordinals and BRC-20 tokens, combining traditional Bitcoin functionality with new token capabilities.
-
-## Key Features
-
-### Bitcoin Operations
-- Standard BTC transactions with RBF support
-- Multiple address formats (Legacy, Native SegWit, Taproot)
-- Custom fee settings with fee estimation
-- UTXO management and coin control
-
-### Ordinals Support
-- View and transfer inscriptions
-- Built-in inscription marketplace
-- Bulk inscription operations
-- Ordinals-aware UTXO management
-
-### BRC-20 Integration
-- Token balances and transfers
-- Market price tracking
-- Trading interface
-- Token minting support

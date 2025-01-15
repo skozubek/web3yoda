@@ -4,11 +4,20 @@ import { type CollectionEntry, getCollection } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import ToolCard from "@/components/tools/ToolCard.astro";
 import { getLocaleFromUrl, useTranslations } from "@/i18n/utils";
+import { languages, type SupportedLanguages } from "@/i18n/i18n-config";
 
-// Get current language and translations
+export const prerender = true;
 
-const lang = getLocaleFromUrl(Astro.url) as "en" | "pl";
+// Dynamically generate paths for all supported languages
+export function getStaticPaths() {
+  // Convert languages object keys into array of language codes
+  return Object.keys(languages).map((lang) => ({
+    params: { lang },
+  }));
+}
 
+// Get language from URL parameters
+const { lang } = Astro.params as { lang: SupportedLanguages };
 const t = await useTranslations(lang);
 
 // Fetch all tools with error handling
@@ -19,24 +28,109 @@ try {
   console.error("Error fetching tools:", error);
 }
 
+// Get unique ecosystems and categories for filters
+const ecosystems = [...new Set(tools.flatMap((tool) => tool.data.ecosystems))];
+const categories = [...new Set(tools.map((tool) => tool.data.category))];
+const statuses = [...new Set(tools.map((tool) => tool.data.status))];
+
 // Tailwind classes
 const classes = {
-  container: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12",
-  title: "text-4xl font-bold mb-8",
-  toolsGrid: "grid gap-6 md:grid-cols-2 lg:grid-cols-3",
-  noTools: "text-gray-400 italic",
+  header: "mb-12 border-b border-gray-700 pb-8",
+  title: "text-4xl font-bold mb-6",
+  description: "text-xl text-gray-400",
+  filters: "mb-8 flex flex-wrap gap-4",
+  filterGroup: "flex flex-col gap-2",
+  filterLabel: "text-sm text-gray-400",
+  filterSelect:
+    "bg-gray-800 border border-gray-700 rounded px-3 py-2 text-white",
+  toolsGrid: "grid gap-6 sm:grid-cols-2 lg:grid-cols-3",
+  noTools: "text-gray-400 text-center py-12",
+  statsBadge:
+    "inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-800 text-gray-300",
+};
+
+// Filter options
+const filterOptions = {
+  ecosystem: ecosystems.map((eco) => ({
+    value: eco,
+    label: t(`tools.ecosystems.${eco}`),
+  })),
+  category: categories.map((cat) => ({
+    value: cat,
+    label: t(`tools.categories.${cat}`),
+  })),
+  status: statuses.map((status) => ({
+    value: status,
+    label: t(`tools.status.${status}`),
+  })),
 };
 ---
 
-<BaseLayout
-  title={t("tools.title")}
-  description={t("tools.description")}
-  type="website"
->
-  <main class={classes.container}>
-    <h1 class={classes.title}>{t("tools.title")}</h1>
+<BaseLayout title={t("tools.title")} description={t("tools.description")}>
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    {/* Header */}
+    <header class={classes.header}>
+      <h1 class={classes.title}>{t("tools.title")}</h1>
+      <p class={classes.description}>{t("tools.description")}</p>
 
-    {/* Simple tools grid */}
+      {/* Tools count */}
+      <div class="mt-4">
+        <span class={classes.statsBadge}>
+          {tools.length}
+          {t("tools.total_count")}
+        </span>
+      </div>
+    </header>
+
+    {/* Filters */}
+    <div class={classes.filters}>
+      {/* Ecosystem filter */}
+      <div class={classes.filterGroup}>
+        <label class={classes.filterLabel}>
+          {t("tools.filters.ecosystem")}
+        </label>
+        <select class={classes.filterSelect} data-filter="ecosystem">
+          <option value="all">{t("tools.filters.all")}</option>
+          {
+            filterOptions.ecosystem.map(({ value, label }) => (
+              <option value={value}>{label}</option>
+            ))
+          }
+        </select>
+      </div>
+
+      {/* Category filter */}
+      <div class={classes.filterGroup}>
+        <label class={classes.filterLabel}>
+          {t("tools.filters.category")}
+        </label>
+        <select class={classes.filterSelect} data-filter="category">
+          <option value="all">{t("tools.filters.all")}</option>
+          {
+            filterOptions.category.map(({ value, label }) => (
+              <option value={value}>{label}</option>
+            ))
+          }
+        </select>
+      </div>
+
+      {/* Status filter */}
+      <div class={classes.filterGroup}>
+        <label class={classes.filterLabel}>
+          {t("tools.filters.status")}
+        </label>
+        <select class={classes.filterSelect} data-filter="status">
+          <option value="all">{t("tools.filters.all")}</option>
+          {
+            filterOptions.status.map(({ value, label }) => (
+              <option value={value}>{label}</option>
+            ))
+          }
+        </select>
+      </div>
+    </div>
+
+    {/* Tools grid */}
     {
       tools.length > 0 ? (
         <div class={classes.toolsGrid}>
@@ -50,3 +144,45 @@ const classes = {
     }
   </main>
 </BaseLayout>
+
+<script>
+  // Client-side filtering logic
+  function initializeFilters() {
+    const filters = document.querySelectorAll("[data-filter]");
+    const toolCards = document.querySelectorAll("[data-tool]");
+
+    filters.forEach((filter) => {
+      filter.addEventListener("change", updateFilters);
+    });
+
+    function updateFilters() {
+      const activeFilters = Array.from(filters).reduce(
+        (acc, filter) => {
+          const value = (filter as HTMLSelectElement).value;
+          if (value !== "all") {
+            acc[filter.getAttribute("data-filter")!] = value;
+          }
+          return acc;
+        },
+        {} as Record<string, string>
+      );
+
+      toolCards.forEach((card) => {
+        const toolData = JSON.parse(card.getAttribute("data-tool")!);
+        const isVisible = Object.entries(activeFilters).every(
+          ([key, value]) => {
+            if (key === "ecosystem") {
+              return toolData.ecosystems.includes(value);
+            }
+            return toolData[key] === value;
+          }
+        );
+
+        card.classList.toggle("hidden", !isVisible);
+      });
+    }
+  }
+
+  // Initialize filters when the page loads
+  document.addEventListener("DOMContentLoaded", initializeFilters);
+</script>

@@ -13,7 +13,7 @@ interface Props {
 const { tool, lang } = Astro.props;
 const t = await useTranslations(lang);
 
-// Type-safe access to localized content
+// Get localized content
 const localizedContent = tool.data.i18n[lang];
 
 // Ensure localized content exists
@@ -21,51 +21,64 @@ if (!localizedContent) {
   throw new Error(`Missing localized content for language: ${lang}`);
 }
 
-// Generate the tool URL
+// Generate tool URL
 const toolUrl = `/${lang}/tools/${tool.id.split("/").pop()}`;
+
+// Create tool data for filtering
+const toolFilterData = {
+  category: tool.data.category,
+  ecosystems: tool.data.ecosystems,
+  status: tool.data.status,
+  pricing: tool.data.metadata?.pricing,
+};
 
 // Tailwind classes for consistent styling
 const classes = {
-  card: "border border-gray-700 rounded-lg p-6 hover:border-gray-500 transition-colors",
-  logoContainer: "w-16 h-16 mb-4",
-  logo: "w-full h-full object-contain",
-  logoPlaceholder:
-    "w-full h-full bg-gray-800 rounded flex items-center justify-center",
-  title: "text-xl font-bold mb-2",
+  card: "group flex flex-col h-full border border-gray-700 rounded-lg p-6 hover:border-gray-500 transition-colors",
+  logoContainer: "w-16 h-16 mb-4 transition-transform group-hover:scale-105",
+  logo: "w-full h-full object-contain rounded-lg bg-gray-800 p-2",
+  title: "text-xl font-bold mb-2 group-hover:text-white transition-colors",
   description: "text-gray-400 mb-4 line-clamp-2",
-  features: "text-sm text-gray-400 space-y-1 mb-4",
+  features: "text-sm text-gray-400 space-y-1 mb-6",
   featureItem: "flex items-start",
-  metadata: "flex flex-wrap gap-2 mt-auto",
-  badge: "px-2 py-1 bg-gray-800 rounded text-sm",
+  metadataRow: "mt-auto pt-4 border-t border-gray-700",
+  metadata: "flex flex-wrap gap-2",
+  badge: "px-2 py-1 bg-gray-800 rounded text-sm text-gray-300",
+  link: "absolute inset-0 z-10",
 };
 ---
 
-<article class={classes.card}>
-  <a href={toolUrl} class="block">
-    {/* Tool logo with error boundary */}
+<article class="relative" data-tool={JSON.stringify(toolFilterData)}>
+  {/* Make entire card clickable while preserving metadata interaction */}
+  <a href={toolUrl} class={classes.link}>
+    <span class="sr-only">View {localizedContent.title}</span>
+  </a>
+
+  <div class={classes.card}>
+    {/* Tool Logo */}
     <div class={classes.logoContainer}>
       {
         tool.data.logo ? (
           <Image
             src={tool.data.logo}
-            alt={localizedContent.title}
+            alt={`${localizedContent.title} logo`}
             width={64}
             height={64}
             class={classes.logo}
           />
         ) : (
-          <div class={classes.logoPlaceholder}>
+          <div class={`${classes.logo} flex items-center justify-center`}>
             <span class="text-xs text-gray-400">No logo</span>
           </div>
         )
       }
     </div>
 
-    {/* Tool info */}
+    {/* Tool Info */}
     <h3 class={classes.title}>{localizedContent.title}</h3>
     <p class={classes.description}>{localizedContent.description}</p>
 
-    {/* Features preview with validation */}
+    {/* Features Preview */}
     {
       localizedContent.features.length > 0 && (
         <ul class={classes.features}>
@@ -79,18 +92,28 @@ const classes = {
       )
     }
 
-    {/* Tool metadata */}
-    <div class={classes.metadata}>
-      <span class={classes.badge}>
-        {t(`tools.status.${tool.data.status}`)}
-      </span>
-      {
-        tool.data.metadata?.pricing && (
-          <span class={classes.badge}>
-            {t(`tools.pricing.${tool.data.metadata.pricing}`)}
-          </span>
-        )
-      }
+    {/* Metadata Row */}
+    <div class={classes.metadataRow}>
+      <div class={classes.metadata}>
+        {/* Status Badge */}
+        <span class={classes.badge}>
+          {t(`tools.status.${tool.data.status}`)}
+        </span>
+
+        {/* Primary Ecosystem Badge */}
+        <span class={classes.badge}>
+          {t(`tools.ecosystems.${tool.data.ecosystems[0]}`)}
+        </span>
+
+        {/* Pricing Badge (if available) */}
+        {
+          tool.data.metadata?.pricing && (
+            <span class={classes.badge}>
+              {t(`tools.pricing.${tool.data.metadata.pricing}`)}
+            </span>
+          )
+        }
+      </div>
     </div>
-  </a>
+  </div>
 </article>
