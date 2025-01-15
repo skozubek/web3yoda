@@ -30,6 +30,7 @@ const uiSchema = z.object({
   }),
   tools: z.object({
     title: z.string(),
+    description: z.string(),
     website: z.string(),
     key_features: z.string(),
     last_updated: z.string(),
@@ -142,6 +143,11 @@ const toolSchema = z.object({
   screenshot: z.string().optional(),
   website: z.string().url(),
   github: z.string().url().optional(),
+  social: z.object({
+    x: z.string().url().optional(),
+    discord: z.string().url().optional(),
+    telegram: z.string().url().optional(),
+  }).optional(),
   category: z.enum(['wallets', 'marketplaces', 'defi', 'infrastructure', 'security', 'analytics', 'other']),
   ecosystems: z.array(z.enum(['bitcoin', 'ethereum', 'solana', 'multichain', 'other'])).min(1),
   status: z.enum(['active', 'beta', 'deprecated']),

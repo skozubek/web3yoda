@@ -17,9 +17,21 @@ interface Props {
   description?: string;
   image?: string;
   type?: string;
+  schema?: Record<string, any>;
+  meta?: Array<{ name: string; content: string }>;
+  robots?: string;
 }
 
-const { title, description, image, type } = Astro.props;
+const { title, description, image, type, schema, meta, robots } = Astro.props;
+
+// Debug props
+console.log("BaseLayout Props:", {
+  title,
+  description,
+  schema: schema ? "Present" : "Missing",
+  meta: meta ? "Present" : "Missing",
+  robots,
+});
 
 const currentLocale = getLocaleFromUrl(Astro.url);
 const currentPath = Astro.url.pathname;
@@ -70,6 +82,9 @@ const alternateUrlsWithDefault: AlternateUrls = {
       type={type}
       currentLocale={currentLocale}
       alternateUrls={alternateUrlsWithDefault}
+      schema={schema}
+      meta={meta}
+      robots={robots}
     />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />

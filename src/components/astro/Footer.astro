@@ -1,7 +1,6 @@
 ---
 // src/components/astro/Footer.astro
 import { useTranslations } from "../../i18n/utils";
-import { X, Mail } from "lucide-react";
 import Newsletter from "./Newsletter.astro";
 
 const t = await useTranslations(Astro.currentLocale as "en" | "pl");
@@ -30,14 +29,41 @@ const t = await useTranslations(Astro.currentLocale as "en" | "pl");
           class="text-gray-400 hover:text-white transition-colors"
           aria-label="Twitter"
         >
-          <X className="h-7 w-7" />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            viewBox="0 0 16 16"
+            fill="currentColor"
+            aria-hidden="true"
+          >
+            <path
+              d="M9.18549 7.49741L14.4309 1.39999H13.1879L8.63331 6.6943L4.99554 1.39999H0.799805L6.30082 9.40592L0.799805 15.8H2.04288L6.85269 10.209L10.6944 15.8H14.8902L9.18518 7.49741H9.18549ZM7.48292 9.47645L6.92556 8.67924L2.49078 2.33576H4.40007L7.97899 7.45515L8.53635 8.25236L13.1885 14.9068H11.2792L7.48292 9.47676V9.47645Z"
+            ></path>
+          </svg>
+          <span class="sr-only">Twitter</span>
         </a>
         <a
           href="mailto:web3yoda.xyz@pm.me"
           class="text-gray-400 hover:text-white transition-colors"
           aria-label="Email"
         >
-          <Mail className="h-7 w-7" />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <rect width="20" height="16" x="2" y="4" rx="2"></rect>
+            <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+          </svg>
+          <span class="sr-only">Email</span>
         </a>
       </div>
     </div>

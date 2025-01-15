@@ -64,9 +64,51 @@ const filterOptions = {
     label: t(`tools.status.${status}`),
   })),
 };
+
+// Construct directory-specific SEO schema
+const directorySchema = {
+  "@type": "ItemList",
+  name: t("tools.title"),
+  description: t("tools.description"),
+  numberOfItems: tools.length,
+  itemListElement: tools.map((tool, index) => ({
+    "@type": "ListItem",
+    position: index + 1,
+    item: {
+      "@type": "SoftwareApplication",
+      name: tool.data.i18n[lang].title,
+      description: tool.data.i18n[lang].description,
+      applicationCategory: `Blockchain ${tool.data.category}`,
+      url: `${Astro.url.origin}/${lang}/tools/${tool.id.split("/").pop()}`,
+    },
+  })),
+};
+
+// Add debugging
+console.log("Directory Schema:", JSON.stringify(directorySchema, null, 2));
+
+const directoryMetaTags = [
+  {
+    name: "keywords",
+    content: [
+      "web3 tools",
+      "blockchain tools",
+      ...new Set(tools.flatMap((tool) => tool.data.ecosystems)),
+      ...new Set(tools.map((tool) => tool.data.category)),
+    ].join(", "),
+  },
+];
+
+console.log("Directory Meta Tags:", directoryMetaTags);
 ---
 
-<BaseLayout title={t("tools.title")} description={t("tools.description")}>
+<BaseLayout
+  title={t("tools.title")}
+  description={t("tools.description")}
+  schema={directorySchema}
+  meta={directoryMetaTags}
+  robots="index, follow, max-image-preview:large"
+>
   <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     {/* Header */}
     <header class={classes.header}>

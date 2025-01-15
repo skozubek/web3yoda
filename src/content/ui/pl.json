@@ -27,6 +27,7 @@
       "key_features": "Główne Funkcje",
       "last_updated": "Ostatnia Aktualizacja",
       "title": "Katalog Narzędzi Web3",
+      "description": "Starannie wyselekcjonowane, sprawdzone narzędzia Web3",
       "categories": {
         "wallets": "Portfele",
         "marketplaces": "Giełdy",
@@ -61,7 +62,7 @@
         "deprecated": "Przestarzałe"
       },
       "filters": {
-        "all": "Wszystkie Narzędzia",
+        "all": "Wszystkie",
         "category": "Kategoria",
         "ecosystem": "Ekosystem",
         "status": "Status"

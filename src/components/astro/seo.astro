@@ -10,6 +10,9 @@ interface Props {
   alternateUrls: {
     [key: string]: string;
   };
+  schema?: Record<string, any>; // Allow custom schema override
+  meta?: Array<{ name: string; content: string }>; // Additional meta tags
+  robots?: string; // Custom robots directive
 }
 
 const {
@@ -20,16 +23,47 @@ const {
   type = "website",
   currentLocale,
   alternateUrls,
+  schema,
+  meta = [],
+  robots = "index, follow",
 } = Astro.props;
+
+// Debug received props
+console.log("SEO Component Props:", {
+  title,
+  schema: schema ? "Present" : "Missing",
+  meta: meta.length > 0 ? "Present" : "Missing",
+  robots,
+});
 
 // Get the current URL
 const currentUrl = Astro.url.href;
+
+// Default schema if none provided
+const defaultSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  url: currentUrl,
+  name: title,
+  description: description,
+  inLanguage: currentLocale,
+  alternateName: Object.values(alternateUrls),
+};
+
+// Merge default schema with provided schema or use default
+const finalSchema = schema
+  ? { "@context": "https://schema.org", ...schema }
+  : defaultSchema;
 ---
 
 <!-- Basic Meta Tags -->
 <title>{title}</title>
 <meta name="description" content={description} />
+<meta name="robots" content={robots} />
 <link rel="canonical" href={canonicalUrl || currentUrl} />
+
+<!-- Custom Meta Tags -->
+{meta.map((tag) => <meta name={tag.name} content={tag.content} />)}
 
 <!-- Open Graph / Facebook -->
 <meta property="og:type" content={type} />
@@ -55,15 +89,4 @@ const currentUrl = Astro.url.href;
 }
 
 <!-- JSON-LD Schema -->
-<script
-  type="application/ld+json"
-  set:html={JSON.stringify({
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    url: currentUrl,
-    name: title,
-    description: description,
-    inLanguage: currentLocale,
-    alternateName: Object.values(alternateUrls),
-  })}
-/>
+<script type="application/ld+json" set:html={JSON.stringify(finalSchema)} />
