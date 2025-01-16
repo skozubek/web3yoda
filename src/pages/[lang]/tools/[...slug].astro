@@ -48,7 +48,7 @@ const formattedDate = new Intl.DateTimeFormat(lang, {
 const classes = {
   header: "mb-12 border-b border-gray-700 pb-8",
   logoContainer: "w-100 h-100 mb-6 bg-transparent",
-  logo: "w-full h-full object-contain rounded-lg bg-gray-800 p-2",
+  logo: "object-contain rounded-lg bg-gray-800 p-2",
   title: "text-4xl font-bold mb-4",
   description: "text-xl text-gray-400 mb-6",
   metadata: "flex flex-wrap gap-4 mb-6",
@@ -136,8 +136,8 @@ console.log("Tool Page Props:", {
               <Image
                 src={tool.data.logo}
                 alt={`${localizedContent.title} logo`}
-                width={96}
-                height={96}
+                width={150}
+                height={150}
                 class={classes.logo}
               />
             )

@@ -60,24 +60,29 @@ const NewsletterForm: React.FC<NewsletterFormProps> = ({ translations }) => {
   };
 
   return (
-    <div>
-      <h3 className="font-bold mb-4">{translations.title}</h3>
-      <p className="text-gray-400 mb-4">{translations.description}</p>
+    <div role="form" aria-labelledby="newsletter-title">
+      <h3 id="newsletter-title" className="font-bold mb-4">{translations.title}</h3>
+      <p id="newsletter-description" className="text-gray-400 mb-4">{translations.description}</p>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="flex gap-2">
           <input
             type="email"
             name="email"
+            id="newsletter-email"
             required
             placeholder={translations.placeholder}
             className="flex-1 px-4 py-2 bg-transparent border border-gray-600 rounded-md focus:outline-none focus:border-white"
             disabled={isSubmitting}
+            aria-required="true"
+            aria-describedby="newsletter-description"
+            aria-label={translations.placeholder}
           />
           <button
             type="submit"
             className="px-6 py-2 bg-white text-black font-bold rounded-md hover:bg-gray-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             disabled={isSubmitting}
+            aria-live="polite"
           >
             {translations.button}
           </button>

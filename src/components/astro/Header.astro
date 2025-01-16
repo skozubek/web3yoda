@@ -2,8 +2,9 @@
 // src/components/astro/Header.astro
 import LanguagePicker from "./LanguagePicker.astro";
 import { useTranslations } from "@/i18n/utils";
+import type { SupportedLanguages } from "@/i18n/i18n-config";
 
-const t = await useTranslations(Astro.currentLocale as "en" | "pl");
+const t = await useTranslations(Astro.currentLocale as SupportedLanguages);
 ---
 
 <header
