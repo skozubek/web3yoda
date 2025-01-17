@@ -34,26 +34,28 @@ const toolFilterData = {
 
 // Tailwind classes for consistent styling
 const classes = {
-  card: "group flex flex-col h-full border border-gray-700 rounded-lg p-6 hover:border-gray-500 transition-colors relative",
-  cardLink: "absolute inset-0 z-0", // Base layer for card click
-  logoContainer: "w-16 h-16 mb-4 transition-transform group-hover:scale-105",
+  card: "group flex flex-col h-full min-h-[300px] border border-gray-700 rounded-lg p-8 hover:border-gray-500 transition-colors relative bg-gray-900/50 backdrop-blur-sm",
+  cardLink: "absolute inset-0 z-0",
+  logoContainer: "w-20 h-20 mb-6 transition-transform group-hover:scale-105", // Adjusted size
   logo: "w-full h-full object-contain rounded-lg bg-gray-800 p-2",
-  title: "text-xl font-bold mb-2 group-hover:text-white transition-colors",
-  description: "text-gray-400 mb-4 line-clamp-2",
+  title:
+    "text-xl font-bold mb-2 group-hover:text-white transition-colors line-clamp-1",
+  description: "text-gray-400 mb-6 line-clamp-2 flex-grow",
   metadataRow: "mt-auto pt-4 border-t border-gray-700",
   metadata: "flex flex-wrap gap-2",
-  badge: "px-2 py-1 bg-gray-800 rounded text-sm text-gray-300",
+  badge:
+    "px-2 py-1 bg-gray-800 rounded text-sm text-gray-300 whitespace-nowrap",
   socialLinks: "flex items-center space-x-2 mt-4 relative z-10", // Higher z-index for clickable social links
   socialLink:
-    "text-gray-400 hover:text-white transition-colors p-1 relative z-10 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800", // Added focus styles
+    "text-gray-400 hover:text-white transition-colors p-1 relative z-10 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800",
 };
 
 // Social media platform labels for accessibility
 const platformLabels = {
-  github: "GitHub repository",
-  x: "X (Twitter) profile",
-  discord: "Discord community",
-  telegram: "Telegram channel",
+  github: "GitHub",
+  x: "X (Twitter)",
+  discord: "Discord",
+  telegram: "Telegram",
 } as const;
 ---
 

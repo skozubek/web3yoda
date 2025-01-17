@@ -1,0 +1,83 @@
+---
+// src/components/tools/FilterSelect.astro
+interface Props {
+  label: string;
+  options: Array<{ value: string; label: string }>;
+  dataFilter: string;
+  className?: string;
+}
+
+const { label, options, dataFilter, className = "" } = Astro.props;
+
+// Generate unique ID for accessibility
+const uniqueId = `filter-${dataFilter}-${Math.random().toString(36).substr(2, 9)}`;
+---
+
+<style>
+  .filter-select {
+    appearance: none;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="gray"><path d="M5.5 8l4.5 4.5L14.5 8H5.5z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 16px;
+    padding-right: 30px;
+    transition: border-color 0.2s ease;
+  }
+
+  .filter-select:hover {
+    border-color: rgb(209 213 219);
+  }
+
+  /* Hide default arrow in IE/Edge */
+  .filter-select::-ms-expand {
+    display: none;
+  }
+
+  /* Focus styles for keyboard navigation */
+  .filter-select:focus {
+    outline: 2px solid white;
+    outline-offset: 2px;
+  }
+
+  /* High contrast mode support */
+  @media (forced-colors: active) {
+    .filter-select {
+      border: 1px solid CanvasText;
+    }
+    .filter-select:focus {
+      outline: 2px solid ButtonText;
+    }
+  }
+</style>
+
+<div
+  class={`filter-group ${className}`}
+  role="group"
+  aria-labelledby={`${uniqueId}-label`}
+>
+  <label
+    id={`${uniqueId}-label`}
+    for={uniqueId}
+    class="text-sm text-gray-400 block mb-2"
+  >
+    {label}
+  </label>
+  <select
+    id={uniqueId}
+    data-filter={dataFilter}
+    class="filter-select w-full bg-transparent border border-gray-600 rounded px-3 py-2 text-gray-400 focus:border-white focus:outline-none"
+    aria-label={`Select ${label.toLowerCase()}`}
+    aria-describedby={`${uniqueId}-description`}
+  >
+    {
+      options.map(({ value, label: optionLabel }) => (
+        <option value={value} aria-selected={value === "all"}>
+          {optionLabel}
+        </option>
+      ))
+    }
+  </select>
+  <span id={`${uniqueId}-description`} class="sr-only">
+    Use up and down arrow keys to navigate through options
+  </span>
+</div>

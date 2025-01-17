@@ -20,18 +20,19 @@ interface Props {
   schema?: Record<string, any>;
   meta?: Array<{ name: string; content: string }>;
   robots?: string;
+  fullWidth?: boolean; // for full-width pages
 }
 
-const { title, description, image, type, schema, meta, robots } = Astro.props;
-
-// Debug props
-console.log("BaseLayout Props:", {
+const {
   title,
   description,
-  schema: schema ? "Present" : "Missing",
-  meta: meta ? "Present" : "Missing",
+  image,
+  type,
+  schema,
+  meta,
   robots,
-});
+  fullWidth = false,
+} = Astro.props;
 
 const currentLocale = getLocaleFromUrl(Astro.url);
 const currentPath = Astro.url.pathname;
@@ -97,7 +98,9 @@ const alternateUrlsWithDefault: AlternateUrls = {
   <body class="bg-black text-white font-mono">
     <div class="flex flex-col min-h-screen">
       <Header />
-      <main class="flex-grow mx-auto max-w-3xl px-8 py-16">
+      <main
+        class={`flex-grow mx-auto px-4 sm:px-6 lg:px-8 py-16 w-full ${fullWidth ? "max-w-7xl" : "max-w-3xl"}`}
+      >
         <slot />
       </main>
       <Footer />
