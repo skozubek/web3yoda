@@ -1,11 +1,14 @@
 // src/content/config.ts
 import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
-import { type SupportedLanguages } from '../i18n/i18n-config';
+import { type SupportedLanguages, languages } from '../i18n/i18n-config';
 
-// UI collection schema
+// Create enum values from languages object keys
+const languageValues = Object.keys(languages) as [SupportedLanguages, ...SupportedLanguages[]];
+
+// UI collection schema with dynamic language support
 const uiSchema = z.object({
-  id: z.enum(['en', 'pl']),
+  id: z.enum(languageValues),
   meta: z.object({
     description: z.string(),
   }),
@@ -39,6 +42,22 @@ const uiSchema = z.object({
     status: z.record(z.string()),
     filters: z.record(z.string()),
     pricing: z.record(z.string()),
+    metrics: z.object({
+      sectionTitle: z.string(),
+      description: z.string(),
+      followers: z.string(),
+      monthly: z.object({
+        tweets: z.string(),
+        engagement: z.string(),
+        growth: z.string()
+      }),
+      weekly: z.object({
+        tweets: z.string(),
+        growth: z.string()
+      }),
+      lastUpdate: z.string(),
+      lastTweet: z.string()
+    })
   }),
   footer: z.object({
     description: z.string(),
@@ -81,6 +100,34 @@ const homeSchema = z.object({
 });
 
 /**
+ * X/Twitter Metrics Schema
+ * Focuses on recent activity and engagement
+ */
+const xMetricsSchema = z.object({
+  handle: z.string(),
+  // Current follower count
+  followers: z.number(),
+
+  // Last 30 days activity
+  monthlyStats: z.object({
+    tweets: z.number(),          // tweets in last 30 days
+    avgLikes: z.number(),        // average likes per tweet
+    avgRetweets: z.number(),     // average retweets per tweet
+    avgQuotes: z.number(),       // average quotes per tweet
+    followersGrowth: z.number(), // percentage growth
+  }),
+
+  // Last 7 days for more immediate trends
+  weeklyStats: z.object({
+    tweets: z.number(),          // tweets in last 7 days
+    followersGrowth: z.number(), // percentage growth
+  }),
+
+  lastTweetDate: z.date(),
+  lastMetricsUpdate: z.date(),
+}).optional();
+
+/**
  * Core categories for Web3 tools
  */
 const categorySchema = z.enum([
@@ -117,7 +164,7 @@ const ecosystemSchema = z.array(z.enum([
  * Schema for multilingual tool content
  */
 const toolTranslationsSchema = z.record(
-  z.custom<SupportedLanguages>(), // Use the imported type
+  z.custom<SupportedLanguages>(),
   z.object({
     title: z.string(),
     description: z.string(),
@@ -135,7 +182,7 @@ const toolTranslationsSchema = z.record(
 
 /**
  * Main tool schema
- * Combines metadata with translations
+ * Combines metadata with translations and X metrics
  */
 const toolSchema = z.object({
   id: z.string(),
@@ -148,10 +195,11 @@ const toolSchema = z.object({
     discord: z.string().url().optional(),
     telegram: z.string().url().optional(),
   }).optional(),
-  category: z.enum(['wallets', 'marketplaces', 'defi', 'infrastructure', 'security', 'analytics', 'other']),
-  ecosystems: z.array(z.enum(['bitcoin', 'ethereum', 'solana', 'multichain', 'other'])).min(1),
-  status: z.enum(['active', 'beta', 'deprecated']),
+  category: categorySchema,
+  ecosystems: ecosystemSchema,
+  status: statusSchema,
   lastUpdated: z.date(),
+  xMetrics: xMetricsSchema,
   i18n: toolTranslationsSchema,
   metadata: z.object({
     tags: z.array(z.string()),
@@ -184,7 +232,7 @@ export const collections = { tools, home, ui };
 
 // Export type helpers
 export type Tool = z.infer<typeof toolSchema>;
-export type ToolTranslations = z.infer<typeof toolTranslationsSchema>;
+export type XMetrics = z.infer<typeof xMetricsSchema>;
 export type ToolCategory = z.infer<typeof categorySchema>;
 export type ToolStatus = z.infer<typeof statusSchema>;
 export type ToolEcosystem = z.infer<typeof ecosystemSchema>[number];

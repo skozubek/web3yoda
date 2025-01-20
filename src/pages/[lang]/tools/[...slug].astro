@@ -5,18 +5,14 @@ import { Image } from "astro:assets";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { getLocaleFromUrl, useTranslations } from "@/i18n/utils";
 import { languages, type SupportedLanguages } from "@/i18n/i18n-config";
+import ToolMetrics from "@/components/tools/ToolMetrics.astro";
 
-// Add prerender flag
 export const prerender = true;
 
 export async function getStaticPaths() {
   const tools = await getCollection("tools");
-
-  // Generate paths for all tools in all supported languages
   return tools.flatMap((tool) => {
     const slug = tool.id.split("/").pop();
-
-    // Create a route for each supported language
     return Object.keys(languages).map((lang) => ({
       params: { lang, slug },
       props: { tool },
@@ -24,53 +20,69 @@ export async function getStaticPaths() {
   });
 }
 
-// Get page props
 const { tool } = Astro.props;
 const lang = getLocaleFromUrl(Astro.url) as SupportedLanguages;
 const t = await useTranslations(lang);
-
-// Get localized content
 const localizedContent = tool.data.i18n[lang];
 
-// Ensure localized content exists
 if (!localizedContent) {
   throw new Error(`Missing localized content for language: ${lang}`);
 }
 
-// Format date for display
 const formattedDate = new Intl.DateTimeFormat(lang, {
   year: "numeric",
   month: "long",
   day: "numeric",
 }).format(tool.data.lastUpdated);
 
-// Tailwind classes for styling
+// Centralized styles using Tailwind classes
 const classes = {
+  // Layout
+  container: "max-w-4xl mx-auto px-4",
+
+  // Header styles
   header: "mb-12 border-b border-gray-700 pb-8",
-  logoContainer: "w-100 h-100 mb-6 bg-transparent",
-  logo: "object-contain rounded-lg bg-gray-800 p-2",
+  headerContent: "flex items-start gap-6",
+  mainContent: "flex-grow",
+
+  // Logo styles
+  logoContainer: "w-100 h-100 mb-6 bg-transparent max-w-[150px]",
+  logo: "w-full h-full object-contain rounded-lg bg-gray-800 p-2",
+
+  // Typography
   title: "text-4xl font-bold mb-4",
   description: "text-xl text-gray-400 mb-6",
+
+  // Metadata and badges
   metadata: "flex flex-wrap gap-4 mb-6",
   badge: "px-3 py-1 bg-gray-800 rounded-full text-sm",
-  links: "flex gap-4",
-  primaryLink:
-    "px-4 py-2 bg-white text-black font-bold rounded hover:bg-gray-200 transition-colors",
-  secondaryLink:
-    "px-4 py-2 border border-gray-600 rounded hover:border-gray-400 transition-colors",
+
+  // Links and buttons
+  linksContainer: "flex items-center gap-4",
+  websiteLink:
+    "px-4 py-2 bg-transparent border border-gray-600 rounded text-gray-300 hover:border-gray-400 hover:text-white transition-colors",
+  socialLinks: "flex items-center gap-2",
+  socialLink: "text-gray-400 hover:text-white transition-colors p-1",
+
+  // Content sections
   section: "mb-12",
   sectionTitle: "text-2xl font-bold mb-4",
   sectionContent: "text-gray-300 leading-relaxed",
-  keyFeatures: "grid gap-8 md:grid-cols-2 lg:grid-cols-3",
+
+  // Features grid
+  featuresGrid: "grid gap-8 md:grid-cols-2 lg:grid-cols-3",
   featureCard:
     "border border-gray-700 rounded-lg p-6 hover:border-gray-500 transition-colors",
   featureTitle: "text-xl font-bold mb-4",
   featureList: "space-y-2 text-gray-300",
   featureItem: "flex items-start gap-2",
+  bulletPoint: "text-gray-400 mt-1",
+
+  // Footer
   footer: "mt-16 pt-8 border-t border-gray-700 text-sm text-gray-400",
 };
 
-// Construct tool-specific SEO data
+// SEO schema
 const toolSchema = {
   "@type": "SoftwareApplication",
   name: localizedContent.title,
@@ -93,7 +105,7 @@ const toolSchema = {
   }),
 };
 
-// Additional meta tags specific to the tool
+// Meta tags
 const toolMetaTags = [
   {
     name: "keywords",
@@ -110,12 +122,6 @@ const toolMetaTags = [
     content: localizedContent.title,
   },
 ];
-
-// Debug schema and meta before passing to BaseLayout
-console.log("Tool Page Props:", {
-  schema: toolSchema ? "Present" : "Missing",
-  meta: toolMetaTags ? "Present" : "Missing",
-});
 ---
 
 <BaseLayout
@@ -124,12 +130,11 @@ console.log("Tool Page Props:", {
   schema={toolSchema}
   meta={toolMetaTags}
   robots="index, follow, max-image-preview:large"
+  fullWidth={true}
 >
-  <article class="max-w-4xl mx-auto px-4">
-    {/* Header Section */}
+  <article class={classes.container}>
     <header class={classes.header}>
-      <div class="flex items-start gap-6">
-        {/* Tool Logo */}
+      <div class={classes.headerContent}>
         <div class={classes.logoContainer}>
           {
             tool.data.logo && (
@@ -144,11 +149,10 @@ console.log("Tool Page Props:", {
           }
         </div>
 
-        <div class="flex-grow">
+        <div class={classes.mainContent}>
           <h1 class={classes.title}>{localizedContent.title}</h1>
           <p class={classes.description}>{localizedContent.description}</p>
 
-          {/* Metadata Badges */}
           <div class={classes.metadata}>
             <span class={classes.badge}>
               {t(`tools.status.${tool.data.status}`)}
@@ -165,26 +169,25 @@ console.log("Tool Page Props:", {
             }
           </div>
 
-          {/* External Links */}
-          <div class="flex items-center gap-4">
+          <div class={classes.linksContainer}>
             <a
               href={tool.data.website}
               target="_blank"
               rel="noopener noreferrer"
-              class="px-4 py-2 bg-transparent border border-gray-600 rounded text-gray-300 hover:border-gray-400 hover:text-white transition-colors"
+              class={classes.websiteLink}
               aria-label={`${t("tools.website")} - ${localizedContent.title}`}
             >
-              {t("tools.website")} - {localizedContent.title}
+              {t("tools.website")}
             </a>
 
-            <div class="flex items-center gap-2">
+            <div class={classes.socialLinks}>
               {
                 tool.data.github && (
                   <a
                     href={tool.data.github}
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="text-gray-400 hover:text-white transition-colors p-1"
+                    class={classes.socialLink}
                     title="GitHub"
                   >
                     <svg
@@ -210,7 +213,7 @@ console.log("Tool Page Props:", {
                     href={tool.data.social.x}
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="text-gray-400 hover:text-white transition-colors p-1"
+                    class={classes.socialLink}
                     title="X (Twitter)"
                   >
                     <svg
@@ -225,13 +228,14 @@ console.log("Tool Page Props:", {
                   </a>
                 )
               }
+
               {
                 tool.data.social?.discord && (
                   <a
                     href={tool.data.social.discord}
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="text-gray-400 hover:text-white transition-colors p-1"
+                    class={classes.socialLink}
                     title="Discord"
                   >
                     <svg
@@ -253,7 +257,7 @@ console.log("Tool Page Props:", {
                     href={tool.data.social.telegram}
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="text-gray-400 hover:text-white transition-colors p-1"
+                    class={classes.socialLink}
                     title="Telegram"
                   >
                     <svg
@@ -270,45 +274,156 @@ console.log("Tool Page Props:", {
               }
             </div>
           </div>
+          {
+            tool.data.xMetrics && (
+              <div class="flex items-center gap-6 mt-4 text-gray-400">
+                {t("tools.metrics.sectionTitle")}
+                <div
+                  class="flex items-center gap-2 hover:text-blue-400 transition-colors"
+                  title={t("tools.metrics.monthly.tweets")}
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                  </svg>
+                  <span class="text-sm font-medium">
+                    {tool.data.xMetrics.monthlyStats.tweets}
+                  </span>
+                </div>
+
+                <div
+                  class="flex items-center gap-2 hover:text-blue-400 transition-colors"
+                  title={t("tools.metrics.monthly.engagement")}
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3" />
+                  </svg>
+                  <span class="text-sm font-medium">
+                    {tool.data.xMetrics.monthlyStats.avgLikes}
+                  </span>
+                </div>
+
+                <div
+                  class="flex items-center gap-2 hover:text-blue-400 transition-colors"
+                  title={t("tools.metrics.followers")}
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2" />
+                    <circle cx="9" cy="7" r="4" />
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                  </svg>
+                  <span class="text-sm font-medium">
+                    {tool.data.xMetrics.followers}
+                  </span>
+                </div>
+
+                {tool.data.xMetrics.monthlyStats.followersGrowth > 0 && (
+                  <div
+                    class="flex items-center gap-2 text-green-400"
+                    title={t("tools.metrics.monthly.growth")}
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path d="m18 15 3-3-3-3" />
+                      <path d="M3 12h18" />
+                    </svg>
+                    <span class="text-sm font-medium">
+                      +{tool.data.xMetrics.monthlyStats.followersGrowth}%
+                    </span>
+                  </div>
+                )}
+              </div>
+            )
+          }
         </div>
       </div>
     </header>
-  </article>
 
-  {/* Content Sections */}
-  {
-    localizedContent.sections.map((section) => (
-      <section class={classes.section}>
-        <h2 class={classes.sectionTitle}>{section.title}</h2>
-        <div class={classes.sectionContent}>{section.content}</div>
-      </section>
-    ))
-  }
-
-  {/* Key Features Grid */}
-  <section class={classes.section}>
-    <h2 class={classes.sectionTitle}>{t("tools.key_features")}</h2>
-    <div class={classes.keyFeatures}>
+    {/* Main Content */}
+    <div class="space-y-12">
+      {/* Tool Sections */}
       {
-        localizedContent.keyFeatures.map((feature) => (
-          <div class={classes.featureCard}>
-            <h3 class={classes.featureTitle}>{feature.title}</h3>
-            <ul class={classes.featureList}>
-              {feature.items.map((item) => (
-                <li class={classes.featureItem}>
-                  <span class="text-gray-400 mt-1">•</span>
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
+        localizedContent.sections.map((section) => (
+          <section class={classes.section}>
+            <h2 class={classes.sectionTitle}>{section.title}</h2>
+            <div class={classes.sectionContent}>{section.content}</div>
+          </section>
         ))
       }
-    </div>
-  </section>
 
-  {/* Footer */}
-  <footer class={classes.footer}>
-    <p>{t("tools.last_updated")}: {formattedDate}</p>
-  </footer>
+      {
+        /* X Metrics
+      {
+        tool.data.xMetrics && (
+          <ToolMetrics metrics={tool.data.xMetrics} lang={lang} />
+        )
+      } */
+      }
+
+      {/* Key Features */}
+      <section class={classes.section}>
+        <h2 class={classes.sectionTitle}>{t("tools.key_features")}</h2>
+        <div class={classes.featuresGrid}>
+          {
+            localizedContent.keyFeatures.map((feature) => (
+              <div class={classes.featureCard}>
+                <h3 class={classes.featureTitle}>{feature.title}</h3>
+                <ul class={classes.featureList}>
+                  {feature.items.map((item) => (
+                    <li class={classes.featureItem}>
+                      <span class={classes.bulletPoint}>•</span>
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))
+          }
+        </div>
+      </section>
+    </div>
+
+    <footer class={classes.footer}>
+      <p>{t("tools.last_updated")}: {formattedDate}</p>
+    </footer>
+  </article>
 </BaseLayout>

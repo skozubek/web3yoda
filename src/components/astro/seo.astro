@@ -28,14 +28,6 @@ const {
   robots = "index, follow",
 } = Astro.props;
 
-// Debug received props
-console.log("SEO Component Props:", {
-  title,
-  schema: schema ? "Present" : "Missing",
-  meta: meta.length > 0 ? "Present" : "Missing",
-  robots,
-});
-
 // Get the current URL
 const currentUrl = Astro.url.href;
 

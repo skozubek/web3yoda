@@ -1,0 +1,29 @@
+# .github/workflows/update-twitter-metrics.yml
+name: Update Twitter Metrics
+
+on:
+  # Run every 6 hours
+  schedule:
+    - cron: '0 */6 * * *'
+  # Allow manual trigger
+  workflow_dispatch:
+
+jobs:
+  update-metrics:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      
+      - name: Install dependencies
+        run: npm install
+      
+      - name: Run update script
+        run: npx tsx scripts/update-twitter-metrics.ts
+        # We'll add environment variables later

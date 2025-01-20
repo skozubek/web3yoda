@@ -50,7 +50,6 @@
       "bitcoin": "Bitcoin",
       "ethereum": "Ethereum",
       "solana": "Solana",
-      "cardano": "Cardano",
       "polkadot": "Polkadot",
       "cosmos": "Cosmos",
       "multichain": "Multichain",
@@ -72,6 +71,22 @@
       "paid": "Paid",
       "hybrid": "Hybrid",
       "contact": "Contact for Pricing"
+    },
+    "metrics": {
+      "sectionTitle": "Social metrics:",
+      "description": "Live metrics from X (Twitter)",
+      "followers": "Followers",
+      "monthly": {
+        "tweets": "Monthly Tweets",
+        "engagement": "Avg Engagement",
+        "growth": "Monthly Growth"
+      },
+      "weekly": {
+        "tweets": "Weekly Tweets",
+        "growth": "Weekly Growth"
+      },
+      "lastUpdate": "Metrics Updated",
+      "lastTweet": "Last Tweet"
     }
   },
   "footer": {
