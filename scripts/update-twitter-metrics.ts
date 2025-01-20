@@ -1,6 +1,6 @@
 // scripts/update-twitter-metrics.ts
-import { readFile, writeFile } from 'fs/promises';
-import { join } from 'path';
+import { readFile, writeFile } from 'node:fs/promises';
+import { join } from 'node:path';
 import type { Tool } from '../src/content/config';
 
 async function main() {
