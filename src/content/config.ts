@@ -210,8 +210,29 @@ const toolSchema = z.object({
 
 // Collections Configuration
 const tools = defineCollection({
-  schema: toolSchema,
-  // Update the loader to use glob for loading MDX files
+  schema: ({ image }) => z.object({
+    id: z.string(),
+    logo: image(),
+    cscreenshot: z.string().optional(),
+    website: z.string().url(),
+    github: z.string().url().optional(),
+    social: z.object({
+      x: z.string().url().optional(),
+      discord: z.string().url().optional(),
+      telegram: z.string().url().optional(),
+    }).optional(),
+    category: categorySchema,
+    ecosystems: ecosystemSchema,
+    status: statusSchema,
+    lastUpdated: z.date(),
+    xMetrics: xMetricsSchema,
+    i18n: toolTranslationsSchema,
+    metadata: z.object({
+      tags: z.array(z.string()),
+      pricing: z.enum(['free', 'paid', 'hybrid'])
+    }).optional()
+  }),
+
   loader: glob({
     pattern: "tools/**/**.mdx",
     base: "./src/content"

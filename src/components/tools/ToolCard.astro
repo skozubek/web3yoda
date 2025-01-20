@@ -11,7 +11,6 @@ interface Props {
 }
 
 const { tool, lang } = Astro.props;
-console.log("dupa tool logo:" + tool.data.logo);
 const t = await useTranslations(lang);
 
 // Get localized content
