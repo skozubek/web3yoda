@@ -139,7 +139,7 @@ const toolMetaTags = [
           {
             tool.data.logo && (
               <Image
-                src={tool.data.logo}
+                src={tool.data.logo as string}
                 alt={`${localizedContent.title} logo`}
                 width={150}
                 height={150}
