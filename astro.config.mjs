@@ -10,7 +10,8 @@ export default defineConfig({
   site: 'https://web3yoda.xyz',
   integrations: [react(), tailwind(), mdx()],
   adapter: vercel({
-    analytics: true // Enable Vercel Analytics
+    analytics: true, // Enable Vercel Analytics
+    imageService: true
   }),
 
   i18n: {
