@@ -16,6 +16,14 @@ import ToolCard from "@/components/tools/ToolCard.astro";
 import FilterSelect from "@/components/tools/FilterSelect.astro";
 import { getLocaleFromUrl, useTranslations } from "@/i18n/utils";
 import { languages, type SupportedLanguages } from "@/i18n/i18n-config";
+import { getImage } from "astro:assets";
+
+// Augment Tool type to include processed image
+type ToolWithImage = CollectionEntry<"tools"> & {
+  data: {
+    logo?: ImageMetadata;
+  };
+};
 
 // Enable static pre-rendering at build time
 // Set to false if you need dynamic server-side rendering

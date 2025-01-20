@@ -3,6 +3,7 @@ import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { type SupportedLanguages, languages } from '../i18n/i18n-config';
 
+
 // Create enum values from languages object keys
 const languageValues = Object.keys(languages) as [SupportedLanguages, ...SupportedLanguages[]];
 
