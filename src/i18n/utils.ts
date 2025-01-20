@@ -23,7 +23,19 @@ export function getLocaleFromUrl(url: URL) {
 export async function useTranslations(lang: SupportedLanguages) {
   const ui = await getUI(lang);
   return function t(key: string) {
-    return key.split('.').reduce((obj, key) => obj?.[key], ui) || '';
+    try {
+      const value = key.split('.').reduce((obj, k) => obj?.[k], ui);
+      if (value === undefined) {
+        console.warn(`Translation missing for key: ${key} in language: ${lang}`);
+        // Fall back to default language
+        const defaultUI = cachedUI?.[defaultLang];
+        return key.split('.').reduce((obj, k) => obj?.[k], defaultUI) || key;
+      }
+      return value;
+    } catch (error) {
+      console.error(`Error accessing translation for key: ${key}`, error);
+      return key;
+    }
   }
 }
 

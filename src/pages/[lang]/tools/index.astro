@@ -1,0 +1,259 @@
+---
+// src/pages/[lang]/tools/index.Astro
+/**
+ * Tools Directory Index Page
+ *
+ * This page displays a filterable directory of Web3 tools. It supports:
+ * - Internationalization (i18n)
+ * - Client-side filtering
+ * - Responsive grid layout
+ * - Accessibility features
+ */
+
+import { type CollectionEntry, getCollection } from "astro:content";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import ToolCard from "@/components/tools/ToolCard.astro";
+import FilterSelect from "@/components/tools/FilterSelect.astro";
+import { getLocaleFromUrl, useTranslations } from "@/i18n/utils";
+import { languages, type SupportedLanguages } from "@/i18n/i18n-config";
+
+// Enable static pre-rendering at build time
+// Set to false if you need dynamic server-side rendering
+export const prerender = true;
+
+/**
+ * Generate static paths for all supported languages
+ * This creates a page for each language defined in the i18n config
+ */
+export function getStaticPaths() {
+  return Object.keys(languages).map((lang) => ({
+    params: { lang },
+  }));
+}
+
+// Get current language from URL parameters
+const { lang } = Astro.params as { lang: SupportedLanguages };
+const t = await useTranslations(lang);
+
+// Fetch all tools from the content collection
+let tools: CollectionEntry<"tools">[] = [];
+try {
+  tools = await getCollection("tools");
+} catch (error) {
+  console.error("Error fetching tools:", error);
+}
+
+// Extract unique values for filter options
+const ecosystems = [...new Set(tools.flatMap((tool) => tool.data.ecosystems))];
+const categories = [...new Set(tools.map((tool) => tool.data.category))];
+const statuses = [...new Set(tools.map((tool) => tool.data.status))];
+
+/**
+ * Tailwind classes organized by component
+ */
+const classes = {
+  // Main layout classes
+  container: "w-full mx-auto",
+
+  // Header section
+  header: "mb-12 border-b border-gray-700 pb-8",
+  title: "text-4xl font-bold mb-6",
+  description: "text-xl text-gray-400 max-w-3xl",
+
+  // Stats and metrics
+  statsContainer: "mt-4 flex gap-4",
+  statsBadge:
+    "inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-800 text-gray-300",
+
+  // Filters section
+  filtersContainer: "mb-12 flex flex-col sm:flex-row gap-4 max-w-4xl",
+  filterWrapper: "w-full", // Simplified filter width control
+
+  // Tools grid - Updated for better responsive design
+  toolsGrid: "grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3",
+  noTools: "text-center py-12 text-gray-400",
+};
+
+/**
+ * Filter options configuration
+ * Maps raw data to formatted options for filter dropdowns
+ */
+const filterOptions = {
+  ecosystem: ecosystems.map((eco) => ({
+    value: eco,
+    label: t(`tools.ecosystems.${eco}`),
+  })),
+  category: categories.map((cat) => ({
+    value: cat,
+    label: t(`tools.categories.${cat}`),
+  })),
+  status: statuses.map((status) => ({
+    value: status,
+    label: t(`tools.status.${status}`),
+  })),
+};
+
+/**
+ * SEO Schema for the tools directory
+ * Follows Schema.org ItemList format
+ */
+const directorySchema = {
+  "@type": "ItemList",
+  name: t("tools.title"),
+  description: t("tools.description"),
+  numberOfItems: tools.length,
+  itemListElement: tools.map((tool, index) => ({
+    "@type": "ListItem",
+    position: index + 1,
+    item: {
+      "@type": "SoftwareApplication",
+      name: tool.data.i18n[lang].title,
+      description: tool.data.i18n[lang].description,
+      applicationCategory: `Blockchain ${tool.data.category}`,
+      url: `${Astro.url.origin}/${lang}/tools/${tool.id.split("/").pop()}`,
+    },
+  })),
+};
+
+/**
+ * Additional meta tags for SEO
+ */
+const directoryMetaTags = [
+  {
+    name: "keywords",
+    content: [
+      "web3 tools",
+      "blockchain tools",
+      ...new Set(tools.flatMap((tool) => tool.data.ecosystems)),
+      ...new Set(tools.map((tool) => tool.data.category)),
+    ].join(", "),
+  },
+];
+---
+
+<BaseLayout
+  title={t("tools.title")}
+  description={t("tools.description")}
+  schema={directorySchema}
+  meta={directoryMetaTags}
+  robots="index, follow, max-image-preview:large"
+  fullWidth={true}
+>
+  <main class={classes.container}>
+    {/* Header Section */}
+    <header class={classes.header}>
+      <h1 class={classes.title}>{t("tools.title")}</h1>
+      <p class={classes.description}>{t("tools.description")}</p>
+
+      <div class={classes.statsContainer}>
+        <span class={classes.statsBadge}>
+          {tools.length}
+          {t("tools.total_count")}
+        </span>
+      </div>
+    </header>
+
+    {/* Filters Section */}
+    <div class={classes.filtersContainer}>
+      <FilterSelect
+        label={t("tools.filters.ecosystem")}
+        options={[
+          { value: "all", label: t("tools.filters.all") },
+          ...filterOptions.ecosystem,
+        ]}
+        dataFilter="ecosystem"
+        className={classes.filterWrapper}
+      />
+
+      <FilterSelect
+        label={t("tools.filters.category")}
+        options={[
+          { value: "all", label: t("tools.filters.all") },
+          ...filterOptions.category,
+        ]}
+        dataFilter="category"
+        className={classes.filterWrapper}
+      />
+
+      <FilterSelect
+        label={t("tools.filters.status")}
+        options={[
+          { value: "all", label: t("tools.filters.all") },
+          ...filterOptions.status,
+        ]}
+        dataFilter="status"
+        className={classes.filterWrapper}
+      />
+    </div>
+
+    {/* Tools Grid */}
+    {
+      tools.length > 0 ? (
+        <div class={classes.toolsGrid}>
+          {tools.map((tool) => (
+            <ToolCard tool={tool} lang={lang} />
+          ))}
+        </div>
+      ) : (
+        <p class={classes.noTools}>{t("tools.no_tools_found")}</p>
+      )
+    }
+  </main>
+</BaseLayout>
+
+{/* Client-side filtering logic */}
+<script>
+  /**
+   * Initializes and manages the filtering functionality
+   * - Handles filter change events
+   * - Updates tool visibility based on selected filters
+   * - Supports multiple simultaneous filters
+   */
+  function initializeFilters() {
+    const filters = document.querySelectorAll("[data-filter]");
+    const toolCards = document.querySelectorAll("[data-tool]");
+
+    // Add change event listeners to all filters
+    filters.forEach((filter) => {
+      filter.addEventListener("change", updateFilters);
+    });
+
+    /**
+     * Updates tool visibility based on current filter values
+     * - Collects active filters
+     * - Checks each tool against filter criteria
+     * - Updates visibility of tool cards
+     */
+    function updateFilters() {
+      // Get current filter values
+      const activeFilters = Array.from(filters).reduce(
+        (acc, filter) => {
+          const value = (filter as HTMLSelectElement).value;
+          if (value !== "all") {
+            acc[filter.getAttribute("data-filter")!] = value;
+          }
+          return acc;
+        },
+        {} as Record<string, string>
+      );
+
+      // Update visibility of each tool card
+      toolCards.forEach((card) => {
+        const toolData = JSON.parse(card.getAttribute("data-tool")!);
+        const isVisible = Object.entries(activeFilters).every(
+          ([key, value]) => {
+            if (key === "ecosystem") {
+              return toolData.ecosystems.includes(value);
+            }
+            return toolData[key] === value;
+          }
+        );
+
+        card.classList.toggle("hidden", !isVisible);
+      });
+    }
+  }
+
+  // Initialize filters when DOM is ready
+  document.addEventListener("DOMContentLoaded", initializeFilters);
+</script>

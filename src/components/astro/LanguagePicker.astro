@@ -1,6 +1,10 @@
 ---
 // src/components/astro/LanguagePicker.astro
 import { languages } from "../../i18n/utils";
+
+// Get current language name for aria-label
+const currentLangCode = Astro.currentLocale as keyof typeof languages;
+const currentLangName = languages[currentLangCode];
 ---
 
 <style>
@@ -12,20 +16,40 @@ import { languages } from "../../i18n/utils";
     background-size: 16px;
     padding-right: 30px;
   }
+
+  /* Hide label visually while keeping it accessible for screen readers */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
 </style>
 
-<select
-  class="custom-select bg-transparent border border-gray-600 rounded px-3 py-2 text-gray-400 focus:border-white transition-colors"
-  onchange="window.location.pathname = this.value"
->
-  {
-    Object.entries(languages).map(([lang, label]) => (
-      <option
-        value={lang === "en" ? "/" : `/${lang}/`}
-        selected={Astro.currentLocale === lang}
-      >
-        {label}
-      </option>
-    ))
-  }
-</select>
+<div class="language-picker">
+  <label for="language-select" class="sr-only">
+    Select language - currently {currentLangName}
+  </label>
+  <select
+    id="language-select"
+    class="custom-select bg-transparent border border-gray-600 rounded px-3 py-2 text-gray-400 focus:border-white hover:border-gray-400 transition-colors"
+    aria-label={`Select language - currently ${currentLangName}`}
+    onchange="window.location.pathname = this.value"
+  >
+    {
+      Object.entries(languages).map(([lang, label]) => (
+        <option
+          value={lang === "en" ? "/" : `/${lang}/`}
+          selected={Astro.currentLocale === lang}
+        >
+          {label}
+        </option>
+      ))
+    }
+  </select>
+</div>

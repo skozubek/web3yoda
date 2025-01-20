@@ -1,6 +1,6 @@
 // src/components/react/Toast.tsx
 import React, { useEffect, useState } from 'react';
-import { X, Check, AlertCircle } from 'lucide-react';
+import type { SupportedLanguages } from '@/i18n/i18n-config';
 
 export type ToastType = 'success' | 'error';
 
@@ -12,7 +12,7 @@ export interface ToastEvent {
 }
 
 interface ToastProps {
-  'data-locale': 'en' | 'pl';
+  'data-locale': SupportedLanguages;
   translations: Record<string, any>;
 }
 
@@ -57,9 +57,37 @@ const Toast: React.FC<ToastProps> = ({ 'data-locale': locale, translations }) =>
         }`}
       >
         {type === 'success' ? (
-          <Check className="w-5 h-5 text-white" />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="text-white"
+          >
+            <polyline points="20 6 9 17 4 12" />
+          </svg>
         ) : (
-          <AlertCircle className="w-5 h-5 text-white" />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="text-white"
+          >
+            <circle cx="12" cy="12" r="10" />
+            <line x1="12" y1="8" x2="12" y2="12" />
+            <line x1="12" y1="16" x2="12.01" y2="16" />
+          </svg>
         )}
         <p className="text-white font-medium">{message}</p>
         <button
@@ -67,7 +95,20 @@ const Toast: React.FC<ToastProps> = ({ 'data-locale': locale, translations }) =>
           className="ml-4 text-white hover:text-gray-200 transition-colors"
           aria-label="Close notification"
         >
-          <X className="w-4 h-4" />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
         </button>
       </div>
     </div>

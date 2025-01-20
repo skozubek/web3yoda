@@ -1,21 +1,32 @@
+// astro.config.mjs
 import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
 import tailwind from '@astrojs/tailwind';
 import vercel from '@astrojs/vercel/serverless';
+import mdx from '@astrojs/mdx';
 
 export default defineConfig({
   output: 'server',
   site: 'https://web3yoda.xyz',
-  integrations: [react(), tailwind()],
+  integrations: [react(), tailwind(), mdx()],
   adapter: vercel({
     analytics: true // Enable Vercel Analytics
   }),
+
   i18n: {
     defaultLocale: 'en',
     locales: ['en', 'pl'],
+    routes: {
+      pl: {
+        prefix: 'pl'
+      }
+    },
     routing: {
       prefixDefaultLocale: false
     }
+  },
+  compilerOptions: {
+    "types": ["astro/client"]
   },
   image: {
     service: {

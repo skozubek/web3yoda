@@ -1,9 +1,14 @@
 // src/content/config.ts
-import { defineCollection, reference, z } from 'astro:content';
+import { defineCollection, z } from 'astro:content';
+import { glob } from 'astro/loaders';
+import { type SupportedLanguages, languages } from '../i18n/i18n-config';
 
-// UI collection schema
+// Create enum values from languages object keys
+const languageValues = Object.keys(languages) as [SupportedLanguages, ...SupportedLanguages[]];
+
+// UI collection schema with dynamic language support
 const uiSchema = z.object({
-  id: z.enum(['en', 'pl']),
+  id: z.enum(languageValues),
   meta: z.object({
     description: z.string(),
   }),
@@ -28,11 +33,31 @@ const uiSchema = z.object({
   }),
   tools: z.object({
     title: z.string(),
+    description: z.string(),
+    website: z.string(),
+    key_features: z.string(),
+    last_updated: z.string(),
     categories: z.record(z.string()),
     ecosystems: z.record(z.string()),
     status: z.record(z.string()),
     filters: z.record(z.string()),
     pricing: z.record(z.string()),
+    metrics: z.object({
+      sectionTitle: z.string(),
+      description: z.string(),
+      followers: z.string(),
+      monthly: z.object({
+        tweets: z.string(),
+        engagement: z.string(),
+        growth: z.string()
+      }),
+      weekly: z.object({
+        tweets: z.string(),
+        growth: z.string()
+      }),
+      lastUpdate: z.string(),
+      lastTweet: z.string()
+    })
   }),
   footer: z.object({
     description: z.string(),
@@ -74,73 +99,122 @@ const homeSchema = z.object({
   })
 });
 
-// Tool category schema
+/**
+ * X/Twitter Metrics Schema
+ * Focuses on recent activity and engagement
+ */
+const xMetricsSchema = z.object({
+  handle: z.string(),
+  // Current follower count
+  followers: z.number(),
+
+  // Last 30 days activity
+  monthlyStats: z.object({
+    tweets: z.number(),          // tweets in last 30 days
+    avgLikes: z.number(),        // average likes per tweet
+    avgRetweets: z.number(),     // average retweets per tweet
+    avgQuotes: z.number(),       // average quotes per tweet
+    followersGrowth: z.number(), // percentage growth
+  }),
+
+  // Last 7 days for more immediate trends
+  weeklyStats: z.object({
+    tweets: z.number(),          // tweets in last 7 days
+    followersGrowth: z.number(), // percentage growth
+  }),
+
+  lastTweetDate: z.date(),
+  lastMetricsUpdate: z.date(),
+}).optional();
+
+/**
+ * Core categories for Web3 tools
+ */
 const categorySchema = z.enum([
-  'wallets',           // Cryptocurrency & NFT wallets
-  'marketplaces',      // NFT & token marketplaces
-  'defi',             // DeFi protocols & tools
-  'analytics',        // Market analysis & tracking
-  'security',         // Security & audit tools
-  'infrastructure',   // Node providers, RPCs, indexers
-  'development',      // Dev tools, SDKs, frameworks
-  'identity',         // DIDs, authentication, verification
-  'governance',       // DAOs, voting, delegation
-  'social',           // Web3 social platforms
-  'storage',          // Decentralized storage solutions
-  'gaming',           // Web3 gaming platforms & tools
-  'oracles',          // Price feeds, data oracles, VRF
-  'bridges',          // Cross-chain bridges & liquidity networks
-  'data',             // On-chain data, indexing, APIs
-  'other'             // Miscellaneous tools
+  'wallets',         // Crypto wallets, key management
+  'marketplaces',    // NFT and token marketplaces
+  'defi',           // DeFi protocols and tools
+  'infrastructure', // RPCs, nodes, indexers
+  'security',       // Security tools, audit tools
+  'analytics',      // Data analytics, market tracking
+  'other'          // Catch-all for edge cases
 ]);
 
-// Tool status schema
-const statusSchema = z.enum(['active', 'beta', 'deprecated']);
+/**
+ * Tool status indicators
+ */
+const statusSchema = z.enum([
+  'active',     // Tool is actively maintained
+  'beta',       // Tool is in testing phase
+  'deprecated'  // Tool is no longer maintained
+]);
 
-// Tool pricing schema
-const pricingSchema = z.enum(['free', 'paid', 'hybrid', 'contact']);
-
-// Blockchain ecosystem schema
+/**
+ * Supported blockchain ecosystems
+ */
 const ecosystemSchema = z.array(z.enum([
-  'bitcoin',    // BTC, Ordinals, Lightning, etc.
+  'bitcoin',    // BTC, Ordinals, Lightning
   'ethereum',   // ETH, EVM chains
   'solana',     // SOL ecosystem
-  'cardano',    // ADA ecosystem
-  'polkadot',   // DOT ecosystem
-  'cosmos',     // ATOM, IBC chains
   'multichain', // Cross-chain solutions
   'other'       // Other blockchains
 ])).min(1);
 
-// Schema for multilingual tool descriptions
-// Defines how each tool's content should be structured in different languages
-const toolTranslationsSchema = z.record(z.enum(['en', 'pl']), z.object({
-  title: z.string(),       // Tool name in given language
-  description: z.string(), // Tool description in given language
-  features: z.array(z.string()), // List of tool features in given language
-}));
+/**
+ * Schema for multilingual tool content
+ */
+const toolTranslationsSchema = z.record(
+  z.custom<SupportedLanguages>(),
+  z.object({
+    title: z.string(),
+    description: z.string(),
+    features: z.array(z.string()),
+    sections: z.array(z.object({
+      title: z.string(),
+      content: z.string()
+    })),
+    keyFeatures: z.array(z.object({
+      title: z.string(),
+      items: z.array(z.string())
+    }))
+  })
+);
 
-// Tool collection schema
-const toolsSchema = z.object({
+/**
+ * Main tool schema
+ * Combines metadata with translations and X metrics
+ */
+const toolSchema = z.object({
   id: z.string(),
-  ecosystems: ecosystemSchema,
+  logo: z.string().optional(),
+  screenshot: z.string().optional(),
   website: z.string().url(),
   github: z.string().url().optional(),
+  social: z.object({
+    x: z.string().url().optional(),
+    discord: z.string().url().optional(),
+    telegram: z.string().url().optional(),
+  }).optional(),
   category: categorySchema,
+  ecosystems: ecosystemSchema,
   status: statusSchema,
   lastUpdated: z.date(),
-  i18n: toolTranslationsSchema, // Multilingual content for this tool
+  xMetrics: xMetricsSchema,
+  i18n: toolTranslationsSchema,
   metadata: z.object({
     tags: z.array(z.string()),
-    pricing: pricingSchema,
-    relatedTools: z.array(reference('tools')).optional(),
-  }).optional(),
+    pricing: z.enum(['free', 'paid', 'hybrid'])
+  }).optional()
 });
 
-// Define the collections
+// Collections Configuration
 const tools = defineCollection({
-  type: 'content',
-  schema: toolsSchema,
+  schema: toolSchema,
+  // Update the loader to use glob for loading MDX files
+  loader: glob({
+    pattern: "tools/**/**.mdx",
+    base: "./src/content"
+  })
 });
 
 const home = defineCollection({
@@ -154,15 +228,11 @@ const ui = defineCollection({
 });
 
 // Export the collections
-export const collections = {
-  tools,
-  home,
-  ui,
-};
+export const collections = { tools, home, ui };
 
 // Export type helpers
-export type ToolFrontmatter = z.infer<typeof toolsSchema>;
+export type Tool = z.infer<typeof toolSchema>;
+export type XMetrics = z.infer<typeof xMetricsSchema>;
 export type ToolCategory = z.infer<typeof categorySchema>;
 export type ToolStatus = z.infer<typeof statusSchema>;
-export type ToolPricing = z.infer<typeof pricingSchema>;
-export type ToolTranslations = z.infer<typeof toolTranslationsSchema>;
+export type ToolEcosystem = z.infer<typeof ecosystemSchema>[number];

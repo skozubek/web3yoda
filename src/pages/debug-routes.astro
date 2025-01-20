@@ -1,0 +1,94 @@
+---
+import { getCollection } from "astro:content";
+import {
+  getLocalizedURL,
+  languages,
+  defaultLang,
+  showDefaultLang,
+} from "../i18n/utils"; // Add showDefaultLang import
+
+// Get current URL info
+const currentUrl = Astro.url;
+const pathname = currentUrl.pathname;
+
+const tools = await getCollection("tools");
+
+// Test various route combinations
+const testPaths = ["/tools", "/tools/unisat", "/en/tools", "/en/tools/unisat"];
+
+const routeInfo = testPaths.map((path) => ({
+  path,
+  localizedURLs: Object.keys(languages).map((lang) => ({
+    lang,
+    url: getLocalizedURL(path, lang, defaultLang),
+  })),
+}));
+
+console.log("=== Debug: Current Request ===");
+console.log("Current pathname:", pathname);
+console.log("Default language:", defaultLang);
+console.log("Available languages:", languages);
+
+console.log("=== Debug: Route Generation ===");
+console.log("Route Info:", JSON.stringify(routeInfo, null, 2));
+---
+
+<h1>Route Debugging Information</h1>
+
+<h2>Current Request</h2>
+<pre>
+Pathname: {pathname}
+Default Language: {defaultLang}
+Available Languages: {JSON.stringify(languages, null, 2)}
+</pre>
+
+<h2>i18n Configuration</h2>
+<pre>
+Default Language: {defaultLang}
+Show Default Lang Prefix: {showDefaultLang}
+</pre>
+
+<h2>Test Routes</h2>
+{
+  routeInfo.map((info) => (
+    <div style="margin-bottom: 2rem; padding: 1rem; border: 1px solid #ccc;">
+      <h3>Original Path: {info.path}</h3>
+      <ul>
+        {info.localizedURLs.map(({ lang, url }) => (
+          <li>
+            {lang}: {url}
+            <a href={url} style="margin-left: 1rem;">
+              (Test Link)
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  ))
+}
+
+<h2>Available Tool Routes</h2>
+<ul>
+  {
+    tools.map((tool) => {
+      const slug = tool.id.split("/").pop();
+      return (
+        <li>
+          <strong>{tool.id}</strong>
+          <ul>
+            <li>
+              EN: /tools/{slug} <a href={`/tools/${slug}`}>(Test)</a>
+            </li>
+            <li>
+              EN with prefix: /en/tools/{slug}{" "}
+              <a href={`/en/tools/${slug}`}>(Test)</a>
+            </li>
+            <li>
+              PL: /pl/tools/{slug} <a href={`/pl/tools/${slug}`}>(Test)</a>
+            </li>
+          </ul>
+        </li>
+      );
+    })
+  }
+</ul>

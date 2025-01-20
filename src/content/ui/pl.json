@@ -1,77 +1,96 @@
 {
-    "id": "pl",
-    "meta": {
-      "description": "Zacznij bezpiecznie korzystać z technologii blockchain. Praktyczna wiedza bez zbędnej teorii"
-    },
-    "nav": {
-      "schedule": "Umów rozmowę",
-      "twitter": "X (Twitter)"
-    },
-    "newsletter": {
-      "title": "Newsletter",
-      "description": "Otrzymuj najnowsze informacje o Web3 prosto na swoją skrzynkę",
-      "placeholder": "Twój email",
-      "button": "Subskrybuj",
-      "toast": {
-        "success": "Dziękujemy za subskrypcję!",
-        "error": {
-          "invalid": "Podaj prawidłowy adres email",
-          "failed": "Nie udało się zapisać. Spróbuj ponownie.",
-          "server": "Błąd konfiguracji serwera",
-          "general": "Coś poszło nie tak. Spróbuj ponownie."
-        }
+  "id": "pl",
+  "meta": {
+    "description": "Zacznij bezpiecznie korzystać z technologii blockchain. Praktyczna wiedza bez zbędnej teorii"
+  },
+  "nav": {
+    "schedule": "Umów rozmowę",
+    "twitter": "X (Twitter)"
+  },
+  "newsletter": {
+    "title": "Newsletter",
+    "description": "Otrzymuj najnowsze informacje o Web3 prosto na swoją skrzynkę",
+    "placeholder": "Twój email",
+    "button": "Subskrybuj",
+    "toast": {
+      "success": "Dziękujemy za subskrypcję!",
+      "error": {
+        "invalid": "Podaj prawidłowy adres email",
+        "failed": "Nie udało się zapisać. Spróbuj ponownie.",
+        "server": "Błąd konfiguracji serwera",
+        "general": "Coś poszło nie tak. Spróbuj ponownie."
       }
+    }
+  },
+  "tools": {
+    "website": "Strona www",
+    "key_features": "Główne Funkcje",
+    "last_updated": "Ostatnia Aktualizacja",
+    "title": "Katalog Narzędzi Web3",
+    "description": "Starannie wyselekcjonowane, sprawdzone narzędzia Web3",
+    "categories": {
+      "wallets": "Portfele",
+      "marketplaces": "Giełdy",
+      "defi": "DeFi",
+      "analytics": "Analityka",
+      "security": "Bezpieczeństwo",
+      "infrastructure": "Infrastruktura",
+      "development": "Rozwój",
+      "identity": "Tożsamość",
+      "governance": "Zarządzanie",
+      "social": "Social",
+      "storage": "Przechowywanie",
+      "gaming": "Gry",
+      "oracles": "Orakula",
+      "bridges": "Mosty",
+      "data": "Dane",
+      "other": "Inne"
     },
-    "tools": {
-      "title": "Katalog Narzędzi Web3",
-      "categories": {
-        "wallets": "Portfele",
-        "marketplaces": "Giełdy",
-        "defi": "DeFi",
-        "analytics": "Analityka",
-        "security": "Bezpieczeństwo",
-        "infrastructure": "Infrastruktura",
-        "development": "Rozwój",
-        "identity": "Tożsamość",
-        "governance": "Zarządzanie",
-        "social": "Social",
-        "storage": "Przechowywanie",
-        "gaming": "Gry",
-        "oracles": "Orakula",
-        "bridges": "Mosty",
-        "data": "Dane",
-        "other": "Inne"
-      },
-      "ecosystems": {
-        "bitcoin": "Bitcoin",
-        "ethereum": "Ethereum",
-        "solana": "Solana",
-        "cardano": "Cardano",
-        "polkadot": "Polkadot",
-        "cosmos": "Cosmos",
-        "multichain": "Multichain",
-        "other": "Inne"
-      },
-      "status": {
-        "active": "Aktywne",
-        "beta": "Beta",
-        "deprecated": "Przestarzałe"
-      },
-      "filters": {
-        "all": "Wszystkie Narzędzia",
-        "category": "Kategoria",
-        "ecosystem": "Ekosystem",
-        "status": "Status"
-      },
-      "pricing": {
-        "free": "Darmowe",
-        "paid": "Płatne",
-        "hybrid": "Hybrydowe",
-        "contact": "Skontaktuj się po cenę"
-      }
+    "ecosystems": {
+      "bitcoin": "Bitcoin",
+      "ethereum": "Ethereum",
+      "solana": "Solana",
+      "polkadot": "Polkadot",
+      "cosmos": "Cosmos",
+      "multichain": "Multichain",
+      "other": "Inne"
     },
-    "footer": {
-      "description": "Łączymy świat Web2 i Web3 poprzez profesjonalne doradztwo i edukację."
+    "status": {
+      "active": "Aktywne",
+      "beta": "Beta",
+      "deprecated": "Przestarzałe"
     },
-    "copyright": "© 2024 Web3Yoda. Wszelkie prawa zastrzeżone."
-  }
+    "filters": {
+      "all": "Wszystkie",
+      "category": "Kategoria",
+      "ecosystem": "Ekosystem",
+      "status": "Status"
+    },
+    "pricing": {
+      "free": "Darmowe",
+      "paid": "Płatne",
+      "hybrid": "Hybrydowe",
+      "contact": "Skontaktuj się po cenę"
+    },
+    "metrics": {
+      "sectionTitle": "Statystyki SM:",
+      "description": "Aktualne metryki z X (Twitter)",
+      "followers": "Obserwujący",
+      "monthly": {
+        "tweets": "Tweety miesięcznie",
+        "engagement": "Średnie zaangażowanie",
+        "growth": "Wzrost miesięczny"
+      },
+      "weekly": {
+        "tweets": "Tweety tygodniowo",
+        "growth": "Wzrost tygodniowy"
+      },
+      "lastUpdate": "Aktualizacja metryk",
+      "lastTweet": "Ostatni Tweet"
+    }
+  },
+  "footer": {
+    "description": "Łączymy świat Web2 i Web3 poprzez profesjonalne doradztwo i edukację."
+  },
+  "copyright": "© 2024 Web3Yoda. Wszelkie prawa zastrzeżone."
+}
