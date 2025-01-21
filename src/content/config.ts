@@ -34,6 +34,7 @@ const uiSchema = z.object({
   }),
   tools: z.object({
     title: z.string(),
+    total_count: z.string(),
     description: z.string(),
     website: z.string(),
     key_features: z.string(),
