@@ -1,33 +1,59 @@
-/**
- * Types for Twitter metrics scraping functionality
- * Simplified version focusing on immediately available metrics
- */
+// src/scripts/metrics/types.ts
 
 /**
- * Core metrics we scrape from Twitter profile
- * Only includes data visible without historical tracking
+ * Monthly statistics for a Twitter profile
+ * Used by both API client and scraper implementations
  */
-export interface TwitterMetrics {
+export interface MonthlyStats {
+    tweets: number;
+    avgLikes: number;
+    avgRetweets: number;
+    avgQuotes: number;
+    followersGrowth: number;
+  }
+
+  /**
+   * Weekly statistics for a Twitter profile
+   * Used by both API client and scraper implementations
+   */
+  export interface WeeklyStats {
+    tweets: number;
+    followersGrowth: number;
+  }
+
+  /**
+   * Core metrics interface used across all implementations
+   */
+  export interface TwitterMetrics {
     handle: string;
     followers: number;
     recentTweets: {
-      count: number;          // Number of recent tweets we found
-      avgLikes: number;       // Average likes per tweet
-      avgRetweets: number;    // Average retweets per tweet
+      count: number;
+      avgLikes: number;
+      avgRetweets: number;
     };
-    lastTweetDate: Date;      // Date of most recent tweet
-    lastUpdate: Date;         // When we last scraped this data
+    lastTweetDate: Date;
+    lastUpdate: Date;
   }
   
   /**
-   * Configuration for the scraping process
+   * Extended metrics interface for the new API implementation
+   * Extends core metrics to maintain backward compatibility
+   */
+  export interface ExtendedTwitterMetrics extends TwitterMetrics {
+    monthlyStats: MonthlyStats;
+    weeklyStats: WeeklyStats;
+  }
+
+  /**
+   * Configuration for the scraper
    */
   export interface ScraperConfig {
     maxRetries: number;
-    retryDelay: number;      // milliseconds
-    timeout: number;         // milliseconds
+    retryDelay: number;
+    timeout: number;
+    tweetsToAnalyze: number;
     userAgent: string;
-    tweetsToAnalyze: number; // How many recent tweets to look at
   }
   
   /**
@@ -38,6 +64,7 @@ export interface TwitterMetrics {
     PARSING = 'parsing',
     TIMEOUT = 'timeout',
     NOT_FOUND = 'not_found',
+    RATE_LIMIT = 'rate_limit',
     UNKNOWN = 'unknown'
   }
   
