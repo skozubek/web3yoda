@@ -73,6 +73,15 @@ const homeSchema = z.object({
     title: z.string(),
     subtitle: z.string()
   }),
+  catalog: z.object({
+    title: z.string(),
+    description: z.string(),
+    button: z.string(),
+    benefits: z.array(z.object({
+      title: z.string(),
+      description: z.string()
+    }))
+  }),
   consultations: z.object({
     title: z.string(),
     items: z.array(z.object({

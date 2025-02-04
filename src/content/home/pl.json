@@ -1,7 +1,30 @@
 {
     "hero": {
-      "title": "Twój przewodnik po świecie web3",
-      "subtitle": "Zacznij bezpiecznie korzystać z technologii blockchain. Praktyczna wiedza bez zbędnej teorii"
+      "title": "Twój przewodnik i sprawdzone narzędzia Web3",
+      "subtitle": "Odkrywaj Web3 z najlepszymi narzędziami i sprawdzonymi rozwiązaniami. Portfele, DeFi, DEXy, Marketplace'y NFT.  Testujemy, weryfikujemy i wybieramy to, co najlepsze, abyś mógł bezpiecznie i skutecznie poruszać się po sieciach blockchain"
+    },
+    "catalog": {
+      "title": "Katalog narzędzi Web3",
+      "description": "Starannie wybrane i przetestowane narzędzia Web3",
+      "button": "Zobacz Katalog",
+      "benefits": [
+        {
+          "title": "BTC, ETH, SOL",
+          "description": "Rozwiązania Cross-chain"
+        },
+        {
+          "title": "Monitorowany status",
+          "description": "Regularnie uaktualniamy"
+        },
+        {
+          "title": "Darmowe narzędzia",
+          "description": "Zacznij korzystać"
+        },
+        {
+          "title": "Zweryfikowane przez Web3Yoda",
+          "description": "Bepieczeńswo jest najważniejsze"
+        }
+      ]
     },
     "consultations": {
       "title": "Konsultacje",

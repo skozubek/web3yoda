@@ -1,7 +1,30 @@
 {
     "hero": {
-      "title": "Your Web3 Onboarding Guides",
-      "subtitle": "Start your Web3 journey with a seasoned guide who's walked the path before you. Skip the theory and dive into practical blockchain knowledge from someone who lives and breathes it daily"
+      "title": "Your Web3 Onboarding Guides & Tools",
+      "subtitle": "Navigate Web3 with our essential toolkit and expert guidance. From wallets and DeFi protocols to NFT marketplaces and cross-chain bridges - we've tested and verified the best Web3 tools to help you explore blockchain technology safely and effectively"
+    },
+    "catalog": {
+      "title": "Web3 Tools Directory",
+      "description": "Browse our curated collection of verified Web3 tools",
+      "button": "Browse Catalog",
+      "benefits": [
+        {
+          "title": "BTC, ETH, SOL",
+          "description": "Cross-chain solutions"
+        },
+        {
+          "title": "Verified Status",
+          "description": "Regular updates"
+        },
+        {
+          "title": "Best Free Tools",
+          "description": "Start exploring"
+        },
+        {
+          "title": "Web3Yoda verified",
+          "description": "Security first"
+        }
+      ]
     },
     "consultations": {
       "title": "Coaching Sessions",

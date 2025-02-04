@@ -1,9 +1,12 @@
 ---
+// file: src/pages/index.astro
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
 
 const homeEntries = await getCollection("home");
 const content = homeEntries.find((entry) => entry.id.startsWith("en"))?.data;
+const tools = await getCollection("tools");
+const toolsCount = tools.length;
 
 if (!content) {
   throw new Error(`No content found for locale: en`);
@@ -11,6 +14,8 @@ if (!content) {
 
 const styles = {
   section: "mt-16 pt-8 border-t border-gray-600",
+  benefitCard: "px-4 py-3 bg-gray-800/50 rounded-lg",
+  benefitTitle: "block font-bold mb-1",
   contentBlock:
     "mb-8 transform transition-transform duration-300 ease-in-out hover:translate-x-2",
   title: "text-xl font-bold mb-2",
@@ -19,12 +24,46 @@ const styles = {
 };
 ---
 
-<BaseLayout title={`Web3Yoda - ${content.hero.title}`}>
-  <div class="container">
+<BaseLayout title={`Web3Yoda - ${content.hero.title}`} fullWidth={true}>
+  <div class="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <header>
-      <h1 class="text-4xl font-bold mb-2">{content.hero.title}</h1>
+      <h1 class="text-4xl font-bold mb-8">{content.hero.title}</h1>
       <p class="text-gray-400 mb-8">{content.hero.subtitle}</p>
     </header>
+
+    {/* Tools Directory Feature */}
+    <section class="bg-gray-900/50 border border-gray-700 rounded-lg p-8 mb-16">
+      <div
+        class="flex flex-col md:flex-row items-start md:items-center justify-between gap-6"
+      >
+        <div>
+          <h2 class="text-2xl font-bold mb-2">{content.catalog.title}</h2>
+          <p class="text-gray-400 mb-4">
+            {content.catalog.description}
+          </p>
+          <div class="flex items-center space-x-4">
+            <a href="/en/tools" class={styles.cta}>
+              {content.catalog.button}
+            </a>
+            <span
+              class="text-sm px-3 py-1 bg-gray-800 rounded-full text-gray-300"
+            >
+              {toolsCount}
+            </span>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-4 text-sm">
+          {
+            content.catalog.benefits.map((item) => (
+              <div class={styles.benefitCard}>
+                <h3 class={styles.benefitTitle}>{item.title}</h3>
+                <p class={styles.description}>{item.description}</p>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </section>
 
     <section class={styles.section}>
       <h2 class="text-2xl font-bold mb-8">{content.consultations.title}</h2>
