@@ -5,16 +5,24 @@ import { useTranslations } from "@/i18n/utils";
 import type { SupportedLanguages } from "@/i18n/i18n-config";
 
 const t = await useTranslations(Astro.currentLocale as SupportedLanguages);
+
+const menuIcon = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6">
+  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+</svg>`;
+
+const closeIcon = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6">
+  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+</svg>`;
 ---
 
 <header
   class="fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-sm border-b border-gray-800"
 >
-  <div class="max-w-3xl mx-auto px-8">
-    <div class="flex items-center justify-between h-28">
+  <div class="max-w-7xl mx-auto px-4 sm:px-8">
+    <div class="flex items-center justify-between h-20">
       <a href="/" class="flex items-center group">
         <svg
-          class="w-20 h-20 transition-transform duration-300 group-hover:scale-110"
+          class="w-12 h-12 sm:w-20 sm:h-20 transition-transform duration-300 group-hover:scale-110"
           viewBox="0 0 64 64"
         >
           <rect x="16" y="8" width="32" height="32" fill="#ffffff"></rect>
@@ -22,17 +30,17 @@ const t = await useTranslations(Astro.currentLocale as SupportedLanguages);
           <rect x="36" y="16" width="4" height="4" fill="#000000"></rect>
           <rect x="24" y="28" width="16" height="4" fill="#000000"></rect>
         </svg>
-        <span class="ml-3 text-xl font-bold">Web3Yoda</span>
+        <span class="ml-3 text-lg sm:text-xl font-bold">Web3Yoda</span>
       </a>
 
-      <nav class="flex items-center space-x-8">
-        <LanguagePicker />
+      <nav class="hidden md:flex items-center space-x-8">
         <a
-          href="https://cal.com/web3yoda/15min"
-          class="px-4 py-2 bg-white text-black font-bold hover:bg-gray-400 hover:text-white transition-colors duration-300 ease-in-out"
+          href={`/${Astro.currentLocale}/tools`}
+          class="text-gray-400 hover:text-white transition-colors"
         >
-          {t("nav.schedule")}
+          {t("tools.title")}
         </a>
+        <LanguagePicker />
         <a
           href="https://twitter.com/phantom0fweb3"
           class="text-gray-400 hover:text-white transition-colors duration-300"
@@ -53,8 +61,58 @@ const t = await useTranslations(Astro.currentLocale as SupportedLanguages);
           <span class="sr-only">{t("nav.twitter")}</span>
         </a>
       </nav>
+
+      <button
+        id="mobile-menu-button"
+        class="md:hidden p-2 text-gray-400 hover:text-white"
+        aria-label="Toggle menu"
+      >
+        <span class="menu-open" set:html={menuIcon} />
+        <span class="menu-close hidden" set:html={closeIcon} />
+      </button>
+    </div>
+
+    <div id="mobile-menu" class="md:hidden hidden pb-4" aria-hidden="true">
+      <nav class="flex flex-col space-y-4">
+        <a
+          href={`/${Astro.currentLocale}/tools`}
+          class="text-gray-400 hover:text-white transition-colors py-2"
+        >
+          {t("tools.title")}
+        </a>
+        <div class="py-2">
+          <LanguagePicker />
+        </div>
+        <a
+          href="https://twitter.com/phantom0fweb3"
+          class="text-gray-400 hover:text-white transition-colors duration-300 py-2"
+        >
+          {t("nav.twitter")}
+        </a>
+      </nav>
     </div>
   </div>
 </header>
 
-<div class="h-28"></div>
+<div class="h-20"></div>
+
+<script>
+  const mobileMenuButton = document.getElementById("mobile-menu-button");
+  const mobileMenu = document.getElementById("mobile-menu");
+  const menuOpen = document.querySelector(".menu-open");
+  const menuClose = document.querySelector(".menu-close");
+
+  if (mobileMenuButton && mobileMenu && menuOpen && menuClose) {
+    mobileMenuButton.addEventListener("click", () => {
+      const isExpanded =
+        mobileMenuButton.getAttribute("aria-expanded") === "true";
+
+      mobileMenuButton.setAttribute("aria-expanded", (!isExpanded).toString());
+      mobileMenu.classList.toggle("hidden");
+      mobileMenu.setAttribute("aria-hidden", isExpanded.toString());
+
+      menuOpen.classList.toggle("hidden");
+      menuClose.classList.toggle("hidden");
+    });
+  }
+</script>
