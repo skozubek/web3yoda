@@ -27,7 +27,7 @@ async function testTwitterApi() {
 
   try {
     console.log('Fetching metrics...');
-    const metrics = await client.getMetrics('opensea');
+    const metrics = await client.getMetrics('JupiterExchange');
     
     console.log('\nSuccessfully fetched metrics:');
     console.log(JSON.stringify(metrics, null, 2));
@@ -42,7 +42,7 @@ async function testTwitterApi() {
 }
 
 // Run the test
-console.log('Starting Twitter API test...');
+console.log('Starting Twitter API test with expanded data...');
 console.log('Current working directory:', process.cwd());
 testTwitterApi()
   .then(() => console.log('\nTest completed successfully!'))
