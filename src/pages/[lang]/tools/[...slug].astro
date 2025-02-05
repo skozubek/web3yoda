@@ -6,6 +6,7 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 import { getLocaleFromUrl, useTranslations } from "@/i18n/utils";
 import { languages, type SupportedLanguages } from "@/i18n/i18n-config";
 import ToolMetrics from "@/components/tools/ToolMetrics.astro";
+import Breadcrumb from "@/components/astro/Breadcrumb.astro";
 
 export const prerender = true;
 
@@ -130,6 +131,7 @@ const toolMetaTags = [
   robots="index, follow, max-image-preview:large"
   fullWidth={true}
 >
+  <Breadcrumb tool={tool} lang={lang} />
   {/* Full-width tool header section */}
   <div class={classes.toolheader}>
     <div class={classes.toolheaderContent}>

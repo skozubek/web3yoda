@@ -1,0 +1,74 @@
+---
+// src/components/astro/Breadcrumb.astro
+import type { CollectionEntry } from "astro:content";
+import { useTranslations } from "@/i18n/utils";
+
+interface Props {
+  tool?: CollectionEntry<"tools">;
+  lang: string;
+}
+
+const { tool, lang } = Astro.props;
+const t = await useTranslations(lang as "en" | "pl");
+
+// Build breadcrumb items
+const items = [
+  { label: "Home", url: `/${lang}` },
+  { label: t("tools.title"), url: `/${lang}/tools` },
+];
+
+if (tool) {
+  items.push({
+    label: t(`tools.categories.${tool.data.category}`),
+    url: `/${lang}/tools?category=${tool.data.category}`,
+  });
+  items.push({
+    label: tool.data.i18n[lang].title,
+    url: null, // Current page
+  });
+}
+---
+
+<nav aria-label="Breadcrumb" class="mb-6 px-4 sm:px-0">
+  <ol
+    class="flex flex-wrap items-center text-sm text-gray-400"
+    itemscope
+    itemtype="https://schema.org/BreadcrumbList"
+  >
+    {
+      items.map((item, index) => (
+        <li
+          itemprop="itemListElement"
+          itemscope
+          itemtype="https://schema.org/ListItem"
+          class="flex items-center"
+        >
+          {index > 0 && (
+            <svg
+              class="mx-2 h-4 w-4 flex-shrink-0 text-gray-600"
+              viewBox="0 0 16 16"
+              fill="none"
+              stroke="currentColor"
+            >
+              <path d="M6 12l4-4-4-4" />
+            </svg>
+          )}
+          {item.url ? (
+            <a
+              href={item.url}
+              itemprop="item"
+              class="hover:text-white transition-colors whitespace-nowrap"
+            >
+              <span itemprop="name">{item.label}</span>
+            </a>
+          ) : (
+            <span itemprop="name" class="truncate max-w-[200px]">
+              {item.label}
+            </span>
+          )}
+          <meta itemprop="position" content={`${index + 1}`} />
+        </li>
+      ))
+    }
+  </ol>
+</nav>
