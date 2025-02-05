@@ -20,7 +20,7 @@ interface Props {
   schema?: Record<string, any>;
   meta?: Array<{ name: string; content: string }>;
   robots?: string;
-  fullWidth?: boolean; // for full-width pages
+  fullWidth?: boolean;
 }
 
 const {
@@ -38,10 +38,8 @@ const currentLocale = getLocaleFromUrl(Astro.url);
 const currentPath = Astro.url.pathname;
 const t = await useTranslations(currentLocale);
 
-// Get the site URL from Astro.site or fallback to current URL origin
 const siteUrl = Astro.site?.origin || Astro.url.origin;
 
-// Define type for alternateUrls
 interface AlternateUrls {
   [key: string]: string;
   "x-default": string;
@@ -49,7 +47,6 @@ interface AlternateUrls {
   pl: string;
 }
 
-// First, create the language URLs
 const baseAlternateUrls = Object.keys(languages).reduce<Record<string, string>>(
   (acc, locale) => {
     const path = getLocalizedURL(currentPath, locale, defaultLang);
@@ -59,7 +56,6 @@ const baseAlternateUrls = Object.keys(languages).reduce<Record<string, string>>(
   {}
 );
 
-// Then create the complete alternateUrls object with proper typing
 const alternateUrlsWithDefault: AlternateUrls = {
   ...baseAlternateUrls,
   "x-default": baseAlternateUrls["en"],
@@ -97,13 +93,24 @@ const alternateUrlsWithDefault: AlternateUrls = {
   </head>
   <body class="bg-black text-white font-mono">
     <div class="flex flex-col min-h-screen">
-      <Header />
+      {/* Header uses full width */}
+      <div class="max-w-7xl w-full mx-auto">
+        <Header />
+      </div>
+
+      {/* Main content slightly inset */}
       <main
-        class={`flex-grow mx-auto px-4 sm:px-6 lg:px-8 py-16 w-full ${fullWidth ? "max-w-7xl" : "max-w-3xl"}`}
+        class={`flex-grow mx-auto w-full px-4 sm:px-6 lg:px-8 py-16 ${
+          fullWidth ? "max-w-6xl" : "max-w-4xl"
+        }`}
       >
         <slot />
       </main>
-      <Footer />
+
+      {/* Footer uses full width */}
+      <div class="max-w-7xl w-full mx-auto">
+        <Footer />
+      </div>
       <Analytics />
     </div>
   </body>

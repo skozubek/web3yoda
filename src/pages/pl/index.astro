@@ -1,4 +1,5 @@
 ---
+// src/pages/pl/index.astro
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
 
@@ -24,94 +25,92 @@ const styles = {
 ---
 
 <BaseLayout title={`Web3Yoda - ${content.hero.title}`} fullWidth={true}>
-  <div class="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <header>
-      <h1 class="text-4xl font-bold mb-8">{content.hero.title}</h1>
-      <p class="text-gray-400 mb-8">{content.hero.subtitle}</p>
-    </header>
+  <header>
+    <h1 class="text-4xl font-bold mb-8">{content.hero.title}</h1>
+    <p class="text-gray-400 mb-8">{content.hero.subtitle}</p>
+  </header>
 
-    {/* Tools Directory Feature */}
-    <section class="bg-gray-900/50 border border-gray-700 rounded-lg p-8 mb-16">
-      <div
-        class="flex flex-col md:flex-row items-start md:items-center justify-between gap-6"
-      >
-        <div>
-          <h2 class="text-2xl font-bold mb-2">{content.catalog.title}</h2>
-          <p class="text-gray-400 mb-4">
-            {content.catalog.description}
-          </p>
-          <div class="flex items-center space-x-4">
-            <a href="/pl/tools" class={styles.cta}>
-              {content.catalog.button}
-            </a>
-            <span
-              class="text-sm px-3 py-1 bg-gray-800 rounded-full text-gray-300"
-            >
-              {toolsCount}
-            </span>
-          </div>
-        </div>
-        <div class="grid grid-cols-2 gap-4 text-sm">
-          {
-            content.catalog.benefits.map((item) => (
-              <div class={styles.benefitCard}>
-                <h3 class={styles.benefitTitle}>{item.title}</h3>
-                <p class={styles.description}>{item.description}</p>
-              </div>
-            ))
-          }
-        </div>
-      </div>
-    </section>
-
-    <section class={styles.section}>
-      <h2 class="text-2xl font-bold mb-8">{content.consultations.title}</h2>
-      {
-        content.consultations.items.map((item) => (
-          <div class={styles.contentBlock}>
-            <h3 class={styles.title}>{item.title}</h3>
-            <p class={styles.description}>{item.description}</p>
-          </div>
-        ))
-      }
-    </section>
-
-    <section class={styles.section}>
-      <h2 class="text-2xl font-bold mb-8">{content.services.title}</h2>
-      {
-        content.services.items.map((item) => (
-          <div class={styles.contentBlock}>
-            <h3 class={styles.title}>{item.title}</h3>
-            <p class={styles.description}>{item.description}</p>
-          </div>
-        ))
-      }
-    </section>
-
-    <section class={styles.section}>
-      <h2 class="text-2xl font-bold mb-8">{content.discovery.title}</h2>
-      <div class={styles.contentBlock}>
-        <p class={`${styles.description} mb-4`}>
-          {content.discovery.description}
+  {/* Tools Directory Feature */}
+  <section class="bg-gray-900/50 border border-gray-700 rounded-lg p-8 mb-16">
+    <div
+      class="flex flex-col md:flex-row items-start md:items-center justify-between gap-6"
+    >
+      <div>
+        <h2 class="text-2xl font-bold mb-2">{content.catalog.title}</h2>
+        <p class="text-gray-400 mb-4">
+          {content.catalog.description}
         </p>
-        <a href="https://cal.com/web3yoda/15min" class={styles.cta}>
-          {content.discovery.cta}
-        </a>
+        <div class="flex items-center space-x-4">
+          <a href="/pl/tools" class={styles.cta}>
+            {content.catalog.button}
+          </a>
+          <span
+            class="text-sm px-3 py-1 bg-gray-800 rounded-full text-gray-300"
+          >
+            {toolsCount}
+          </span>
+        </div>
       </div>
-    </section>
-
-    <section class={styles.section}>
-      <h2 class="text-2xl font-bold mb-8">{content.benefits.title}</h2>
-      <div class="space-y-12">
+      <div class="grid grid-cols-2 gap-4 text-sm">
         {
-          content.benefits.items.map((benefit) => (
-            <div class={styles.contentBlock}>
-              <h3 class={styles.title}>{benefit.title}</h3>
-              <p class={styles.description}>{benefit.description}</p>
+          content.catalog.benefits.map((item) => (
+            <div class={styles.benefitCard}>
+              <h3 class={styles.benefitTitle}>{item.title}</h3>
+              <p class={styles.description}>{item.description}</p>
             </div>
           ))
         }
       </div>
-    </section>
-  </div>
+    </div>
+  </section>
+
+  <section class={styles.section}>
+    <h2 class="text-2xl font-bold mb-8">{content.consultations.title}</h2>
+    {
+      content.consultations.items.map((item) => (
+        <div class={styles.contentBlock}>
+          <h3 class={styles.title}>{item.title}</h3>
+          <p class={styles.description}>{item.description}</p>
+        </div>
+      ))
+    }
+  </section>
+
+  <section class={styles.section}>
+    <h2 class="text-2xl font-bold mb-8">{content.services.title}</h2>
+    {
+      content.services.items.map((item) => (
+        <div class={styles.contentBlock}>
+          <h3 class={styles.title}>{item.title}</h3>
+          <p class={styles.description}>{item.description}</p>
+        </div>
+      ))
+    }
+  </section>
+
+  <section class={styles.section}>
+    <h2 class="text-2xl font-bold mb-8">{content.discovery.title}</h2>
+    <div class={styles.contentBlock}>
+      <p class={`${styles.description} mb-4`}>
+        {content.discovery.description}
+      </p>
+      <a href="https://cal.com/web3yoda/15min" class={styles.cta}>
+        {content.discovery.cta}
+      </a>
+    </div>
+  </section>
+
+  <section class={styles.section}>
+    <h2 class="text-2xl font-bold mb-8">{content.benefits.title}</h2>
+    <div class="space-y-12">
+      {
+        content.benefits.items.map((benefit) => (
+          <div class={styles.contentBlock}>
+            <h3 class={styles.title}>{benefit.title}</h3>
+            <p class={styles.description}>{benefit.description}</p>
+          </div>
+        ))
+      }
+    </div>
+  </section>
 </BaseLayout>
