@@ -145,7 +145,7 @@ const directoryMetaTags = [
 
   {/* Filters Section */}
   <div class={classes.filtersContainer}>
-    <FilterSelect
+    <!-- <FilterSelect
       label={t("tools.filters.ecosystem")}
       options={[
         { value: "all", label: t("tools.filters.all") },
@@ -173,6 +173,15 @@ const directoryMetaTags = [
       ]}
       dataFilter="status"
       className={classes.filterWrapper}
+    /> -->
+    <FilterGroup
+      lang={lang}
+      filterOptions={filterOptions}
+      translations={{
+        ecosystem: t("tools.filters.ecosystem"),
+        category: t("tools.filters.category"),
+        status: t("tools.filters.status"),
+      }}
     />
   </div>
 

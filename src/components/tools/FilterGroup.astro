@@ -1,6 +1,7 @@
 ---
 import FilterSelect from "./FilterSelect.astro";
 import type { SupportedLanguages } from "@/i18n/i18n-config";
+import { useTranslations } from "@/i18n/utils";
 
 interface Props {
   lang: SupportedLanguages;
@@ -14,17 +15,11 @@ interface Props {
     category: string;
     status: string;
   };
-  className?: string;
 }
 
-const {
-  lang,
-  filterOptions,
-  translations,
-  className = "mb-12 flex flex-col sm:flex-row gap-4 max-w-4xl",
-} = Astro.props;
+const { lang, filterOptions, translations } = Astro.props;
+const t = await useTranslations(lang);
 
-// Get current URL parameters
 const url = new URL(Astro.request.url);
 const searchParams = new URLSearchParams(url.search);
 const currentFilters = {
@@ -35,31 +30,63 @@ const currentFilters = {
 ---
 
 <div
-  class={className}
+  class="filter-groups"
   data-filter-group
   data-initial-filters={JSON.stringify(currentFilters)}
 >
   <FilterSelect
     label={translations.ecosystem}
-    options={filterOptions.ecosystem}
+    options={[
+      { value: "all", label: t("tools.filters.all") },
+      ...filterOptions.ecosystem,
+    ]}
     dataFilter="ecosystem"
-    className="w-full"
+    className="w-full min-w-[220px]"
   />
 
   <FilterSelect
     label={translations.category}
-    options={filterOptions.category}
+    options={[
+      { value: "all", label: t("tools.filters.all") },
+      ...filterOptions.category,
+    ]}
     dataFilter="category"
-    className="w-full"
+    className="w-full min-w-[220px]"
   />
 
   <FilterSelect
     label={translations.status}
-    options={filterOptions.status}
+    options={[
+      { value: "all", label: t("tools.filters.all") },
+      ...filterOptions.status,
+    ]}
     dataFilter="status"
-    className="w-full"
+    className="w-full min-w-[220px]"
   />
 </div>
+
+<style>
+  .filter-groups {
+    @apply mb-12 grid grid-cols-1 sm:grid-cols-3 gap-4;
+  }
+
+  .filter-group {
+    @apply w-full;
+    min-width: 220px;
+  }
+
+  .filter-group :global(.filter-select) {
+    @apply w-full bg-transparent border border-gray-600 rounded px-3 py-2 text-gray-400;
+  }
+
+  .filter-group :global(.filter-select:hover) {
+    @apply border-gray-400;
+  }
+
+  .filter-group :global(.filter-select:focus) {
+    @apply border-white outline-none;
+  }
+</style>
 
 <script>
   function initializeFilterGroup() {
@@ -73,7 +100,6 @@ const currentFilters = {
     const filters = filterGroup.querySelectorAll("[data-filter]");
     const toolCards = document.querySelectorAll("[data-tool]");
 
-    // Set initial values from URL parameters
     filters.forEach((filter) => {
       const filterType = filter.getAttribute("data-filter");
       if (filterType && initialFilters[filterType]) {
@@ -127,6 +153,5 @@ const currentFilters = {
     updateFilters();
   }
 
-  // Initialize on both initial load and subsequent navigations
   document.addEventListener("astro:page-load", initializeFilterGroup);
 </script>
