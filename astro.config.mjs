@@ -5,10 +5,12 @@ import tailwind from '@astrojs/tailwind';
 import vercel from '@astrojs/vercel/serverless';
 import mdx from '@astrojs/mdx';
 
+import sitemap from '@astrojs/sitemap';
+
 export default defineConfig({
   output: 'server',
   site: 'https://web3yoda.xyz',
-  integrations: [react(), tailwind(), mdx()],
+  integrations: [react(), tailwind(), mdx(), sitemap()],
   adapter: vercel({
     analytics: true, // Enable Vercel Analytics
     imageService: true

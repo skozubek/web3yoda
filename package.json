@@ -17,6 +17,7 @@
     "@astrojs/mdx": "^4.0.5",
     "@astrojs/node": "^9.0.0",
     "@astrojs/react": "^4.1.2",
+    "@astrojs/sitemap": "^3.2.1",
     "@astrojs/tailwind": "^5.1.4",
     "@astrojs/vercel": "^8.0.1",
     "@types/react": "^18.3.12",
