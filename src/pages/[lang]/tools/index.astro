@@ -16,7 +16,7 @@ import ToolCard from "@/components/tools/ToolCard.astro";
 import FilterSelect from "@/components/tools/FilterSelect.astro";
 import { getLocaleFromUrl, useTranslations } from "@/i18n/utils";
 import { languages, type SupportedLanguages } from "@/i18n/i18n-config";
-import { getImage } from "astro:assets";
+import FilterGroup from "@/components/tools/FilterGroup.astro";
 
 // Enable static pre-rendering at build time
 export const prerender = true;
@@ -198,6 +198,22 @@ const directoryMetaTags = [
     const filters = document.querySelectorAll("[data-filter]");
     const toolCards = document.querySelectorAll("[data-tool]");
 
+    // Initialize from URL parameters
+    const searchParams = new URLSearchParams(window.location.search);
+    const categoryParam = searchParams.get("category");
+
+    // Set initial filter values if URL params exist
+    if (categoryParam) {
+      const categoryFilter = document.querySelector(
+        '[data-filter="category"]'
+      ) as HTMLSelectElement;
+      if (categoryFilter) {
+        categoryFilter.value = categoryParam;
+        // Trigger initial filter
+        updateFilters();
+      }
+    }
+
     // Add change event listeners to all filters
     filters.forEach((filter) => {
       filter.addEventListener("change", updateFilters);
@@ -215,6 +231,14 @@ const directoryMetaTags = [
         },
         {} as Record<string, string>
       );
+
+      // Update URL with active filters
+      const params = new URLSearchParams();
+      Object.entries(activeFilters).forEach(([key, value]) => {
+        params.set(key, value);
+      });
+      const newUrl = `${window.location.pathname}${params.toString() ? "?" + params.toString() : ""}`;
+      history.pushState({}, "", newUrl);
 
       // Update visibility of each tool card
       toolCards.forEach((card) => {

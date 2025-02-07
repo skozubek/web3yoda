@@ -1,0 +1,132 @@
+---
+import FilterSelect from "./FilterSelect.astro";
+import type { SupportedLanguages } from "@/i18n/i18n-config";
+
+interface Props {
+  lang: SupportedLanguages;
+  filterOptions: {
+    ecosystem: Array<{ value: string; label: string }>;
+    category: Array<{ value: string; label: string }>;
+    status: Array<{ value: string; label: string }>;
+  };
+  translations: {
+    ecosystem: string;
+    category: string;
+    status: string;
+  };
+  className?: string;
+}
+
+const {
+  lang,
+  filterOptions,
+  translations,
+  className = "mb-12 flex flex-col sm:flex-row gap-4 max-w-4xl",
+} = Astro.props;
+
+// Get current URL parameters
+const url = new URL(Astro.request.url);
+const searchParams = new URLSearchParams(url.search);
+const currentFilters = {
+  category: searchParams.get("category") || "all",
+  ecosystem: searchParams.get("ecosystem") || "all",
+  status: searchParams.get("status") || "all",
+};
+---
+
+<div
+  class={className}
+  data-filter-group
+  data-initial-filters={JSON.stringify(currentFilters)}
+>
+  <FilterSelect
+    label={translations.ecosystem}
+    options={filterOptions.ecosystem}
+    dataFilter="ecosystem"
+    className="w-full"
+  />
+
+  <FilterSelect
+    label={translations.category}
+    options={filterOptions.category}
+    dataFilter="category"
+    className="w-full"
+  />
+
+  <FilterSelect
+    label={translations.status}
+    options={filterOptions.status}
+    dataFilter="status"
+    className="w-full"
+  />
+</div>
+
+<script>
+  function initializeFilterGroup() {
+    const filterGroup = document.querySelector("[data-filter-group]");
+    if (!filterGroup) return;
+
+    const initialFilters = JSON.parse(
+      filterGroup.getAttribute("data-initial-filters") || "{}"
+    );
+
+    const filters = filterGroup.querySelectorAll("[data-filter]");
+    const toolCards = document.querySelectorAll("[data-tool]");
+
+    // Set initial values from URL parameters
+    filters.forEach((filter) => {
+      const filterType = filter.getAttribute("data-filter");
+      if (filterType && initialFilters[filterType]) {
+        (filter as HTMLSelectElement).value = initialFilters[filterType];
+      }
+    });
+
+    function updateFilters() {
+      const activeFilters = Array.from(filters).reduce(
+        (acc, filter) => {
+          const value = (filter as HTMLSelectElement).value;
+          const filterType = filter.getAttribute("data-filter");
+          if (value !== "all" && filterType) {
+            acc[filterType] = value;
+          }
+          return acc;
+        },
+        {} as Record<string, string>
+      );
+
+      const params = new URLSearchParams();
+      Object.entries(activeFilters).forEach(([key, value]) => {
+        params.set(key, value);
+      });
+
+      const newUrl = `${window.location.pathname}${
+        params.toString() ? "?" + params.toString() : ""
+      }`;
+
+      history.pushState({}, "", newUrl);
+
+      toolCards.forEach((card) => {
+        const toolData = JSON.parse(card.getAttribute("data-tool") || "{}");
+        const isVisible = Object.entries(activeFilters).every(
+          ([key, value]) => {
+            if (key === "ecosystem") {
+              return toolData.ecosystems.includes(value);
+            }
+            return toolData[key] === value;
+          }
+        );
+
+        card.classList.toggle("hidden", !isVisible);
+      });
+    }
+
+    filters.forEach((filter) => {
+      filter.addEventListener("change", updateFilters);
+    });
+
+    updateFilters();
+  }
+
+  // Initialize on both initial load and subsequent navigations
+  document.addEventListener("astro:page-load", initializeFilterGroup);
+</script>
