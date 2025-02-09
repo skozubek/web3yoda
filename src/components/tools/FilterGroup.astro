@@ -21,7 +21,6 @@ interface Props {
 const { lang, filterOptions, translations } = Astro.props;
 const t = await useTranslations(lang);
 
-// Get initial filters from URL
 const url = new URL(Astro.request.url);
 const searchParams = new URLSearchParams(url.search);
 const initialFilters = {
@@ -67,29 +66,18 @@ const initialFilters = {
 </div>
 
 <script>
-  // Update tools visibility based on URL parameters
-  function updateFromURL() {
-    // Get current URL parameters
+  function updateVisibility() {
     const params = new URLSearchParams(window.location.search);
 
-    // Update select elements to match URL
-    document.querySelectorAll("[data-filter]").forEach((filter) => {
-      const select = filter as HTMLSelectElement;
-      const filterType = select.dataset.filter;
-      select.value = params.get(filterType) || "all";
-    });
-
-    // Update tool visibility
     document.querySelectorAll("[data-tool]").forEach((card) => {
-      const toolData = JSON.parse(card.getAttribute("data-tool") || "{}");
+      const data = JSON.parse(card.getAttribute("data-tool") || "{}");
       const isVisible = ["ecosystem", "category", "status"].every(
         (filterType) => {
-          const filterValue = params.get(filterType) || "all";
-          if (filterValue === "all") return true;
-          if (filterType === "ecosystem") {
-            return toolData.ecosystems.includes(filterValue);
-          }
-          return toolData[filterType] === filterValue;
+          const value = params.get(filterType) || "all";
+          if (value === "all") return true;
+          if (filterType === "ecosystem")
+            return data.ecosystems.includes(value);
+          return data[filterType] === value;
         }
       );
 
@@ -98,33 +86,33 @@ const initialFilters = {
   }
 
   // Handle filter changes
-  document.querySelectorAll("[data-filter]").forEach((filter) => {
-    filter.addEventListener("change", () => {
-      // Build URL parameters from current filter values
-      const params = new URLSearchParams(window.location.search);
-      const select = filter as HTMLSelectElement;
-      const filterType = select.dataset.filter;
+  document.addEventListener("change", (e) => {
+    const select = e.target as HTMLSelectElement;
+    if (!select.matches("[data-filter]")) return;
 
-      if (select.value === "all") {
-        params.delete(filterType);
-      } else {
-        params.set(filterType, select.value);
-      }
+    const params = new URLSearchParams(window.location.search);
+    const filterType = select.dataset.filter;
 
-      // Update URL and history
-      const newUrl = `${window.location.pathname}${params.toString() ? "?" + params.toString() : ""}`;
-      window.history.pushState({}, "", newUrl);
+    if (select.value === "all") {
+      params.delete(filterType);
+    } else {
+      params.set(filterType, select.value);
+    }
 
-      // Update visibility
-      updateFromURL();
-    });
+    const newUrl =
+      window.location.pathname +
+      (params.toString() ? `?${params.toString()}` : "");
+
+    // Only update if URL is actually changing
+    if (newUrl !== window.location.pathname + window.location.search) {
+      history.replaceState(history.state, "", newUrl);
+      updateVisibility();
+    }
   });
 
-  // Handle browser navigation
-  window.addEventListener("popstate", () => {
-    updateFromURL();
-  });
+  // Initial visibility update
+  updateVisibility();
 
-  // Initial setup
-  updateFromURL();
+  // Handle back/forward
+  window.addEventListener("popstate", updateVisibility);
 </script>
