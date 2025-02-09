@@ -1,4 +1,5 @@
 ---
+// src/components/tools/FilterGroup.astro
 import FilterSelect from "./FilterSelect.astro";
 import type { SupportedLanguages } from "@/i18n/i18n-config";
 import { useTranslations } from "@/i18n/utils";
@@ -20,9 +21,10 @@ interface Props {
 const { lang, filterOptions, translations } = Astro.props;
 const t = await useTranslations(lang);
 
+// Get initial filters from URL
 const url = new URL(Astro.request.url);
 const searchParams = new URLSearchParams(url.search);
-const currentFilters = {
+const initialFilters = {
   category: searchParams.get("category") || "all",
   ecosystem: searchParams.get("ecosystem") || "all",
   status: searchParams.get("status") || "all",
@@ -30,9 +32,8 @@ const currentFilters = {
 ---
 
 <div
-  class="filter-groups"
+  class="filter-groups mb-12 grid grid-cols-1 sm:grid-cols-3 gap-4"
   data-filter-group
-  data-initial-filters={JSON.stringify(currentFilters)}
 >
   <FilterSelect
     label={translations.ecosystem}
@@ -65,93 +66,65 @@ const currentFilters = {
   />
 </div>
 
-<style>
-  .filter-groups {
-    @apply mb-12 grid grid-cols-1 sm:grid-cols-3 gap-4;
-  }
-
-  .filter-group {
-    @apply w-full;
-    min-width: 220px;
-  }
-
-  .filter-group :global(.filter-select) {
-    @apply w-full bg-transparent border border-gray-600 rounded px-3 py-2 text-gray-400;
-  }
-
-  .filter-group :global(.filter-select:hover) {
-    @apply border-gray-400;
-  }
-
-  .filter-group :global(.filter-select:focus) {
-    @apply border-white outline-none;
-  }
-</style>
-
 <script>
-  function initializeFilterGroup() {
-    const filterGroup = document.querySelector("[data-filter-group]");
-    if (!filterGroup) return;
+  // Update tools visibility based on URL parameters
+  function updateFromURL() {
+    // Get current URL parameters
+    const params = new URLSearchParams(window.location.search);
 
-    const initialFilters = JSON.parse(
-      filterGroup.getAttribute("data-initial-filters") || "{}"
-    );
-
-    const filters = filterGroup.querySelectorAll("[data-filter]");
-    const toolCards = document.querySelectorAll("[data-tool]");
-
-    filters.forEach((filter) => {
-      const filterType = filter.getAttribute("data-filter");
-      if (filterType && initialFilters[filterType]) {
-        (filter as HTMLSelectElement).value = initialFilters[filterType];
-      }
+    // Update select elements to match URL
+    document.querySelectorAll("[data-filter]").forEach((filter) => {
+      const select = filter as HTMLSelectElement;
+      const filterType = select.dataset.filter;
+      select.value = params.get(filterType) || "all";
     });
 
-    function updateFilters() {
-      const activeFilters = Array.from(filters).reduce(
-        (acc, filter) => {
-          const value = (filter as HTMLSelectElement).value;
-          const filterType = filter.getAttribute("data-filter");
-          if (value !== "all" && filterType) {
-            acc[filterType] = value;
+    // Update tool visibility
+    document.querySelectorAll("[data-tool]").forEach((card) => {
+      const toolData = JSON.parse(card.getAttribute("data-tool") || "{}");
+      const isVisible = ["ecosystem", "category", "status"].every(
+        (filterType) => {
+          const filterValue = params.get(filterType) || "all";
+          if (filterValue === "all") return true;
+          if (filterType === "ecosystem") {
+            return toolData.ecosystems.includes(filterValue);
           }
-          return acc;
-        },
-        {} as Record<string, string>
+          return toolData[filterType] === filterValue;
+        }
       );
 
-      const params = new URLSearchParams();
-      Object.entries(activeFilters).forEach(([key, value]) => {
-        params.set(key, value);
-      });
-
-      const newUrl = `${window.location.pathname}${
-        params.toString() ? "?" + params.toString() : ""
-      }`;
-
-      history.pushState({}, "", newUrl);
-
-      toolCards.forEach((card) => {
-        const toolData = JSON.parse(card.getAttribute("data-tool") || "{}");
-        const isVisible = Object.entries(activeFilters).every(
-          ([key, value]) => {
-            if (key === "ecosystem") {
-              return toolData.ecosystems.includes(value);
-            }
-            return toolData[key] === value;
-          }
-        );
-
-        card.classList.toggle("hidden", !isVisible);
-      });
-    }
-
-    filters.forEach((filter) => {
-      filter.addEventListener("change", updateFilters);
+      card.classList.toggle("hidden", !isVisible);
     });
-
-    updateFilters();
   }
 
-  document.addEventListener("astro:page-load", initializeFilterGroup);
+  // Handle filter changes
+  document.querySelectorAll("[data-filter]").forEach((filter) => {
+    filter.addEventListener("change", () => {
+      // Build URL parameters from current filter values
+      const params = new URLSearchParams(window.location.search);
+      const select = filter as HTMLSelectElement;
+      const filterType = select.dataset.filter;
+
+      if (select.value === "all") {
+        params.delete(filterType);
+      } else {
+        params.set(filterType, select.value);
+      }
+
+      // Update URL and history
+      const newUrl = `${window.location.pathname}${params.toString() ? "?" + params.toString() : ""}`;
+      window.history.pushState({}, "", newUrl);
+
+      // Update visibility
+      updateFromURL();
+    });
+  });
+
+  // Handle browser navigation
+  window.addEventListener("popstate", () => {
+    updateFromURL();
+  });
+
+  // Initial setup
+  updateFromURL();
 </script>
