@@ -83,12 +83,25 @@ const initialFilters = {
 
       card.classList.toggle("hidden", !isVisible);
     });
+
+    // Update filter controls based on URL parameters
+    document
+      .querySelectorAll<HTMLSelectElement>("[data-filter]")
+      .forEach((select) => {
+        const filterType = select.dataset.filter;
+        const value = params.get(filterType) || "all";
+        select.value = value;
+      });
   }
 
   // Handle filter changes
   document.addEventListener("change", (e) => {
-    const select = e.target as HTMLSelectElement;
-    if (!select.matches("[data-filter]")) return;
+    const select = e.target;
+    if (
+      !(select instanceof HTMLSelectElement) ||
+      !select.matches("[data-filter]")
+    )
+      return;
 
     const params = new URLSearchParams(window.location.search);
     const filterType = select.dataset.filter;
@@ -105,7 +118,7 @@ const initialFilters = {
 
     // Only update if URL is actually changing
     if (newUrl !== window.location.pathname + window.location.search) {
-      history.replaceState(history.state, "", newUrl);
+      history.replaceState({ filters: Object.fromEntries(params) }, "", newUrl);
       updateVisibility();
     }
   });
@@ -114,5 +127,7 @@ const initialFilters = {
   updateVisibility();
 
   // Handle back/forward
-  window.addEventListener("popstate", updateVisibility);
+  window.addEventListener("popstate", (event) => {
+    updateVisibility();
+  });
 </script>
