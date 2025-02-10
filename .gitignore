@@ -26,3 +26,5 @@ pnpm-debug.log*
 repopack-output.txt
 CHANGELOG.md
 NewKnowledgeBase.md
+.cursor/rules/framework.mdc
+web3yoda.code-workspace
