@@ -18,7 +18,7 @@ async function updateMetrics() {
     });
 
     // Find all tool MDX files
-    const mdxFiles = await globby('src/content/tools/**/*.mdx');
+    const mdxFiles = await globby('src/content/toolsupdate/*.mdx');
     console.log(`Found ${mdxFiles.length} tool files`);
 
     // Process each file
