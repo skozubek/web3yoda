@@ -317,6 +317,19 @@ const toolMetaTags = [
         }
       </div>
     </section>
+    {/* Web3Yoda's Why Section - Only shown if ourwhy data exists */}
+    {
+      localizedContent.ourWhy && (
+        <section class={classes.section}>
+          {localizedContent.ourWhy.map((whySection) => (
+            <div>
+              <h2 class={classes.sectionTitle}>{whySection.title}</h2>
+              <div class={classes.sectionContent}>{whySection.content}</div>
+            </div>
+          ))}
+        </section>
+      )
+    }
 
     <footer class={classes.footer}>
       <p>{t("tools.last_updated")}: {formattedDate}</p>

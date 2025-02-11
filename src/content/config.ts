@@ -187,7 +187,11 @@ const toolTranslationsSchema = z.record(
     keyFeatures: z.array(z.object({
       title: z.string(),
       items: z.array(z.string())
-    }))
+    })),
+    ourWhy: z.array(z.object({
+      title: z.string(),
+      content: z.string()
+    })).optional()
   })
 );
 
