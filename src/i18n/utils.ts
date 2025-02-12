@@ -43,12 +43,7 @@ export function getLocalizedURL(currentPath: string, locale: string, defaultLang
   // Remove the current locale from the path if it exists
   const pathWithoutLocale = currentPath.replace(/^\/[^/]+\/?/, '');
 
-  // Don't add locale prefix for default language
-  if (locale === defaultLang) {
-    return pathWithoutLocale || '/';
-  }
-
-  // Add the new locale prefix
+  // Always add the locale prefix, even for default language
   return `/${locale}${pathWithoutLocale ? `/${pathWithoutLocale}` : ''}`;
 }
 

@@ -28,8 +28,19 @@ const {
   robots = "index, follow",
 } = Astro.props;
 
-// Get the current URL
+// Get the current URL and use it as is for canonical (no trailing slash manipulation)
 const currentUrl = Astro.url.href;
+
+// Ensure canonical URL has language prefix but preserve exact path format
+let finalCanonicalUrl = canonicalUrl || currentUrl;
+if (!finalCanonicalUrl.includes(`/${currentLocale}/`)) {
+  const urlObj = new URL(finalCanonicalUrl);
+  const pathWithoutLocale = urlObj.pathname
+    .replace(/^\/[^/]+\/?/, "")
+    .replace(/\/$/, ""); // Remove trailing slash
+  urlObj.pathname = `/${currentLocale}${pathWithoutLocale ? `/${pathWithoutLocale}` : ""}`;
+  finalCanonicalUrl = urlObj.toString();
+}
 
 // Default schema if none provided
 const defaultSchema = {
@@ -52,7 +63,7 @@ const finalSchema = schema
 <title>{title}</title>
 <meta name="description" content={description} />
 <meta name="robots" content={robots} />
-<link rel="canonical" href={canonicalUrl || currentUrl} />
+<link rel="canonical" href={finalCanonicalUrl} />
 
 <!-- Custom Meta Tags -->
 {meta.map((tag) => <meta name={tag.name} content={tag.content} />)}
