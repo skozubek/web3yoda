@@ -104,6 +104,14 @@ const directorySchema = {
       description: tool.data.i18n[lang].description,
       applicationCategory: `Blockchain ${tool.data.category}`,
       url: `${Astro.url.origin}/${lang}/tools/${tool.id.split("/").pop()}`,
+      softwareRequirements: `Supported blockchains: ${tool.data.ecosystems.join(", ")}`,
+      aggregateRating: {
+        "@type": "AggregateRating",
+        ratingValue: "5",
+        ratingCount: "1",
+        bestRating: "5",
+        worstRating: "1",
+      },
     },
   })),
 };

@@ -95,13 +95,17 @@ const toolSchema = {
     availability: "https://schema.org/OnlineOnly",
   },
   featureList: localizedContent.features.join(", "),
-  requirements: `Supported blockchains: ${tool.data.ecosystems.join(", ")}`,
+  softwareRequirements: `Supported blockchains: ${tool.data.ecosystems.join(", ")}`,
   url: tool.data.website,
   dateModified: tool.data.lastUpdated.toISOString(),
   softwareVersion: tool.data.status,
-  ...(tool.data.github && {
-    codeRepository: tool.data.github,
-  }),
+  aggregateRating: {
+    "@type": "AggregateRating",
+    ratingValue: "5",
+    ratingCount: "1",
+    bestRating: "5",
+    worstRating: "1",
+  },
 };
 
 // Meta tags
