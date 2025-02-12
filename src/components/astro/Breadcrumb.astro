@@ -1,7 +1,7 @@
 ---
 // src/components/astro/Breadcrumb.astro
 import type { CollectionEntry } from "astro:content";
-import { useTranslations } from "@/i18n/utils";
+import { useTranslations, getLocalizedURL, defaultLang } from "@/i18n/utils";
 
 interface Props {
   tool?: CollectionEntry<"tools">;
@@ -13,7 +13,7 @@ const t = await useTranslations(lang as "en" | "pl");
 
 // Build breadcrumb items
 const items = [
-  { label: "Home", url: `/${lang}` },
+  { label: "Home", url: getLocalizedURL("/", lang, defaultLang) },
   { label: t("tools.title"), url: `/${lang}/tools` },
 ];
 
