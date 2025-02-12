@@ -29,18 +29,34 @@ const {
 } = Astro.props;
 
 // Get the current URL and use it as is for canonical (no trailing slash manipulation)
-const currentUrl = Astro.url.href;
+const currentUrl = Astro.url.href.replace(/\/$/, "");
 
 // Ensure canonical URL has language prefix but preserve exact path format
-let finalCanonicalUrl = canonicalUrl || currentUrl;
+let finalCanonicalUrl = (canonicalUrl || currentUrl).replace(/\/$/, "");
 if (!finalCanonicalUrl.includes(`/${currentLocale}/`)) {
   const urlObj = new URL(finalCanonicalUrl);
-  const pathWithoutLocale = urlObj.pathname
-    .replace(/^\/[^/]+\/?/, "")
-    .replace(/\/$/, ""); // Remove trailing slash
-  urlObj.pathname = `/${currentLocale}${pathWithoutLocale ? `/${pathWithoutLocale}` : ""}`;
-  finalCanonicalUrl = urlObj.toString();
+  // Check if this is the home page
+  const isHomePage = urlObj.pathname === "/" || urlObj.pathname === "";
+
+  // For home page in default language, don't add language prefix
+  if (isHomePage && currentLocale === "en") {
+    finalCanonicalUrl = urlObj.origin;
+  } else {
+    const pathWithoutLocale = urlObj.pathname
+      .replace(/^\/[^/]+\/?/, "")
+      .replace(/\/$/, ""); // Remove trailing slash
+    urlObj.pathname = `/${currentLocale}${pathWithoutLocale ? `/${pathWithoutLocale}` : ""}`;
+    finalCanonicalUrl = urlObj.toString().replace(/\/$/, ""); // Remove trailing slash
+  }
 }
+
+// Clean alternate URLs
+const cleanAlternateUrls = Object.fromEntries(
+  Object.entries(alternateUrls).map(([lang, url]) => [
+    lang,
+    url.replace(/\/$/, ""),
+  ])
+);
 
 // Default schema if none provided
 const defaultSchema = {
@@ -50,7 +66,7 @@ const defaultSchema = {
   name: title,
   description: description,
   inLanguage: currentLocale,
-  alternateName: Object.values(alternateUrls),
+  alternateName: Object.values(cleanAlternateUrls),
 };
 
 // Merge default schema with provided schema or use default
@@ -73,7 +89,10 @@ const finalSchema = schema
 <meta property="og:url" content={currentUrl} />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
-<meta property="og:image" content={new URL(image, Astro.url)} />
+<meta
+  property="og:image"
+  content={new URL(image, Astro.url).toString().replace(/\/$/, "")}
+/>
 <meta property="og:locale" content={currentLocale} />
 
 <!-- Twitter -->
@@ -81,12 +100,19 @@ const finalSchema = schema
 <meta property="twitter:url" content={currentUrl} />
 <meta property="twitter:title" content={title} />
 <meta property="twitter:description" content={description} />
-<meta property="twitter:image" content={new URL(image, Astro.url)} />
+<meta
+  property="twitter:image"
+  content={new URL(image, Astro.url).toString().replace(/\/$/, "")}
+/>
 
 <!-- Language Alternates -->
-<link rel="alternate" href={alternateUrls["x-default"]} hreflang="x-default" />
+<link
+  rel="alternate"
+  href={cleanAlternateUrls["x-default"]}
+  hreflang="x-default"
+/>
 {
-  Object.entries(alternateUrls)
+  Object.entries(cleanAlternateUrls)
     .filter(([lang]) => lang !== "x-default")
     .map(([lang, url]) => <link rel="alternate" href={url} hreflang={lang} />)
 }

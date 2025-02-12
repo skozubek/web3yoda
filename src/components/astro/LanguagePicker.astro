@@ -44,7 +44,7 @@ const currentLangName = languages[currentLangCode];
     {
       Object.entries(languages).map(([lang, label]) => (
         <option
-          value={lang === "en" ? "/" : `/${lang}/`}
+          value={lang === "en" ? "/" : `/${lang}`}
           selected={Astro.currentLocale === lang}
         >
           {label}

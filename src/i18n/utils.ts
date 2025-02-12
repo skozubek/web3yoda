@@ -41,9 +41,14 @@ export async function useTranslations(lang: SupportedLanguages) {
 
 export function getLocalizedURL(currentPath: string, locale: string, defaultLang: string) {
   // Remove the current locale from the path if it exists
-  const pathWithoutLocale = currentPath.replace(/^\/[^/]+\/?/, '');
+  const pathWithoutLocale = currentPath.replace(/^\/[^/]+\/?/, '').replace(/\/$/, '');
 
-  // Always add the locale prefix, even for default language
+  // For home page in default language, return root URL
+  if (!pathWithoutLocale && locale === defaultLang) {
+    return '/';
+  }
+
+  // For other cases, add locale prefix
   return `/${locale}${pathWithoutLocale ? `/${pathWithoutLocale}` : ''}`;
 }
 
