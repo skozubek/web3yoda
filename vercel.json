@@ -19,11 +19,5 @@
           }
         ]
       }
-    ],
-    "routes": [
-      {
-        "src": "/uz1jwagkez5pb9cte7ugpt646urs1vcg.txt",
-        "dest": "/src/uz1jwagkez5pb9cte7ugpt646urs1vcg.txt"
-      }
     ]
   }
