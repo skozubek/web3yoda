@@ -83,28 +83,40 @@ const classes = {
 
 // SEO schema
 const toolSchema = {
-  "@type": "SoftwareApplication",
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
   name: localizedContent.title,
   description: localizedContent.description,
-  applicationCategory: `Blockchain ${tool.data.category}`,
-  operatingSystem: "Web",
-  offers: {
-    "@type": "Offer",
-    price: tool.data.metadata?.pricing === "free" ? "0" : null,
-    priceCurrency: "USD",
-    availability: "https://schema.org/OnlineOnly",
-  },
-  featureList: localizedContent.features.join(", "),
-  softwareRequirements: `Supported blockchains: ${tool.data.ecosystems.join(", ")}`,
-  url: tool.data.website,
-  dateModified: tool.data.lastUpdated.toISOString(),
-  softwareVersion: tool.data.status,
-  aggregateRating: {
-    "@type": "AggregateRating",
-    ratingValue: "5",
-    ratingCount: "1",
-    bestRating: "5",
-    worstRating: "1",
+  mainEntity: {
+    "@type": "SoftwareApplication",
+    name: localizedContent.title,
+    description: localizedContent.description,
+    applicationCategory: `Blockchain ${tool.data.category}`,
+    operatingSystem: "Web",
+    offers: {
+      "@type": "Offer",
+      price: tool.data.metadata?.pricing === "free" ? "0" : "1",
+      priceCurrency: "USD",
+      availability: "https://schema.org/OnlineOnly",
+      priceValidUntil: new Date(
+        new Date().setFullYear(new Date().getFullYear() + 1)
+      )
+        .toISOString()
+        .split("T")[0],
+      itemCondition: "https://schema.org/NewCondition",
+    },
+    featureList: localizedContent.features.join(", "),
+    softwareRequirements: `Supported blockchains: ${tool.data.ecosystems.join(", ")}`,
+    url: tool.data.website,
+    dateModified: tool.data.lastUpdated.toISOString(),
+    softwareVersion: tool.data.status,
+    aggregateRating: {
+      "@type": "AggregateRating",
+      ratingValue: "5",
+      ratingCount: "1",
+      bestRating: "5",
+      worstRating: "1",
+    },
   },
 };
 
