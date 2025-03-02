@@ -11,7 +11,16 @@ export default defineConfig({
   output: 'server',
   trailingSlash: 'never',
   site: 'https://web3yoda.xyz',
-  integrations: [react(), tailwind(), mdx(), sitemap()],
+  integrations: [
+    react(),
+    tailwind(),
+    mdx(),
+    sitemap({
+    filter: (page) => {
+      // Exclude debug-related routes from the sitemap
+      return !page.includes('/debug-routes') && !page.endsWith('/debug');
+    }
+  })],
   adapter: vercel({
     analytics: true, // Enable Vercel Analytics
     imageService: true,
