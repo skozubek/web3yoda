@@ -14,7 +14,9 @@ export default defineConfig({
   integrations: [react(), tailwind(), mdx(), sitemap()],
   adapter: vercel({
     analytics: true, // Enable Vercel Analytics
-    imageService: true
+    imageService: true,
+    excludeFiles: ['**/debug-routes/**'],
+    devMode: false
   }),
 
   i18n: {
