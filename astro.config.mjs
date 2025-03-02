@@ -9,6 +9,7 @@ import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
   output: 'server',
+  trailingSlash: 'never',
   site: 'https://web3yoda.xyz',
   integrations: [react(), tailwind(), mdx(), sitemap()],
   adapter: vercel({
