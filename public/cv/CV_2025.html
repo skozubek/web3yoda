@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Sergiusz Kozubek - CV</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: "Montserrat", sans-serif;
+      }
+      .container {
+        width: 1000px;
+        margin: 40px auto;
+        display: grid;
+        grid-template-columns: 300px 1fr;
+        gap: 40px;
+        padding: 20px;
+      }
+      .name {
+        font-size: 48px;
+        font-weight: 700;
+        line-height: 1;
+        margin: 0;
+        text-transform: uppercase;
+      }
+      .section-title {
+        font-size: 20px;
+        font-weight: 700;
+        text-transform: uppercase;
+        margin-top: 40px;
+        margin-bottom: 20px;
+        position: relative;
+        padding-bottom: 8px;
+      }
+      .section-title::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 40%;
+        border-bottom: 2px solid black;
+      }
+      .details-grid {
+        display: grid;
+        gap: 8px;
+      }
+      .details-label {
+        font-weight: 700;
+        text-transform: uppercase;
+      }
+      .right-aligned {
+        text-align: right;
+      }
+      .job-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 8px;
+      }
+      .job-title {
+        font-weight: 700;
+        font-size: 16px;
+      }
+      .job-details {
+        display: flex;
+        font-weight: bold;
+        justify-content: space-between;
+        color: #666;
+        margin-bottom: 12px;
+      }
+      ul {
+        margin: 0 0 24px 0;
+        padding-left: 20px;
+      }
+      li {
+        margin-bottom: 8px;
+      }
+      .left-column {
+        border-right: 1px solid #eee;
+        padding-right: 20px;
+      }
+      .right-column {
+        padding-left: 20px;
+      }
+      p {
+        margin: 0 0 16px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- Left Column -->
+      <div class="left-column">
+        <h1 class="name">SERGIUSZ<br />KOZUBEK</h1>
+
+        <div class="section-title">CONTACT</div>
+        <div class="details-grid">
+          <div class="details-label">ADDRESS</div>
+          <div>Skoczów</div>
+          <div>Poland</div>
+
+          <div class="details-label">PHONE</div>
+          <div>+48 602525216</div>
+
+          <div class="details-label">EMAIL</div>
+          <div>sergiusz.kozubek@gmail.com</div>
+
+          <div class="details-label">LINKS</div>
+          <div>
+            <a href="https://www.linkedin.com/in/skozubek/">LinkedIn</a>
+          </div>
+        </div>
+
+        <div class="section-title">SKILLS</div>
+        <ul>
+          <li>Teamwork</li>
+          <li>Fast learning</li>
+          <li>Adaptability</li>
+          <li>Communication</li>
+          <li>Multitasking</li>
+          <li>High organisation & efficiency</li>
+        </ul>
+
+        <div class="section-title">LANGUAGES</div>
+        <ul>
+          <li>Polish - native</li>
+          <li>English - fluent</li>
+        </ul>
+
+        <div class="section-title">INTERESTS</div>
+        <ul>
+          <li>Trading (CFD futures, crypto), technical analysis</li>
+          <li>Web3, crypto, NFTs communities</li>
+          <li>Building with AI (LLMs, agents, automation tooling)</li>
+          <li>Running (NYC Half Marathon finisher)</li>
+          <li>Mountain biking, skiing, ski touring</li>
+        </ul>
+      </div>
+
+      <!-- Right Column -->
+      <div class="right-column">
+        <div class="section-title">PROFILE</div>
+        <p>
+          Independent consultant with 15+ years’ experience delivering web
+          products, automations, and AI integrations. Former
+          <strong>Google Search Quality Evaluator</strong> and Lionbridge
+          Internet Search Administrator. Web3 and AI enthusiast with strong
+          analytical and communication skills. <strong>Vibe Coder</strong>.
+          <strong>Winner, Bolt Hackathon (July 2025)</strong> —
+          <strong>Blockchain Challenge</strong> (sponsored by the
+          <strong>Algorand Foundation</strong>), one of the world's largest
+          virtual hackathons.
+          <a href="https://devpost.com/software/startsnap-fun">Devpost</a>.
+        </p>
+
+        <div class="section-title">EMPLOYMENT HISTORY</div>
+
+        <div class="job-header">
+          <div class="job-title">
+            Process Automation Specialist & Web3 Consultant
+          </div>
+        </div>
+        <div class="job-details">
+          <span>Self-employed</span>
+          <span>01.2022 - Present</span>
+        </div>
+        <ul>
+          <li>Automated business processes using APIs and AI tools</li>
+          <li>
+            Designed booking system integrating PaperForms, Google Sheets,
+            JavaScript
+          </li>
+          <li>
+            Developed mining rewards calculator for Web3 project Hashlings
+          </li>
+          <li>Built Twitter/X bots for NFT community engagement</li>
+          <li>Consulted on user onboarding to Web3</li>
+        </ul>
+
+        <div class="job-header">
+          <div class="job-title">CTO & Product Owner</div>
+        </div>
+        <div class="job-details">
+          <span>payb.io</span>
+          <span>12.2020 - 06.2022</span>
+        </div>
+        <ul>
+          <li>Developed crypto payment processor POC for online stores</li>
+          <li>Defined product vision & roadmap</li>
+          <li>Managed backlog and task prioritisation</li>
+          <li>Worked daily with developers in Scrum</li>
+        </ul>
+
+        <div class="job-header">
+          <div class="job-title">Internet Search Administrator</div>
+        </div>
+        <div class="job-details">
+          <span>Lionbridge (remote)</span>
+          <span>04.2013 - 08.2014</span>
+        </div>
+        <ul>
+          <li>
+            Assessed local search results for relevance and intent matching
+            (Polish market)
+          </li>
+          <li>Judged location quality for user queries</li>
+        </ul>
+
+        <div class="job-header">
+          <div class="job-title">Freelance Web Developer & SEO Consultant</div>
+        </div>
+        <div class="job-details">
+          <span>Self-employed</span>
+          <span>2009 - 2020</span>
+        </div>
+        <ul>
+          <li>
+            Collaborated with Proline Solution GmbH and Worksline GmbH on ERP
+            (MIO) module development and localization for SMBs using CAD and
+            PDM/PLM; planned and coordinated delivery between Poland and Germany
+          </li>
+          <li>SEO consulting & website optimisation</li>
+          <li>Managed e-commerce store koniakow.com</li>
+          <li>Built websites and online stores (WordPress, WooCommerce)</li>
+        </ul>
+
+        <div class="job-header">
+          <div class="job-title">Search Quality Evaluator</div>
+        </div>
+        <div class="job-details">
+          <span>Google, Dublin</span>
+          <span>03.2008 - 11.2008</span>
+        </div>
+        <ul>
+          <li>Assessed website quality for Polish Google index</li>
+          <li>Analysed content and link structures</li>
+          <li>Monitored Polish market and user feedback</li>
+          <li>Worked on Webmaster Communication projects</li>
+          <li>Developed practices for search quality analysis</li>
+        </ul>
+
+        <div class="job-header">
+          <div class="job-title">Co-founder & E-commerce Manager</div>
+        </div>
+        <div class="job-details">
+          <span>KONI-Art SC, koniakow.com</span>
+          <span>2004 - 2008</span>
+        </div>
+        <ul>
+          <li>Created and managed website with SEO optimisation</li>
+          <li>Managed online shop operations and customer support</li>
+          <li>
+            Established partnerships with Polish & international companies
+          </li>
+        </ul>
+
+        <div class="section-title">EDUCATION</div>
+        <div class="job-header">
+          <div class="job-title">MSc, Computer Science and Management</div>
+          <div class="right-aligned">Wroclaw University of Technology</div>
+        </div>
+        <div class="job-details">
+          <span>2000 - 2003</span>
+        </div>
+        <p>
+          Thesis: Application of the XML language in electronic commerce
+          systems.
+        </p>
+
+        <div class="job-header">
+          <div class="job-title">
+            BSc, Faculty of Fundamental Problems of Technology
+          </div>
+          <div class="right-aligned">Wroclaw University of Technology</div>
+        </div>
+        <div class="job-details">
+          <span>1997 - 2001</span>
+        </div>
+        <p>
+          Engineering project: MATLAB app for life expectancy probability
+          calculation.
+        </p>
+
+        <div class="section-title">CERTIFICATIONS</div>
+        <ul>
+          <li>Intermediate JavaScript Nanodegree, Udacity (2020)</li>
+          <li>Front-End Web Developer Nanodegree, Udacity (2017)</li>
+        </ul>
+      </div>
+    </div>
+  </body>
+</html>
