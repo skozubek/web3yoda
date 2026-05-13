@@ -13,29 +13,29 @@
     "test:twitter-api": "tsx scripts/metrics/test-api.ts"
   },
   "dependencies": {
-    "@astrojs/check": "^0.9.4",
-    "@astrojs/mdx": "^4.1.0",
-    "@astrojs/node": "^9.1.2",
-    "@astrojs/react": "^4.2.1",
-    "@astrojs/sitemap": "^3.2.1",
-    "@astrojs/tailwind": "^6.0.0",
-    "@astrojs/vercel": "^8.1.0",
-    "@types/react": "^18.3.12",
-    "@types/react-dom": "^18.3.1",
-    "@vercel/analytics": "^1.4.1",
-    "astro": "^5.4.1",
-    "dotenv": "^16.4.7",
-    "globby": "^14.0.2",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "tailwindcss": "^3.4.14",
-    "twitter-api-v2": "^1.19.0",
-    "typescript": "^5.6.3"
+    "@astrojs/check": "0.9.4",
+    "@astrojs/mdx": "4.1.0",
+    "@astrojs/node": "9.1.2",
+    "@astrojs/react": "4.2.1",
+    "@astrojs/sitemap": "3.2.1",
+    "@astrojs/tailwind": "6.0.0",
+    "@astrojs/vercel": "8.1.0",
+    "@types/react": "18.3.18",
+    "@types/react-dom": "18.3.5",
+    "@vercel/analytics": "1.4.1",
+    "astro": "5.4.1",
+    "dotenv": "16.4.7",
+    "globby": "14.0.2",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "tailwindcss": "3.4.17",
+    "twitter-api-v2": "1.19.0",
+    "typescript": "5.7.3"
   },
   "devDependencies": {
-    "@tailwindcss/typography": "^0.5.15",
-    "@types/node": "^20.17.14",
-    "playwright": "^1.49.1",
-    "tsx": "^4.19.2"
+    "@tailwindcss/typography": "0.5.16",
+    "@types/node": "20.17.14",
+    "playwright": "1.49.1",
+    "tsx": "4.19.2"
   }
 }
